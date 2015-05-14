@@ -83,6 +83,6 @@
 
 	<p class="footer">Page rendered in <strong>{elapsed_time}</strong> seconds</p>
 </div>
-
+<script type='text/javascript' src="<?php echo base_url(); ?>js/s.js"></script>
 </body>
 </html>
