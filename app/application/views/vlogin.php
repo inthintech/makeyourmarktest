@@ -14,7 +14,7 @@
 
 html,body
 {
-background: #B0E0E6;
+background: #84A749;
 height: 100%; 
 width: 100%; 
 }
@@ -106,11 +106,11 @@ top: 6%;
 {
 margin: 0;
 padding: 0;
-color: #66CDAA;
+color: #6495ED;
 
 font-family: 'Play', sans-serif;
 position: relative;
-top: 30%;
+top: 34%;
 font-size: 1.2em;
 float: left;
 }
@@ -135,7 +135,8 @@ float: left;
 <div class="topbar">
 <div class="headerdiv">
 <h5 class="headertxt">Make Your Mark</h5>
-<p class="welcometxt">Welcome to Administration Center</p>
+
+<p class="welcometxt">Welcome to Application Control Panel</p>
 </div>
 </div>
 <div class="logindiv">
