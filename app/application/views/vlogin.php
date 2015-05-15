@@ -144,13 +144,13 @@ float: left;
 <form class="lform" action="index.php" method="POST">
 <fieldset>
 <label>Username</label>
-<input type="text" name="user" class="form-control">
+<input type="text" name="inploguser" class="form-control">
 </fieldset>  
 <fieldset>
 <label>Password</label>
-<input type="password" name="pass" class="form-control">
+<input type="password" name="inplogpass" class="form-control">
 </fieldset>  
-<button type="submit" name="submit" class="btn btn-danger">Sign In</button>
+<button type="submit" name="inplogsubmit" class="btn btn-danger">Sign In</button>
 </form>
 </div>
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
