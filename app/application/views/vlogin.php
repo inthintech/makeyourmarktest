@@ -140,7 +140,7 @@ float: left;
 </div>
 </div>
 <div class="logindiv">
-<h2 class="welcome">Please sign in</h2>
+<h2 class="welcome">Please log in</h2>
 <form class="lform" action="index.php" method="POST">
 <fieldset>
 <label>Username</label>
@@ -150,7 +150,7 @@ float: left;
 <label>Password</label>
 <input type="password" name="pass" class="form-control">
 </fieldset>  
-<button type="submit" name="submit" class="btn btn-primary">Log In</button>
+<button type="submit" name="submit" class="btn btn-danger">Sign In</button>
 </form>
 </div>
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
