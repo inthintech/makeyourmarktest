@@ -27,13 +27,12 @@ background: #333333;
 .logindiv
 {
 width: 35%;
-height: 50%;
+height: 55%;
 background: #fff;
 margin-left: auto;
 margin-right: auto;
 margin-top: 8%;
 border-radius: 5px;
-
 }
 
 .welcome {
@@ -82,7 +81,7 @@ margin-left: 72%;
 {
 margin-top: 5%;
 color: red;
-font-size: 1.1em;
+font-size: 0.9em;
 text-align: center;
 }
 .logout
@@ -141,17 +140,19 @@ float: left;
 </div>
 <div class="logindiv">
 <h2 class="welcome">Please log in</h2>
-<form class="lform" action="index.php" method="POST">
+<form class="lform" action="<?php echo site_url('login/verify');?>" method="POST">
 <fieldset>
 <label>Username</label>
-<input type="text" name="inploguser" class="form-control">
+<input type="text" name="username" class="form-control">
 </fieldset>  
 <fieldset>
 <label>Password</label>
-<input type="password" name="inplogpass" class="form-control">
+<input type="password" name="password" class="form-control">
 </fieldset>  
-<button type="submit" name="inplogsubmit" class="btn btn-danger">Sign In</button>
+<button type="submit" name="submit" class="btn btn-danger">Sign In</button>
+<?php echo validation_errors(); ?>
 </form>
+
 </div>
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>

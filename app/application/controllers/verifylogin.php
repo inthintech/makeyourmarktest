@@ -1,52 +1,21 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Login extends CI_Controller {
+class VerifyLogin extends CI_Controller {
 
-	/**
-	 * Index Page for this controller.
-	 *
-	 * Maps to the following URL
-	 * 		http://example.com/index.php/welcome
-	 *	- or -  
-	 * 		http://example.com/index.php/welcome/index
-	 *	- or -
-	 * Since this controller is set as the default controller in 
-	 * config/routes.php, it's displayed at http://example.com/
-	 *
-	 * So any other public methods not prefixed with an underscore will
-	 * map to /index.php/welcome/<method_name>
-	 * @see http://codeigniter.com/user_guide/general/urls.html
-	 */
+ function __construct()
+ {
+   parent::__construct();
+   $this->load->model('user','',TRUE);
+ }
 
-	public function __construct()
-    {
-      	parent::__construct();
-        // Your own constructor code
-        $this->load->model('user','',TRUE);
-    }
-
-	public function index()
-	{
-		$this->load->helper(array('form'));
-		if($this->session->userdata('client_id'))
-			{
-				redirect('/exams');
-			}
-		else
-			{
-				$this->load->view('vlogin');
-			}
-		
-	}
-
-	public function verify()
- 	{
+ function index()
+ {
    //This method will have the credentials validation
    $this->load->library('form_validation');
 
    $this->form_validation->set_rules('username', 'Username', 'trim|required|xss_clean');
    $this->form_validation->set_rules('password', 'Password', 'trim|required|xss_clean|callback_check_database');
-   $this->form_validation->set_error_delimiters('<p class="invalid">', '</p>');
+   $this->form_validation->set_error_delimiters('<span class="invalid">', '</span>');
 
    if($this->form_validation->run() == FALSE)
    {
@@ -59,13 +28,12 @@ class Login extends CI_Controller {
      redirect('exams');
    }
 
- 	}
+ }
 
- 	public function check_database()
- 	{
+ function check_database($password)
+ {
    //Field validation succeeded.  Validate against database
    $username = $this->input->post('username');
-   $password = $this->input->post('password');
 
    //query the database
    $result = $this->user->login($username, $password);
@@ -78,10 +46,10 @@ class Login extends CI_Controller {
        
        $client_id = $row->client_id;
        $flag = $row->is_active;
-      	
+      
       } 
 
-      if($flag=='Y')
+      if($flag='Y')
       {
 
         $this->session->set_userdata('client_id', $client_id);
@@ -90,16 +58,16 @@ class Login extends CI_Controller {
       else
       {
         $this->form_validation->set_message('check_database', 'Your license is expired. Please contact Customer Support.');
-        return FALSE;
+        return false;
       }
     }
    else
    {
      $this->form_validation->set_message('check_database', 'Invalid username or password');
-     return FALSE;
+     return false;
    }
- 	}
-	}
+ }
 
-/* End of file welcome.php */
-/* Location: ./application/controllers/welcome.php */
+}
+
+?>
