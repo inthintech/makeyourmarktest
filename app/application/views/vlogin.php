@@ -8,10 +8,13 @@
 <!-- Bootstrap -->
 <link href="<?php echo base_url(); ?>css/bootstrap.min.css" rel="stylesheet">
 
-<link href='http://fonts.googleapis.com/css?family=Play' rel='stylesheet' type='text/css'>
-
 <style type="text/css">
-
+@font-face {
+        font-family: "Play";
+        src: url('<?php echo base_url(); ?>css/Play-Regular.ttf');
+        font-weight: normal;
+        font-style: normal;
+    }
 html,body
 {
 background: #84A749;
@@ -155,7 +158,7 @@ float: left;
 
 </div>
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="<?php echo base_url();?>js/jquery-1.11.3.min.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="<?php echo base_url();?>js/bootstrap.min.js"></script>
 </body>

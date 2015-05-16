@@ -30,7 +30,7 @@ class Login extends CI_Controller {
 		$this->load->helper(array('form'));
 		if($this->session->userdata('client_id'))
 			{
-				redirect('/exams');
+				redirect('exams');
 			}
 		else
 			{

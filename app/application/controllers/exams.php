@@ -22,19 +22,28 @@ class Exams extends CI_Controller {
     {
       	parent::__construct();
         // Your own constructor code
-        $this->load->helper('url');
-        $this->load->library('session');
+        $this->load->model('user','',TRUE);
     }
 
 	public function index()
 	{
 		if($this->session->userdata('client_id'))
 			{
-				redirect('/login');
+				$result = $this->user->getClientName($this->session->userdata('client_id'));
+				foreach($result as $row)
+     			{
+       
+       			$client_name= $row->client_name;
+      			} 
+				$headerdata = array('client_name' => $client_name ,'title' => 'Welcome to Make Your Mark','container_height' => 100 );
+				$this->load->view('header',$headerdata);
+				$this->load->view('footer');
+
 			}
 		else
 			{
-				$this->load->view('welcome_message');
+				
+				redirect('login');
 			}
 		
 	}

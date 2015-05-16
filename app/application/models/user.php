@@ -1,6 +1,8 @@
-<?php
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
 Class User extends CI_Model
 {
+ 
  function login($username, $password)
  {
    
@@ -16,5 +18,23 @@ Class User extends CI_Model
      return false;
    }
  }
+
+function getClientName($client_id)
+ {
+   
+    $query = $this->db->query("select client_name from clients where client_id=".$this->db->escape($client_id));
+
+   if($query -> num_rows() == 1)
+   {
+     return $query->result();
+   }
+   else
+   {
+     return false;
+   }
+ }
+
+
+
 }
 ?>
