@@ -35,8 +35,19 @@ class Exams extends CI_Controller {
        
        			$client_name= $row->client_name;
       			} 
-				$headerdata = array('client_name' => $client_name ,'title' => 'Welcome to Make Your Mark','container_height' => 100 );
+				$headerdata = array('client_name' => $client_name ,'title' => 'Welcome to Make Your Mark','container_height' => 150 );
 				$this->load->view('header',$headerdata);
+				$result = $this->user->getSubscriptionDetails($this->session->userdata('client_id'));
+				foreach($result as $row)
+     			{
+       
+       			$subscriptiondata = array('subscription_info' => '<tr><td>Name</td><td>'.$row->client_name.'</td></tr><tr><td>Active From</td>
+       					<td>'.$row->subscription_start_date.'</td></tr>
+						<tr><td>Subscription Ends On</td><td>'.$row->subscription_end_date.'</td></tr><tr><td>Package Name</td>
+						<td>'.$row->package_name.'</td></tr>
+						<tr><td>Package Description</td><td>'.$row->package_desc.'</td></tr>');
+      			} 
+				$this->load->view('vsubscription',$subscriptiondata);
 				$this->load->view('footer');
 
 			}
@@ -47,6 +58,39 @@ class Exams extends CI_Controller {
 			}
 		
 	}
+
+	public function newexam()
+	{
+		if($this->session->userdata('client_id'))
+			{
+				
+				$result = $this->user->getClientName($this->session->userdata('client_id'));
+				foreach($result as $row)
+     			{
+       
+       			$client_name= $row->client_name;
+      			} 
+				$headerdata = array('client_name' => $client_name ,'title' => 'Welcome to Make Your Mark','container_height' => 150 );
+				$this->load->view('header',$headerdata);
+				$this->load->helper(array('form'));
+				$this->load->view('vnewexam');
+				$this->load->view('footer');
+
+			}
+		else
+			{
+				
+				redirect('login');
+			}
+		
+	}
+
+
+
+
+
+
+
 }
 
 /* End of file welcome.php */

@@ -1,0 +1,54 @@
+.subcontainer
+{
+margin-left:auto;
+margin-right:auto;
+position: relative;
+top:4%;
+overflow: hidden;
+}
+.center_table
+{
+margin-left:auto;
+margin-right:auto;
+margin-top:4%;
+margin-bottom:10%;
+}
+.center_table,td
+{
+background : white;
+}
+.center_table, th, td {
+border: 1px solid #DDD;
+padding-top: 10px;
+padding-bottom: 10px;
+padding-left: 8px;
+padding-right: 8px;
+}
+.exam_form label
+
+{
+  font-weight: normal;
+}
+
+.exam_form
+
+{
+    padding-top: 5%;
+    padding-bottom: 8%;
+}
+.statusMsg
+{
+  text-align: center;
+  font-weight : bold;
+}
+.errorMsg
+{
+  text-align: center;
+  color : red;
+}
+
+.exam_form button
+{
+  margin-left: 0%;
+  width: 20%;
+}

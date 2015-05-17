@@ -7,7 +7,7 @@
 <title><?php echo $title ?></title>
 <!-- Bootstrap -->
 <link href="<?php echo base_url(); ?>css/bootstrap.min.css" rel="stylesheet">
-
+<link href="<?php echo base_url(); ?>css/style.css" rel="stylesheet">
 <style = "text/css">
 @font-face {
         font-family: "Play";
@@ -18,7 +18,9 @@
 html,body
 {
       /*background: #B0E0E6;*/
-      background: #EED5B7;
+      /*background: #EED5B7;*/
+      background: #84A749;
+
       height: 100%; 
       width: 100%; 
 }
@@ -42,6 +44,7 @@ top: 6%;
 margin: 0;
 padding: 0;
 color: #66CDAA;
+color:#EEAD0E;
 font-family: 'Play', sans-serif;
 
 position: relative;
@@ -186,17 +189,23 @@ font-size: 0.9em;
 <div class="containerdiv">
 <div class="leftnav">
 <ul> 
-<li class="menuitem"><span>Main Menu</span></li>
-<li><span><a href="home.php">Home</a></span></li>
-<li><span><a href="addexam.php">Add Exam Entry</a></span></li>
-<li><span><a href="examstatus.php">Exam Status</a></span></li>
-<li><span><a href="uploadresult.php">Upload Results</a></span></li>
-<li><span><a href="verifyresult.php">Verify Results</a></span></li>
+<li class="menuitem"><span>Exams</span></li>
+<li><span><a href="<?php echo site_url('exams'); ?>">Home</a></span></li>
+<li><span><a href="<?php echo site_url('exams/newexam'); ?>">New Exam</a></span></li>
+<li><span><a href="<?php echo site_url('exams'); ?>">Exam Status</a></span></li>
+<li><span><a href="<?php echo site_url('exams'); ?>">Upload Results</a></span></li>
+<li><span><a href="<?php echo site_url('exams'); ?>">Verify Results</a></span></li>
+<li><span><a href="<?php echo site_url('exams'); ?>">Change Password</a></span></li>
+<li><span><a href="<?php echo site_url('exams'); ?>">How to Create CSV File</a></span></li>
+<li><span><a href="<?php echo site_url('exams'); ?>">Feedback / Help</a></span></li>
+<li class="menuitem"><span>Reports</span></li>
+<li><span><a href="<?php echo site_url('exams'); ?>">College Level</a></span></li>
+<li><span><a href="<?php echo site_url('exams'); ?>">Department Level</a></span></li>
+<li><span><a href="<?php echo site_url('exams'); ?>">Year Level</a></span></li>
+<li><span><a href="<?php echo site_url('exams'); ?>">Class Level</a></span></li>
+<li><span><a href="<?php echo site_url('exams'); ?>">Student Level</a></span></li>
+<li><span><a href="<?php echo site_url('exams'); ?>">Staff Level</a></span></li>
 
-<li><span><a href="manageusers.php">Manage User</a></span></li>
-<li><span><a href="createcsv.php">How to Create CSV File</a></span></li>
-<li><span><a href="createreport.php">How to Generate Reports</a></span></li>
-<li><span><a href="feedback.php">Feedback / Support</a></span></li>
 </ul>
 </div>
 <div class="rightcontainer">

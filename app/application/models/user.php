@@ -33,6 +33,25 @@ function getClientName($client_id)
      return false;
    }
  }
+ function getSubscriptionDetails($client_id)
+ {
+   
+    $query = $this->db->query("select a.client_name,DATE_FORMAT(subscription_start_date,'%b %D %Y')subscription_start_date,
+    DATE_FORMAT(subscription_end_date,'%b %D %Y')subscription_end_date,c.package_name,c.package_desc from clients a 
+    join clientpackage b
+    on a.client_id=b.client_id
+    join package c
+    on b.package_id=c.package_id where a.client_id=".$this->db->escape($client_id));
+
+   if($query -> num_rows() == 1)
+   {
+     return $query->result();
+   }
+   else
+   {
+     return false;
+   }
+ }
 
 
 
