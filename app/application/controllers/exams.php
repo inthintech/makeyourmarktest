@@ -23,12 +23,15 @@ class Exams extends CI_Controller {
       	parent::__construct();
         // Your own constructor code
         $this->load->model('user','',TRUE);
+        if(!$this->session->userdata('client_id'))
+        {
+        	redirect('login');
+        }
     }
 
 	public function index()
 	{
-		if($this->session->userdata('client_id'))
-			{
+
 				$result = $this->user->getClientName($this->session->userdata('client_id'));
 				foreach($result as $row)
      			{
@@ -49,43 +52,127 @@ class Exams extends CI_Controller {
       			} 
 				$this->load->view('vsubscription',$subscriptiondata);
 				$this->load->view('footer');
-
-			}
-		else
-			{
-				
-				redirect('login');
-			}
 		
 	}
 
 	public function newexam()
 	{
-		if($this->session->userdata('client_id'))
-			{
-				
+
 				$result = $this->user->getClientName($this->session->userdata('client_id'));
 				foreach($result as $row)
      			{
        
        			$client_name= $row->client_name;
       			} 
-				$headerdata = array('client_name' => $client_name ,'title' => 'Welcome to Make Your Mark','container_height' => 150 );
+				$headerdata = array('client_name' => $client_name ,'title' => 'Add new exam','container_height' => 150 );
 				$this->load->view('header',$headerdata);
 				$this->load->helper(array('form'));
-				$this->load->view('vnewexam');
-				$this->load->view('footer');
-
-			}
-		else
-			{
 				
-				redirect('login');
+				$statusdata = array('success' => '');
+			    $this->load->view('vnewexam',$statusdata);
+				$this->load->view('footer');			 
+		
+	}
+
+	public function newexamstatus()
+	{
+		$this->load->library('form_validation');
+		$this->form_validation->set_rules('ename', 'Exam Name', 'trim|required|xss_clean|max_length[250]|callback_enameRegex');
+		$this->form_validation->set_error_delimiters('<p class="errorMsg">', '</p>');
+		if($this->form_validation->run() == FALSE)
+	   	{
+		     
+			$result = $this->user->getClientName($this->session->userdata('client_id'));
+			foreach($result as $row)
+			{
+				$client_name= $row->client_name;
+			} 
+			$headerdata = array('client_name' => $client_name ,'title' => 'Add new exam','container_height' => 150 );
+			$this->load->view('header',$headerdata);
+			$statusdata = array('success' => '');
+		    $this->load->view('vnewexam',$statusdata);
+			$this->load->view('footer');			 
+
+	   }
+	   else
+	   {
+			
+
+			$result = $this->user->getClientName($this->session->userdata('client_id'));
+			foreach($result as $row)
+			{
+				$client_name= $row->client_name;
+			} 
+			$headerdata = array('client_name' => $client_name ,'title' => 'Add new exam','container_height' => 150 );
+			$this->load->view('header',$headerdata);
+			if($this->user->newExamEntry($this->session->userdata('client_id'),$this->input->post('ename')))
+			{
+				$statusdata = array('success' => '<p class="statusMsg">Exam Uploaded Successfully</p>');
 			}
+			else
+			{
+				$statusdata = array('success' => '<p class="errorMsg">Unknown Error. Please try again.</p>');
+			}
+		   	
+		    $this->load->view('vnewexam',$statusdata);
+			$this->load->view('footer');			 
+
+	   }
+
+	}
+
+
+	public function enameRegex()
+	{
+		$ename = $this->input->post('ename');
+		if(preg_match('/^[a-zA-Z0-9 ]+$/', $ename))
+		//check if only alphanumeric,numbers and spaces are present	
+		{
+			return TRUE;
+		}
+		else
+		{		
+			$this->form_validation->set_message('enameRegex', 'Please enter only alphabets, numbers and spaces');
+     		return FALSE;
+		}		
+	}
+
+
+	public function viewexam()
+	{
+				$result = $this->user->getClientName($this->session->userdata('client_id'));
+				foreach($result as $row)
+     			{
+       
+       			$client_name= $row->client_name;
+      			} 
+				$headerdata = array('client_name' => $client_name ,'title' => 'Exam Status','container_height' => 150 );
+				$this->load->view('header',$headerdata);
+				$this->load->helper(array('form'));
+				$statusdata = array('examstatus' => '');
+		    	$this->load->view('vnewexam',$statusdata);
+			    $this->load->view('vdispexam');
+				$this->load->view('footer');			 
 		
 	}
 
 
+	public function viewexamstatus()
+	{
+
+				$result = $this->user->getClientName($this->session->userdata('client_id'));
+				foreach($result as $row)
+     			{
+       
+       			$client_name= $row->client_name;
+      			} 
+				$headerdata = array('client_name' => $client_name ,'title' => 'Exam Status','container_height' => 150 );
+				$this->load->view('header',$headerdata);
+				$this->load->helper(array('form'));
+			    $this->load->view('vdispexam');
+				$this->load->view('footer');		
+		
+	}
 
 
 

@@ -33,6 +33,8 @@ function getClientName($client_id)
      return false;
    }
  }
+ 
+
  function getSubscriptionDetails($client_id)
  {
    
@@ -53,6 +55,54 @@ function getClientName($client_id)
    }
  }
 
+
+function newExamEntry($client_id,$ename)
+
+{
+
+  $query = $this->db->query("insert into exams(client_id,exam_name,crte_ts,updt_ts,status,lgcl_del_f) 
+  values(".$this->db->escape($client_id).",".$this->db->escape($ename).",CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,0,'N')");
+
+   if($query)
+   {
+     return true;
+   }
+   else
+   {
+     return false;
+   }
+
+}
+
+function getExamList($client_id)
+
+{
+
+  $query = $this->db->query("select 
+case when package_id=1 then 1 
+when package_id=2 then 5
+when package_id=3 then 10
+when package_id=4 then 25
+end no
+from clientpackage where client_id=".$this->db->escape($client_id));
+  foreach($query as $row)
+          {
+       
+            $no= $row->no;
+            } 
+
+  $query = $this->db->query("select exam_name from exams where client_id=".$this->db->escape($client_id)." order by crte_ts desc LIMIT ".$no);
+
+   if($query -> num_rows() >= 1)
+   {
+     return $query->result();
+   }
+   else
+   {
+     return false;
+   }
+
+}
 
 
 }
