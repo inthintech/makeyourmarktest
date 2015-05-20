@@ -41,6 +41,7 @@ class Exams extends CI_Controller {
 				$headerdata = array('client_name' => $client_name ,'title' => 'Welcome to Make Your Mark','container_height' => 150 );
 				$this->load->view('header',$headerdata);
 				$result = $this->user->getSubscriptionDetails($this->session->userdata('client_id'));
+				$subscriptiondata = '';
 				foreach($result as $row)
      			{
        
@@ -55,26 +56,28 @@ class Exams extends CI_Controller {
 		
 	}
 
-	public function newexam()
+	public function add()
 	{
 
-				$result = $this->user->getClientName($this->session->userdata('client_id'));
-				foreach($result as $row)
-     			{
-       
-       			$client_name= $row->client_name;
-      			} 
-				$headerdata = array('client_name' => $client_name ,'title' => 'Add new exam','container_height' => 150 );
-				$this->load->view('header',$headerdata);
-				$this->load->helper(array('form'));
+					$result = $this->user->getClientName($this->session->userdata('client_id'));
+					foreach($result as $row)
+	     			{
+	       
+	       			$client_name= $row->client_name;
+	      			} 
+					$headerdata = array('client_name' => $client_name ,'title' => 'Add new exam','container_height' => 150 );
+					$this->load->view('header',$headerdata);
+					$this->load->helper(array('form'));
+					
+					$statusdata = array('success' => '');
+				    $this->load->view('vnewexam',$statusdata);
+					$this->load->view('footer');			
 				
-				$statusdata = array('success' => '');
-			    $this->load->view('vnewexam',$statusdata);
-				$this->load->view('footer');			 
+				 
 		
 	}
 
-	public function newexamstatus()
+	public function addexam()
 	{
 		$this->load->library('form_validation');
 		$this->form_validation->set_rules('ename', 'Exam Name', 'trim|required|xss_clean|max_length[250]|callback_enameRegex');
@@ -138,7 +141,7 @@ class Exams extends CI_Controller {
 	}
 
 
-	public function viewexam()
+	public function status()
 	{
 				$result = $this->user->getClientName($this->session->userdata('client_id'));
 				foreach($result as $row)
@@ -148,31 +151,27 @@ class Exams extends CI_Controller {
       			} 
 				$headerdata = array('client_name' => $client_name ,'title' => 'Exam Status','container_height' => 150 );
 				$this->load->view('header',$headerdata);
-				$this->load->helper(array('form'));
-				$statusdata = array('examstatus' => '');
-		    	$this->load->view('vnewexam',$statusdata);
-			    $this->load->view('vdispexam');
+				
+				
+				$result = $this->user->getExamStatus($this->session->userdata('client_id'));
+				$examsts = '';
+				$sno = 0;
+				foreach($result as $row)
+     			{
+       			$sno++;
+       			$examsts = $examsts."<tr><td>".$sno."</td><td>".$row->exam_name."</td><td>".$row->cdate."</td><td>".$row->status_msg."</td></tr>";
+      			} 
+				
+      			$statusdata = array('examstatus' => $examsts);	
+      			
+				
+			    $this->load->view('vdispexam',$statusdata);
 				$this->load->view('footer');			 
 		
 	}
 
 
-	public function viewexamstatus()
-	{
 
-				$result = $this->user->getClientName($this->session->userdata('client_id'));
-				foreach($result as $row)
-     			{
-       
-       			$client_name= $row->client_name;
-      			} 
-				$headerdata = array('client_name' => $client_name ,'title' => 'Exam Status','container_height' => 150 );
-				$this->load->view('header',$headerdata);
-				$this->load->helper(array('form'));
-			    $this->load->view('vdispexam');
-				$this->load->view('footer');		
-		
-	}
 
 
 

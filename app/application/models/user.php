@@ -85,13 +85,46 @@ when package_id=3 then 10
 when package_id=4 then 25
 end no
 from clientpackage where client_id=".$this->db->escape($client_id));
-  foreach($query as $row)
+  foreach($query->result() as $row)
           {
        
             $no= $row->no;
             } 
 
-  $query = $this->db->query("select exam_name from exams where client_id=".$this->db->escape($client_id)." order by crte_ts desc LIMIT ".$no);
+  $query = $this->db->query("select exam_id,exam_name from exams 
+    where client_id=".$this->db->escape($client_id)." order by crte_ts desc LIMIT ".$no);
+
+   if($query -> num_rows() >= 1)
+   {
+     return $query->result();
+   }
+   else
+   {
+     return false;
+   }
+
+}
+
+function getExamStatus($client_id)
+
+{
+
+  $query = $this->db->query("select 
+case when package_id=1 then 1 
+when package_id=2 then 5
+when package_id=3 then 10
+when package_id=4 then 25
+end no
+from clientpackage where client_id=".$this->db->escape($client_id));
+  foreach($query->result() as $row)
+          {
+       
+            $no= $row->no;
+            } 
+
+  $query = $this->db->query("select exam_name,DATE_FORMAT(crte_ts,'%b %D %Y')cdate,
+    case when status=1 then 'Results Available' else 'Results Not Uploaded' end status_msg,status from exams 
+    where client_id=".$this->db->escape($client_id)." order by crte_ts desc LIMIT ".$no);
 
    if($query -> num_rows() >= 1)
    {

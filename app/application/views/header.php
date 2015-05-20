@@ -191,8 +191,8 @@ font-size: 0.9em;
 <ul> 
 <li class="menuitem"><span>Exams</span></li>
 <li><span><a href="<?php echo site_url('exams'); ?>">Home</a></span></li>
-<li><span><a href="<?php echo site_url('exams/newexam'); ?>">New Exam</a></span></li>
-<li><span><a href="<?php echo site_url('exams/viewexam'); ?>">Exam Status</a></span></li>
+<li><span><a href="<?php echo site_url('exams/add'); ?>">New Exam</a></span></li>
+<li><span><a href="<?php echo site_url('exams/status'); ?>">Exam Status</a></span></li>
 <li><span><a href="<?php echo site_url('exams'); ?>">Upload Results</a></span></li>
 <li><span><a href="<?php echo site_url('exams'); ?>">Verify Results</a></span></li>
 <li><span><a href="<?php echo site_url('exams'); ?>">Change Password</a></span></li>
