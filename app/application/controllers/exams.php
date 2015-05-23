@@ -189,8 +189,9 @@ class Exams extends CI_Controller {
    
    			$client_name= $row->client_name;
   			} 
-			$headerdata = array('client_name' => $client_name ,'title' => 'Upload Exam','container_height' => 150 );
+			$headerdata = array('client_name' => $client_name ,'title' => 'Upload Exam','container_height' => 250 );
 			$this->load->view('header',$headerdata);
+			$this->load->helper(array('form'));
 			$result = $this->user->getExamList($this->session->userdata('client_id'));
 			if(!$result)
 			{
