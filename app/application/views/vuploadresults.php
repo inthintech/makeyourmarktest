@@ -4,7 +4,7 @@
 <div class="panel-heading">Upload Results for the Exam</div>
 <div class="panel-body">
 
-<form class="exam_form" action="<?php echo site_url('exams/upload');?>" method="POST" enctype="multipart/form-data">
+<form class="upload_form" action="<?php echo site_url('exams/upload');?>" method="POST" enctype="multipart/form-data">
 <fieldset>
 
 <p class="upload_header">Staff information</p>
@@ -78,6 +78,10 @@
 <br><br><br>
 <p class="upload_header">Upload Results File</p>
 
+<br><br>
+<label>Upload the Exam Results CSV File (Refer to How to create CSV section for help)</label>
+<br><br>
+<input type="file" name="fileToUpload" id="fileToUpload">
 
 <!--
 <label>Select an Exam to Upload Results</label>

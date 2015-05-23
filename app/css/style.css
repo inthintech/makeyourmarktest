@@ -93,3 +93,29 @@ padding-right: 8px;
 	margin-right: auto;
 	background: #B0E2FF;
 }
+.upload_form input[type=file]
+{
+  width: 100%;
+  border :1px solid #C0C0C0;
+  padding-top: 1.5%;
+  padding-bottom: 1.5%;
+  padding-left: 2%;
+  border-radius: 4px;
+}
+.upload_form label
+
+{
+  font-weight: normal;
+}
+
+.upload_form
+
+{
+    padding-top: 5%;
+    padding-bottom: 8%;
+}
+.upload_form button
+{
+  margin-left: 0%;
+  width: 20%;
+}

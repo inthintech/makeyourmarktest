@@ -195,6 +195,7 @@ font-size: 0.9em;
 <li><span><a href="<?php echo site_url('exams/status'); ?>">Exam Status</a></span></li>
 <li><span><a href="<?php echo site_url('exams/upload'); ?>">Upload Results</a></span></li>
 <li><span><a href="<?php echo site_url('exams'); ?>">Verify Results</a></span></li>
+<li><span><a href="<?php echo site_url('exams'); ?>">Delete Results</a></span></li>
 <li><span><a href="<?php echo site_url('exams'); ?>">Change Password</a></span></li>
 <li><span><a href="<?php echo site_url('exams'); ?>">How to Create CSV File</a></span></li>
 <li><span><a href="<?php echo site_url('exams'); ?>">Feedback / Help</a></span></li>
