@@ -56,30 +56,13 @@ class Exams extends CI_Controller {
 		
 	}
 
-	public function add()
-	{
-
-					$result = $this->user->getClientName($this->session->userdata('client_id'));
-					foreach($result as $row)
-	     			{
-	       
-	       			$client_name= $row->client_name;
-	      			} 
-					$headerdata = array('client_name' => $client_name ,'title' => 'Add new exam','container_height' => 150 );
-					$this->load->view('header',$headerdata);
-					$this->load->helper(array('form'));
-					
-					$statusdata = array('success' => '');
-				    $this->load->view('vnewexam',$statusdata);
-					$this->load->view('footer');			
-				
-				 
-		
-	}
-
 	public function addexam()
 	{
-		$this->load->library('form_validation');
+
+					if(isset($_POST['submit']))
+					{
+						
+					$this->load->library('form_validation');
 		$this->form_validation->set_rules('ename', 'Exam Name', 'trim|required|xss_clean|max_length[250]|callback_enameRegex');
 		$this->form_validation->set_error_delimiters('<p class="errorMsg">', '</p>');
 		if($this->form_validation->run() == FALSE)
@@ -99,7 +82,6 @@ class Exams extends CI_Controller {
 	   }
 	   else
 	   {
-			
 
 			$result = $this->user->getClientName($this->session->userdata('client_id'));
 			foreach($result as $row)
@@ -123,8 +105,29 @@ class Exams extends CI_Controller {
 	   }
 
 	}
+					else
+					{
 
+					$result = $this->user->getClientName($this->session->userdata('client_id'));
+					foreach($result as $row)
+	     			{
+	       
+	       			$client_name= $row->client_name;
+	      			} 
+					$headerdata = array('client_name' => $client_name ,'title' => 'Add new exam','container_height' => 150 );
+					$this->load->view('header',$headerdata);
+					$this->load->helper(array('form'));
+					
+					$statusdata = array('success' => '');
+				    $this->load->view('vnewexam',$statusdata);
+					$this->load->view('footer');			
+					
+					}
+				 
+		
+	}
 
+	
 	public function enameRegex()
 	{
 		$ename = $this->input->post('ename');
@@ -165,11 +168,62 @@ class Exams extends CI_Controller {
       			$statusdata = array('examstatus' => $examsts);	
       			
 				
-			    $this->load->view('vdispexam',$statusdata);
+			    $this->load->view('vexamstatus',$statusdata);
 				$this->load->view('footer');			 
 		
 	}
 
+	public function upload()
+
+	{
+
+		if(isset($_POST['submit']))
+		{
+
+		}
+		else
+		{
+			$result = $this->user->getClientName($this->session->userdata('client_id'));
+			foreach($result as $row)
+ 			{
+   
+   			$client_name= $row->client_name;
+  			} 
+			$headerdata = array('client_name' => $client_name ,'title' => 'Upload Exam','container_height' => 150 );
+			$this->load->view('header',$headerdata);
+			$result = $this->user->getExamList($this->session->userdata('client_id'));
+			if(!$result)
+			{
+				redirect('exams/noexam');
+			}
+				$examlist = '';
+				foreach($result as $row)
+     			{
+       			$examlist = "<option selected value=".$row->exam_id.">".$row->exam_name."</option>".$examlist;
+       			
+      			} 
+      			$examdata = array('examlist' => $examlist);
+			$this->load->view('vuploadresults',$examdata);
+			$this->load->view('footer');	
+		}
+
+
+	}
+
+
+	public function noexam()
+	{
+			$result = $this->user->getClientName($this->session->userdata('client_id'));
+			foreach($result as $row)
+ 			{
+   
+   			$client_name= $row->client_name;
+  			} 
+			$headerdata = array('client_name' => $client_name ,'title' => 'No exams available','container_height' => 150 );
+			$this->load->view('header',$headerdata);
+			$this->load->view('vnoexams');
+			$this->load->view('footer');
+	}
 
 
 
