@@ -113,7 +113,7 @@ float : left;
 {
 width: 67%;
 height: 100%;
-/*background: white;*/
+/*background: green;*/
 margin-left: 30%;
 }
 

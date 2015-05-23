@@ -138,5 +138,47 @@ from clientpackage where client_id=".$this->db->escape($client_id));
 }
 
 
+function newResult($client_id,$exam_id,$target_path,$staffname,$staffid,$subname,$subcode,$maxmark,$minmark,$deptcode,$year,$section)
+
+{
+
+  $query = $this->db->query('LOAD DATA LOCAL INFILE "'.$target_path.'"
+INTO TABLE results
+FIELDS TERMINATED BY "," ENCLOSED BY "\""
+LINES TERMINATED BY "\r\n"               
+IGNORE 1 LINES
+(student_id,student_name,marks_obtained)
+set 
+pass_mark='.$this->db->escape($minmark).',
+total_marks='.$this->db->escape($maxmark).',
+staff_id='.$this->db->escape($staffid).',
+staff_name='.$this->db->escape($staffname).',
+subject_name='.$this->db->escape($subname).',
+subject_code='.$this->db->escape($subcode).',
+dept_code='.$this->db->escape($deptcode).',
+year='.$this->db->escape($year).',
+section='.$this->db->escape($section).',
+exam_id='.$this->db->escape($exam_id).',
+client_id='.$this->db->escape($client_id).',
+crte_ts=CURRENT_TIMESTAMP,
+updt_ts=CURRENT_TIMESTAMP,
+lgcl_del_f="N"');
+
+   if($query)
+   {
+     
+     unlink($target_path);
+     $query = $this->db->query("update exams set status=1 where exam_id=".$this->db->escape($exam_id)); 
+     return true;
+   }
+   else
+   {
+     return false;
+   }
+
+}
+
+
+
 }
 ?>

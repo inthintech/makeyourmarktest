@@ -63,7 +63,7 @@ class Exams extends CI_Controller {
 					{
 						
 					$this->load->library('form_validation');
-		$this->form_validation->set_rules('ename', 'Exam Name', 'trim|required|xss_clean|max_length[250]|callback_enameRegex');
+		$this->form_validation->set_rules('ename', 'Exam Name', 'trim|required|xss_clean|max_length[250]|callback_alphanumericVal');
 		$this->form_validation->set_error_delimiters('<p class="errorMsg">', '</p>');
 		if($this->form_validation->run() == FALSE)
 	   	{
@@ -128,17 +128,33 @@ class Exams extends CI_Controller {
 	}
 
 	
-	public function enameRegex()
+	public function alphanumericVal($inp,$name)
 	{
-		$ename = $this->input->post('ename');
-		if(preg_match('/^[a-zA-Z0-9 ]+$/', $ename))
+		
+		if(preg_match('/^[a-zA-Z0-9 ]+$/', $inp))
 		//check if only alphanumeric,numbers and spaces are present	
 		{
 			return TRUE;
 		}
 		else
 		{		
-			$this->form_validation->set_message('enameRegex', 'Please enter only alphabets, numbers and spaces');
+			$this->form_validation->set_message('alphanumericVal', 'Please enter only alphabets, numbers and spaces for '.$name.' field');
+     		return FALSE;
+		}		
+	}
+
+
+	public function numericVal($inp,$name)
+	{
+		
+		if(preg_match('/^[0-9 ]+$/', $inp))
+		//check if only alphanumeric,numbers and spaces are present	
+		{
+			return TRUE;
+		}
+		else
+		{		
+			$this->form_validation->set_message('numericVal', 'Please enter only numbers for '.$name.' field');
      		return FALSE;
 		}		
 	}
@@ -179,7 +195,56 @@ class Exams extends CI_Controller {
 
 		if(isset($_POST['submit']))
 		{
+			$this->load->library('form_validation');
+			$this->form_validation->set_rules('staffname', 'Staff Name', 'trim|required|xss_clean|max_length[250]|callback_alphanumericVal[Staff Name]');
+			$this->form_validation->set_rules('staffid', 'Staff Id', 'trim|required|xss_clean|max_length[250]|callback_alphanumericVal[Staff Id]');
+			$this->form_validation->set_rules('subname', 'Subject Name', 'trim|required|xss_clean|max_length[250]|callback_alphanumericVal[Subject Name]');
+			$this->form_validation->set_rules('subcode', 'Subject Code', 'trim|required|xss_clean|max_length[250]|callback_alphanumericVal[Subject Code]');
+			$this->form_validation->set_rules('maxmark', 'Maximum Mark', 'trim|required|xss_clean|max_length[250]|callback_numericVal[Maximum Mark]');
+			$this->form_validation->set_rules('minmark', 'Minimum Mark', 'trim|required|xss_clean|max_length[250]|callback_numericVal[Minimum Mark]');
+			$this->form_validation->set_rules('fileToUpload', 'File', 'callback_fileValidation');
 
+			$this->form_validation->set_error_delimiters('<p class="errorMsg">', '</p>');
+			if($this->form_validation->run() == FALSE)
+			{
+				$result = $this->user->getClientName($this->session->userdata('client_id'));
+				foreach($result as $row)
+				{
+					$client_name= $row->client_name;
+				} 
+				$headerdata = array('client_name' => $client_name ,'title' => 'Add new exam','container_height' => 340 );
+				$this->load->view('header',$headerdata);
+			    $this->load->helper(array('form'));
+				$result = $this->user->getExamList($this->session->userdata('client_id'));
+				if(!$result)
+				{
+					redirect('exams/noexam');
+				}
+					$examlist = '';
+					foreach($result as $row)
+	     			{
+	       			$examlist = "<option selected value=".$row->exam_id.">".$row->exam_name."</option>".$examlist;
+	       			
+	      			} 
+	      			$examdata = array('examlist' => $examlist);
+				$this->load->view('vuploadresults',$examdata);
+				$this->load->view('footer');		
+			}
+			else
+			{
+				$result = $this->user->getClientName($this->session->userdata('client_id'));
+				foreach($result as $row)
+	 			{
+	   
+	   			$client_name= $row->client_name;
+	  			} 
+				$headerdata = array('client_name' => $client_name ,'title' => 'Success','container_height' => 150 );
+				$this->load->view('header',$headerdata);
+				$this->load->view('vuploadsucess');
+				$this->load->view('footer');
+			
+			}
+	   	
 		}
 		else
 		{
@@ -189,7 +254,7 @@ class Exams extends CI_Controller {
    
    			$client_name= $row->client_name;
   			} 
-			$headerdata = array('client_name' => $client_name ,'title' => 'Upload Exam','container_height' => 250 );
+			$headerdata = array('client_name' => $client_name ,'title' => 'Upload Exam Results','container_height' => 340 );
 			$this->load->view('header',$headerdata);
 			$this->load->helper(array('form'));
 			$result = $this->user->getExamList($this->session->userdata('client_id'));
@@ -226,7 +291,97 @@ class Exams extends CI_Controller {
 			$this->load->view('footer');
 	}
 
+	public function fileValidation()
+	{
+			
+			/* Check if file is selected */
 
+			if (!is_uploaded_file($_FILES['fileToUpload']['tmp_name'])) 
+			{
+			$this->form_validation->set_message('fileValidation', 'Please upload a valid CSV file');
+     		return FALSE;
+			}
+			
+			/* Check if file selected is csv*/
+
+			$examFileType = pathinfo($_FILES["fileToUpload"]["name"],PATHINFO_EXTENSION);
+			if($examFileType != "csv") 
+			{
+			$this->form_validation->set_message('fileValidation', 'File Uploaded is not a CSV file');
+     		return FALSE;
+			}
+
+			/* Check if file selected has data */
+
+			if ($_FILES["fileToUpload"]["size"] == 0)
+			{
+			$this->form_validation->set_message('fileValidation', 'File Uploaded is empty');
+     		return FALSE;
+			}
+
+			/* Check file size */
+
+			if ($_FILES["fileToUpload"]["size"] > (5*1048576))
+			{
+			$this->form_validation->set_message('fileValidation', 'File Uploaded is too big. Allowed is upto 5MB.');
+     		return FALSE;
+			}
+			
+			$target_path = "files/";
+
+			$target_path = $target_path . basename( $_FILES['fileToUpload']['name']); 
+
+			if(!move_uploaded_file($_FILES['fileToUpload']['tmp_name'], $target_path)) 
+			{
+			$this->form_validation->set_message('fileValidation', 'Unable to Upload file to server');
+     		return FALSE;
+			} 
+			
+			/* Check no of columns */
+
+			$file = fopen($target_path, "r"); 
+			while ($line = fgetcsv($file))
+			{
+			  // count($line) is the number of columns
+			  $numcols = count($line);
+
+			  // Bail out of the loop if columns are incorrect
+			  if ($numcols != 3) 
+			  {
+			    $this->form_validation->set_message('fileValidation', 'Uploaded file has more or less columns');
+     			return FALSE;
+			  }
+
+			}
+
+			$fp = file($target_path);
+			  // Bail out of the loop if one or less rows present
+			  if (count($fp) <= 1) 
+			  {
+			    $this->form_validation->set_message('fileValidation', 'Uploaded file has one or no rows');
+     			return FALSE;
+			  }
+
+			fclose($file);
+			//fclose($fp);
+
+			$result = $this->user->newResult($this->session->userdata('client_id'),
+				$this->input->post('examid'),$target_path,$this->input->post('staffname'),$this->input->post('staffid'),
+				$this->input->post('subname'),$this->input->post('subcode'),$this->input->post('maxmark'),
+				$this->input->post('minmark'),$this->input->post('dept_code'),$this->input->post('year'),
+				$this->input->post('section')
+				);
+
+			if($result)
+			{
+				return TRUE;
+			}
+			else
+			{
+				return FALSE;
+			}
+
+	}
 
 
 

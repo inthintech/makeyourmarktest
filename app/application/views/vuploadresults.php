@@ -1,10 +1,11 @@
 
-<div class="subcontainer" style="width:90%">
+<div class="subcontainer" style="width:90%;">
 <div class="panel panel-default">
 <div class="panel-heading">Upload Results for the Exam</div>
 <div class="panel-body">
 
 <form class="upload_form" action="<?php echo site_url('exams/upload');?>" method="POST" enctype="multipart/form-data">
+
 <fieldset>
 
 <p class="upload_header">Staff information</p>
@@ -75,6 +76,14 @@
 <option value="F">F</option>
 </select>
 
+
+<br><br><br>
+<p class="upload_header">Exam Information</p>
+<br><br>
+<label>Select an Exam to Upload Results</label>
+<br><br>
+<select class="exam_select" name="examid" ><?php echo $examlist ?></select>
+
 <br><br><br>
 <p class="upload_header">Upload Results File</p>
 
@@ -122,8 +131,8 @@
 
 </fieldset>  
 <br><br>
-<button type="submit" name="submit" class="btn btn-primary">Submit</button>
-
+<button type="submit" name="submit" class="btn btn-primary" style="">Submit</button><br><br>
+<?php echo validation_errors(); ?>
 </form>
 
 </div>
