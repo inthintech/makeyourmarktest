@@ -2,21 +2,6 @@
 
 class Exams extends CI_Controller {
 
-	/**
-	 * Index Page for this controller.
-	 *
-	 * Maps to the following URL
-	 * 		http://example.com/index.php/welcome
-	 *	- or -  
-	 * 		http://example.com/index.php/welcome/index
-	 *	- or -
-	 * Since this controller is set as the default controller in 
-	 * config/routes.php, it's displayed at http://example.com/
-	 *
-	 * So any other public methods not prefixed with an underscore will
-	 * map to /index.php/welcome/<method_name>
-	 * @see http://codeigniter.com/user_guide/general/urls.html
-	 */
 
 	public function __construct()
     {
@@ -29,105 +14,103 @@ class Exams extends CI_Controller {
         }
     }
 
+/*----------------------------------------------  Subscription Details  ----------------------------------------------*/
+
 	public function index()
 	{
 
-				$result = $this->user->getClientName($this->session->userdata('client_id'));
-				foreach($result as $row)
-     			{
-       
-       			$client_name= $row->client_name;
-      			} 
-				$headerdata = array('client_name' => $client_name ,'title' => 'Welcome to Make Your Mark','container_height' => 150 );
-				$this->load->view('header',$headerdata);
-				$result = $this->user->getSubscriptionDetails($this->session->userdata('client_id'));
-				$subscriptiondata = '';
-				foreach($result as $row)
-     			{
-       
-       			$subscriptiondata = array('subscription_info' => '<tr><td>Name</td><td>'.$row->client_name.'</td></tr><tr><td>Active From</td>
-       					<td>'.$row->subscription_start_date.'</td></tr>
-						<tr><td>Subscription Ends On</td><td>'.$row->subscription_end_date.'</td></tr><tr><td>Package Name</td>
-						<td>'.$row->package_name.'</td></tr>
-						<tr><td>Package Description</td><td>'.$row->package_desc.'</td></tr>');
-      			} 
-				$this->load->view('vsubscription',$subscriptiondata);
-				$this->load->view('footer');
+		$result = $this->user->getClientName($this->session->userdata('client_id'));
+		foreach($result as $row)
+			{
+
+			$client_name= $row->client_name;
+			} 
+		$headerdata = array('client_name' => $client_name ,'title' => 'Welcome to Make Your Mark','container_height' => 170 );
+		$this->load->view('header',$headerdata);
+		$result = $this->user->getSubscriptionDetails($this->session->userdata('client_id'));
+		$subscriptiondata = '';
+		foreach($result as $row)
+			{
+
+			$subscriptiondata = array('subscription_info' => '<tr><td>Name</td><td>'.$row->client_name.'</td></tr><tr><td>Active From</td>
+					<td>'.$row->subscription_start_date.'</td></tr>
+				<tr><td>Subscription Ends On</td><td>'.$row->subscription_end_date.'</td></tr><tr><td>Package Name</td>
+				<td>'.$row->package_name.'</td></tr>
+				<tr><td>Package Description</td><td>'.$row->package_desc.'</td></tr>');
+			} 
+		$this->load->view('vsubscription',$subscriptiondata);
+		$this->load->view('footer');
 		
 	}
+
+
+/*----------------------------------------------  Add a new Exam ----------------------------------------------*/
 
 	public function addexam()
 	{
 
-					if(isset($_POST['submit']))
-					{
-						
-					$this->load->library('form_validation');
-		$this->form_validation->set_rules('ename', 'Exam Name', 'trim|required|xss_clean|max_length[250]|callback_alphanumericVal');
-		$this->form_validation->set_error_delimiters('<p class="errorMsg">', '</p>');
-		if($this->form_validation->run() == FALSE)
-	   	{
-		     
-			$result = $this->user->getClientName($this->session->userdata('client_id'));
-			foreach($result as $row)
-			{
-				$client_name= $row->client_name;
-			} 
-			$headerdata = array('client_name' => $client_name ,'title' => 'Add new exam','container_height' => 150 );
-			$this->load->view('header',$headerdata);
-			$statusdata = array('success' => '');
-		    $this->load->view('vnewexam',$statusdata);
-			$this->load->view('footer');			 
-
-	   }
-	   else
-	   {
-
-			$result = $this->user->getClientName($this->session->userdata('client_id'));
-			foreach($result as $row)
-			{
-				$client_name= $row->client_name;
-			} 
-			$headerdata = array('client_name' => $client_name ,'title' => 'Add new exam','container_height' => 150 );
-			$this->load->view('header',$headerdata);
-			if($this->user->newExamEntry($this->session->userdata('client_id'),$this->input->post('ename')))
-			{
-				$statusdata = array('success' => '<p class="statusMsg">Exam Uploaded Successfully</p>');
-			}
-			else
-			{
-				$statusdata = array('success' => '<p class="errorMsg">Unknown Error. Please try again.</p>');
-			}
-		   	
-		    $this->load->view('vnewexam',$statusdata);
-			$this->load->view('footer');			 
-
-	   }
-
-	}
-					else
-					{
-
-					$result = $this->user->getClientName($this->session->userdata('client_id'));
-					foreach($result as $row)
-	     			{
-	       
-	       			$client_name= $row->client_name;
-	      			} 
-					$headerdata = array('client_name' => $client_name ,'title' => 'Add new exam','container_height' => 150 );
-					$this->load->view('header',$headerdata);
-					$this->load->helper(array('form'));
-					
-					$statusdata = array('success' => '');
-				    $this->load->view('vnewexam',$statusdata);
-					$this->load->view('footer');			
-					
-					}
-				 
-		
-	}
-
 	
+		$result = $this->user->getClientName($this->session->userdata('client_id'));
+		foreach($result as $row)
+			{
+
+			$client_name= $row->client_name;
+			} 
+		$headerdata = array('client_name' => $client_name ,'title' => 'Add new exam','container_height' => 170 );
+		$this->load->view('header',$headerdata);
+		$this->load->helper(array('form'));
+	    $this->load->view('vnewexam');
+		$this->load->view('footer');		
+					
+						
+	}
+
+	public function addexamstatus()
+	{
+
+		if(!isset($_POST['submit']))
+		{
+			redirect('exams/addexam');
+		}
+
+		$this->load->library('form_validation');
+		$this->form_validation->set_rules('ename', 'Exam Name', 'trim|required|xss_clean|max_length[250]|callback_alphanumericVal[Exam Name]');
+		$this->form_validation->set_error_delimiters('<br><br><p class="errorMsg">', '</p>');
+		
+		if($this->form_validation->run() == FALSE)
+		   	{
+			     
+				$this->addexam();		 
+
+		   }
+	   else
+		   {
+
+				$result = $this->user->getClientName($this->session->userdata('client_id'));
+				foreach($result as $row)
+				{
+					$client_name= $row->client_name;
+				} 
+				$headerdata = array('client_name' => $client_name ,'title' => 'Add new exam','container_height' => 170 );
+				$this->load->view('header',$headerdata);
+				if($this->user->newExamEntry($this->session->userdata('client_id'),$this->input->post('ename')))
+				{
+					$statusdata = array('message' => 'Exam Uploaded Successfully');
+				}
+				else
+				{
+					$statusdata = array('message' => 'Unknown Error. Please try again.');
+				}
+			   	
+			    $this->load->view('vmessage',$statusdata);
+				$this->load->view('footer');			 
+
+		   }
+
+
+	}
+	
+
 	public function alphanumericVal($inp,$name)
 	{
 		
@@ -144,6 +127,129 @@ class Exams extends CI_Controller {
 	}
 
 
+/*----------------------------------------------  Exam Status Details  ----------------------------------------------*/
+
+	public function status()
+	{
+		$result = $this->user->getClientName($this->session->userdata('client_id'));
+		foreach($result as $row)
+			{
+
+			$client_name= $row->client_name;
+			} 
+		$headerdata = array('client_name' => $client_name ,'title' => 'Exam Status','container_height' => 170 );
+		$this->load->view('header',$headerdata);
+		
+		
+		$result = $this->user->getExamStatus($this->session->userdata('client_id'));
+
+		if($result)
+			{
+				$examsts = '';
+				$sno = 0;
+				foreach($result as $row)
+					{
+					$sno++;
+					$examsts = $examsts."<tr><td>".$sno."</td><td>".$row->exam_name."</td><td>".$row->cdate."</td><td>".$row->status_msg."</td></tr>";
+					} 
+				
+				$statusdata = array('examstatus' => $examsts);	
+				$this->load->view('vexamstatus',$statusdata);
+			}
+		else
+			{
+				$statusdata = array('message' => 'Error : Please create atleast one Exam to use this feature.');
+				$this->load->view('vmessage',$statusdata);
+			}
+
+		$this->load->view('footer');			 
+		
+	}
+
+
+
+/*----------------------------------------------  Upload Results ----------------------------------------------*/
+
+	
+	
+
+	public function upload()
+	{
+		$result = $this->user->getClientName($this->session->userdata('client_id'));
+		foreach($result as $row)
+			{
+
+			$client_name= $row->client_name;
+			} 
+		$headerdata = array('client_name' => $client_name ,'title' => 'Upload Exam Results','container_height' => 300 );
+		$this->load->view('header',$headerdata);
+		$this->load->helper(array('form'));
+		$result = $this->user->getExamList($this->session->userdata('client_id'));
+		if($result)
+		{
+			$examlist = '';
+			foreach($result as $row)
+ 			{
+   			$examlist = "<option selected value=".$row->exam_id.">".$row->exam_name."</option>".$examlist;
+   			
+  			} 
+  			$examdata = array('examlist' => $examlist);
+			$this->load->view('vuploadresults',$examdata);
+		}
+		else
+		{
+			$statusdata = array('message' => 'Error : Please create atleast one Exam to use this feature.');
+			$this->load->view('vmessage',$statusdata);
+		}
+
+		$this->load->view('footer');	
+	}
+
+
+
+
+
+	public function uploadstatus()
+
+	{
+
+		if(!isset($_POST['submit']))
+		{
+			redirect('exams/upload');
+		}
+
+		$this->load->library('form_validation');
+		$this->form_validation->set_rules('staffname', 'Staff Name', 'trim|required|xss_clean|max_length[250]|callback_alphanumericVal[Staff Name]');
+		$this->form_validation->set_rules('staffid', 'Staff Id', 'trim|required|xss_clean|max_length[250]|callback_alphanumericVal[Staff Id]');
+		$this->form_validation->set_rules('subname', 'Subject Name', 'trim|required|xss_clean|max_length[250]|callback_alphanumericVal[Subject Name]');
+		$this->form_validation->set_rules('subcode', 'Subject Code', 'trim|required|xss_clean|max_length[250]|callback_alphanumericVal[Subject Code]');
+		$this->form_validation->set_rules('maxmark', 'Maximum Mark', 'trim|required|xss_clean|max_length[250]|callback_numericVal[Maximum Mark]');
+		$this->form_validation->set_rules('minmark', 'Minimum Mark', 'trim|required|xss_clean|max_length[250]|callback_numericVal[Minimum Mark]');
+		$this->form_validation->set_rules('fileToUpload', 'File', 'callback_fileValidation');
+
+		$this->form_validation->set_error_delimiters('<p class="errorMsg">', '</p>');
+		if($this->form_validation->run() == FALSE)
+		{
+			$this->upload();		
+		}
+		else
+		{
+			$result = $this->user->getClientName($this->session->userdata('client_id'));
+			foreach($result as $row)
+				{
+
+				$client_name= $row->client_name;
+				} 
+			$headerdata = array('client_name' => $client_name ,'title' => 'Upload Exam Results','container_height' => 170 );
+			$this->load->view('header',$headerdata);
+			$statusdata = array('message' => 'Results have been uploaded Successfully.');
+			$this->load->view('vmessage',$statusdata);
+			$this->load->view('footer');
+		}
+	   	
+	}
+		
+
 	public function numericVal($inp,$name)
 	{
 		
@@ -157,138 +263,6 @@ class Exams extends CI_Controller {
 			$this->form_validation->set_message('numericVal', 'Please enter only numbers for '.$name.' field');
      		return FALSE;
 		}		
-	}
-
-
-	public function status()
-	{
-				$result = $this->user->getClientName($this->session->userdata('client_id'));
-				foreach($result as $row)
-     			{
-       
-       			$client_name= $row->client_name;
-      			} 
-				$headerdata = array('client_name' => $client_name ,'title' => 'Exam Status','container_height' => 150 );
-				$this->load->view('header',$headerdata);
-				
-				
-				$result = $this->user->getExamStatus($this->session->userdata('client_id'));
-				$examsts = '';
-				$sno = 0;
-				foreach($result as $row)
-     			{
-       			$sno++;
-       			$examsts = $examsts."<tr><td>".$sno."</td><td>".$row->exam_name."</td><td>".$row->cdate."</td><td>".$row->status_msg."</td></tr>";
-      			} 
-				
-      			$statusdata = array('examstatus' => $examsts);	
-      			
-				
-			    $this->load->view('vexamstatus',$statusdata);
-				$this->load->view('footer');			 
-		
-	}
-
-	public function upload()
-
-	{
-
-		if(isset($_POST['submit']))
-		{
-			$this->load->library('form_validation');
-			$this->form_validation->set_rules('staffname', 'Staff Name', 'trim|required|xss_clean|max_length[250]|callback_alphanumericVal[Staff Name]');
-			$this->form_validation->set_rules('staffid', 'Staff Id', 'trim|required|xss_clean|max_length[250]|callback_alphanumericVal[Staff Id]');
-			$this->form_validation->set_rules('subname', 'Subject Name', 'trim|required|xss_clean|max_length[250]|callback_alphanumericVal[Subject Name]');
-			$this->form_validation->set_rules('subcode', 'Subject Code', 'trim|required|xss_clean|max_length[250]|callback_alphanumericVal[Subject Code]');
-			$this->form_validation->set_rules('maxmark', 'Maximum Mark', 'trim|required|xss_clean|max_length[250]|callback_numericVal[Maximum Mark]');
-			$this->form_validation->set_rules('minmark', 'Minimum Mark', 'trim|required|xss_clean|max_length[250]|callback_numericVal[Minimum Mark]');
-			$this->form_validation->set_rules('fileToUpload', 'File', 'callback_fileValidation');
-
-			$this->form_validation->set_error_delimiters('<p class="errorMsg">', '</p>');
-			if($this->form_validation->run() == FALSE)
-			{
-				$result = $this->user->getClientName($this->session->userdata('client_id'));
-				foreach($result as $row)
-				{
-					$client_name= $row->client_name;
-				} 
-				$headerdata = array('client_name' => $client_name ,'title' => 'Add new exam','container_height' => 340 );
-				$this->load->view('header',$headerdata);
-			    $this->load->helper(array('form'));
-				$result = $this->user->getExamList($this->session->userdata('client_id'));
-				if(!$result)
-				{
-					redirect('exams/noexam');
-				}
-					$examlist = '';
-					foreach($result as $row)
-	     			{
-	       			$examlist = "<option selected value=".$row->exam_id.">".$row->exam_name."</option>".$examlist;
-	       			
-	      			} 
-	      			$examdata = array('examlist' => $examlist);
-				$this->load->view('vuploadresults',$examdata);
-				$this->load->view('footer');		
-			}
-			else
-			{
-				$result = $this->user->getClientName($this->session->userdata('client_id'));
-				foreach($result as $row)
-	 			{
-	   
-	   			$client_name= $row->client_name;
-	  			} 
-				$headerdata = array('client_name' => $client_name ,'title' => 'Success','container_height' => 150 );
-				$this->load->view('header',$headerdata);
-				$this->load->view('vuploadsucess');
-				$this->load->view('footer');
-			
-			}
-	   	
-		}
-		else
-		{
-			$result = $this->user->getClientName($this->session->userdata('client_id'));
-			foreach($result as $row)
- 			{
-   
-   			$client_name= $row->client_name;
-  			} 
-			$headerdata = array('client_name' => $client_name ,'title' => 'Upload Exam Results','container_height' => 340 );
-			$this->load->view('header',$headerdata);
-			$this->load->helper(array('form'));
-			$result = $this->user->getExamList($this->session->userdata('client_id'));
-			if(!$result)
-			{
-				redirect('exams/noexam');
-			}
-				$examlist = '';
-				foreach($result as $row)
-     			{
-       			$examlist = "<option selected value=".$row->exam_id.">".$row->exam_name."</option>".$examlist;
-       			
-      			} 
-      			$examdata = array('examlist' => $examlist);
-			$this->load->view('vuploadresults',$examdata);
-			$this->load->view('footer');	
-		}
-
-
-	}
-
-
-	public function noexam()
-	{
-			$result = $this->user->getClientName($this->session->userdata('client_id'));
-			foreach($result as $row)
- 			{
-   
-   			$client_name= $row->client_name;
-  			} 
-			$headerdata = array('client_name' => $client_name ,'title' => 'No exams available','container_height' => 150 );
-			$this->load->view('header',$headerdata);
-			$this->load->view('vnoexams');
-			$this->load->view('footer');
 	}
 
 	public function fileValidation()
@@ -384,10 +358,156 @@ class Exams extends CI_Controller {
 	}
 
 
+/*----------------------------------------------  Verify Results ----------------------------------------------*/
+
+
+	public function verify()
+		{
+
+			$result = $this->user->getClientName($this->session->userdata('client_id'));
+			foreach($result as $row)
+ 			{
+   
+   			$client_name= $row->client_name;
+  			} 
+			$headerdata = array('client_name' => $client_name ,'title' => 'Verify your results','container_height' => 170 );
+			$this->load->view('header',$headerdata);
+			$result = $this->user->getExamListWithData($this->session->userdata('client_id'));
+			if($result)
+			{
+				$examlist = '';
+				foreach($result as $row)
+	 			{
+	   			$examlist = "<option selected value=".$row->exam_id.">".$row->exam_name."</option>".$examlist;
+	   			
+	  			} 
+	  			$examdata = array('examlist' => $examlist);
+				$this->load->view('vverify',$examdata);
+			}
+			else
+			{
+				$statusdata = array('message' => 'Error : Please create atleast one exam and upload results.');
+				$this->load->view('vmessage',$statusdata);
+			}
+			$this->load->view('footer');
+			
+		}
+
+	public function verifystatus()
+	{
+
+		if(!isset($_POST['submit']))
+		{
+			redirect('exams/verify');
+		}
+
+		$result = $this->user->getClientName($this->session->userdata('client_id'));
+		foreach($result as $row)
+			{
+
+			$client_name= $row->client_name;
+			} 
+		$headerdata = array('client_name' => $client_name ,'title' => 'Check or Delete Results','container_height' => 170 );
+		$this->load->view('header',$headerdata);
+		$result = $this->user->getResultInfo($this->session->userdata('client_id'),$this->input->post('examid'));
+
+		if($result)
+			{
+				$html = '';
+				$sno = 0;
+				foreach($result as $row)
+					{
+					$sno++;
+					$html= $html."<tr><td>".$sno."</td><td>".$row->dept_code." ".$row->year." ".$row->section."</td>
+					<td>".$row->staff_name."</td>
+					<td>".$row->subject_name."</td>
+					<td>
+					<form target=\"_blank\" action=\"".site_url('exams/viewresults')."\" method=\"POST\">
+					<input type=\"hidden\" name=\"batchid\" value=".$row->batch_id.">
+					<input type=\"hidden\" name=\"examid\" value=".$row->exam_id.">  
+					<button type=\"submit\" name=\"submit\" class=\"btn btn-primary\">View</button>
+					</form>
+					</td>
+					<td>
+					<form action=\"".site_url('exams/deleteresults')."\" method=\"POST\">
+					<input type=\"hidden\" name=\"batchid\" value=".$row->batch_id.">
+					<input type=\"hidden\" name=\"examid\" value=".$row->exam_id.">  
+					<button type=\"submit\" name=\"submit\" class=\"btn btn-danger\">Delete</button>
+					</form>
+					</td></tr>";
+					} 
+			}
+		$data = array('resultsInfo' => $html);
+
+		$this->load->view('vverifyoption',$data);
+		$this->load->view('footer');
+		
+	}
+
+	public function viewresults()
+
+	{
+
+		if(!isset($_POST['submit']))
+		{
+			redirect('exams/verify');
+		}
+
+		$result = $this->user->getClientName($this->session->userdata('client_id'));
+		foreach($result as $row)
+			{
+
+			$client_name= $row->client_name;
+			} 
+		$headerdata = array('client_name' => $client_name ,'title' => 'View Results','container_height' => 150 );
+		$this->load->view('rptheader',$headerdata);
+		$result = $this->user->getResultDetails($this->session->userdata('client_id'),$this->input->post('examid'),$this->input->post('batchid'));
+		if($result)
+			{
+				$html = '';
+				$sno = 0;
+				foreach($result as $row)
+					{
+					$sno++;
+					$html= $html."<tr><td>".$sno."</td><td>".$row->student_id."</td><td>".$row->student_name."</td>
+					<td>".$row->total_marks."</td><td>".$row->pass_mark."</td><td>".$row->marks_obtained."</td>";
+					} 
+			}
+		$data = array('resultsInfo' => $html);
+
+		$this->load->view('vverifydetails',$data);
+		$this->load->view('footer');
+
+	}
+
+	public function deleteresults()
+
+	{
+		if(!isset($_POST['submit']))
+		{
+			redirect('exams/verify');
+		}
+		$res = $this->user->removeResults($this->session->userdata('client_id'),$this->input->post('examid'),$this->input->post('batchid'));
+		$result = $this->user->getClientName($this->session->userdata('client_id'));
+		foreach($result as $row)
+			{
+
+			$client_name= $row->client_name;
+			} 
+		$headerdata = array('client_name' => $client_name ,'title' => 'Welcome to Make Your Mark','container_height' => 170 );
+		$this->load->view('header',$headerdata);
+		$statusdata = array('message' => 'Results have been deleted Successfully.');
+		$this->load->view('vmessage',$statusdata);
+		$this->load->view('footer');
+	}
+
+
+
 
 
 
 }
+
 
 /* End of file welcome.php */
 /* Location: ./application/controllers/welcome.php */

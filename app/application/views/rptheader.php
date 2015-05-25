@@ -93,7 +93,7 @@ font-family: 'Play', sans-serif;
 }
 .containerdiv
 {
-width: 75%;
+width: 100%;
 height: <?php echo $container_height ?>%;
 background: #fff;
 margin-left: auto;
@@ -111,10 +111,9 @@ float : left;
 
 .rightcontainer
 {
-width: 67%;
+width: 100%;
 height: 100%;
 /*background: green;*/
-margin-left: 30%;
 }
 
 .menuitem
@@ -187,6 +186,7 @@ font-size: 0.9em;
 <h4 class="clientname"><?php echo $client_name ?></h4>
 </div>
 <div class="containerdiv">
+<!--
 <div class="leftnav">
 <ul> 
 <li class="menuitem"><span>Exams</span></li>
@@ -195,8 +195,6 @@ font-size: 0.9em;
 <li><span><a href="<?php echo site_url('exams/status'); ?>">Exam Status</a></span></li>
 <li><span><a href="<?php echo site_url('exams/upload'); ?>">Upload Results</a></span></li>
 <li><span><a href="<?php echo site_url('exams/verify'); ?>">Verify Results</a></span></li>
-<li><span><a href="<?php echo site_url('exams'); ?>">Add User</a></span></li>
-<li><span><a href="<?php echo site_url('exams'); ?>">Delete User</a></span></li>
 <li><span><a href="<?php echo site_url('exams'); ?>">Change Password</a></span></li>
 <li><span><a href="<?php echo site_url('exams'); ?>">How to Create CSV File</a></span></li>
 <li><span><a href="<?php echo site_url('exams'); ?>">Feedback / Help</a></span></li>
@@ -210,4 +208,5 @@ font-size: 0.9em;
 
 </ul>
 </div>
+-->
 <div class="rightcontainer">

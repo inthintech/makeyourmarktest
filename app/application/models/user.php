@@ -105,6 +105,40 @@ from clientpackage where client_id=".$this->db->escape($client_id));
 
 }
 
+function getExamListWithData($client_id)
+
+{
+
+  $query = $this->db->query("select 
+case when package_id=1 then 1 
+when package_id=2 then 5
+when package_id=3 then 10
+when package_id=4 then 25
+end no
+from clientpackage where client_id=".$this->db->escape($client_id));
+  foreach($query->result() as $row)
+          {
+       
+            $no= $row->no;
+            } 
+
+  $query = $this->db->query("select exam_id,exam_name from exams 
+    where status=1 and client_id=".$this->db->escape($client_id)." order by crte_ts desc LIMIT ".$no);
+
+   if($query -> num_rows() >= 1)
+   {
+     return $query->result();
+   }
+   else
+   {
+     return false;
+   }
+
+}
+
+
+
+
 function getExamStatus($client_id)
 
 {
@@ -140,43 +174,121 @@ from clientpackage where client_id=".$this->db->escape($client_id));
 
 function newResult($client_id,$exam_id,$target_path,$staffname,$staffid,$subname,$subcode,$maxmark,$minmark,$deptcode,$year,$section)
 
-{
+  {
 
-  $query = $this->db->query('LOAD DATA LOCAL INFILE "'.$target_path.'"
-INTO TABLE results
-FIELDS TERMINATED BY "," ENCLOSED BY "\""
-LINES TERMINATED BY "\r\n"               
-IGNORE 1 LINES
-(student_id,student_name,marks_obtained)
-set 
-pass_mark='.$this->db->escape($minmark).',
-total_marks='.$this->db->escape($maxmark).',
-staff_id='.$this->db->escape($staffid).',
-staff_name='.$this->db->escape($staffname).',
-subject_name='.$this->db->escape($subname).',
-subject_code='.$this->db->escape($subcode).',
-dept_code='.$this->db->escape($deptcode).',
-year='.$this->db->escape($year).',
-section='.$this->db->escape($section).',
-exam_id='.$this->db->escape($exam_id).',
-client_id='.$this->db->escape($client_id).',
-crte_ts=CURRENT_TIMESTAMP,
-updt_ts=CURRENT_TIMESTAMP,
-lgcl_del_f="N"');
+      $query = $this->db->query("select max(batch_id)+1 batch_id from results");
+      foreach($query->result() as $row)
+        {
+          $batchid= $row->batch_id;
+        } 
 
-   if($query)
+
+      $query = $this->db->query('LOAD DATA LOCAL INFILE "'.$target_path.'"
+      INTO TABLE results
+      FIELDS TERMINATED BY "," ENCLOSED BY "\""
+      LINES TERMINATED BY "\r\n"               
+      IGNORE 1 LINES
+      (student_id,student_name,marks_obtained)
+      set 
+      pass_mark='.$this->db->escape($minmark).',
+      total_marks='.$this->db->escape($maxmark).',
+      staff_id='.$this->db->escape($staffid).',
+      staff_name='.$this->db->escape($staffname).',
+      subject_name='.$this->db->escape($subname).',
+      subject_code='.$this->db->escape($subcode).',
+      dept_code='.$this->db->escape($deptcode).',
+      year='.$this->db->escape($year).',
+      section='.$this->db->escape($section).',
+      exam_id='.$this->db->escape($exam_id).',
+      client_id='.$this->db->escape($client_id).',
+      crte_ts=CURRENT_TIMESTAMP,
+      updt_ts=CURRENT_TIMESTAMP,
+      batch_id='.$this->db->escape($batchid).'
+      lgcl_del_f="N"');
+
+     if($query)
+     {
+       
+       unlink($target_path);
+       $query = $this->db->query("update exams set status=1 where exam_id=".$this->db->escape($exam_id)); 
+       return true;
+     }
+     else
+     {
+       return false;
+     }
+
+  }
+
+function getResultInfo($client_id,$exam_id)
+
+  {
+
+    $query = $this->db->query("select exam_id,batch_id,dept_code,year,section,staff_id,staff_name,subject_name
+    from results
+    where lgcl_del_f='N' and client_id=".$this->db->escape($client_id)." and exam_id=".$this->db->escape($exam_id)."
+    group by exam_id,batch_id,dept_code,year,section,staff_id,staff_name,subject_name
+    order by dept_code,year,section,subject_name");
+
+    if($query -> num_rows() >= 1)
    {
-     
-     unlink($target_path);
-     $query = $this->db->query("update exams set status=1 where exam_id=".$this->db->escape($exam_id)); 
-     return true;
+     return $query->result();
    }
    else
    {
      return false;
    }
 
-}
+
+  }
+
+
+function getResultDetails($client_id,$exam_id,$batch_id)
+
+  {
+
+    $query = $this->db->query("select student_id,student_name,total_marks,pass_mark,marks_obtained
+    from results
+    where client_id=".$this->db->escape($client_id)." and exam_id=".$this->db->escape($exam_id)." and batch_id=".$this->db->escape($batch_id));
+
+    if($query -> num_rows() >= 1)
+   {
+     return $query->result();
+   }
+   else
+   {
+     return false;
+   }
+
+
+  }
+
+
+function removeResults($client_id,$exam_id,$batch_id)
+
+  {
+
+    $query = $this->db->query("update results set lgcl_del_f='Y'
+    where client_id=".$this->db->escape($client_id)." and exam_id=".$this->db->escape($exam_id)." and batch_id=".$this->db->escape($batch_id));
+
+   $query = $this->db->query("select count(*) cnt from results
+    where lgcl_del_f='N' and client_id=".$this->db->escape($client_id)." and exam_id=".$this->db->escape($exam_id));
+
+   foreach($query->result() as $row)
+        {
+          $count= $row->cnt;
+        } 
+
+    if($count==0)
+    {
+      $query = $this->db->query("update exams set status=0
+      where exam_id=".$this->db->escape($exam_id));
+
+    }
+
+
+  }
+
 
 
 

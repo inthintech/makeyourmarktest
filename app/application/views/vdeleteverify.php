@@ -4,7 +4,7 @@
 <div class="panel-heading">Upload Results for the Exam</div>
 <div class="panel-body">
 
-<form class="upload_form" action="<?php echo site_url('exams/uploadstatus');?>" method="POST" enctype="multipart/form-data">
+<form class="upload_form" action="<?php echo site_url('exams/upload');?>" method="POST" enctype="multipart/form-data">
 
 <fieldset>
 
@@ -92,9 +92,46 @@
 <br><br>
 <input type="file" name="fileToUpload" id="fileToUpload">
 
+<!--
+<label>Select an Exam to Upload Results</label>
+<br><br>
+<select class="exam_select" name="examid" ><?php echo $examlist ?></select>
+
+
+<br><br><br>
+<label>Select the DEPT code</label>
+<br><br>
+<select class="exam_select" name="dept_code" >
+<option selected value="CSE">CSE</option>
+</select>
+
+<br><br><br>
+<label>Select Year</label>
+<br><br>
+<select class="exam_select" name="year" >
+<option selected value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+</select>
+
+<br><br><br>
+<label>Select Section (if no section then select 'A')</label>
+<br><br>
+<select class="exam_select" name="section" >
+<option selected value="A">A</option>
+<option value="B">B</option>
+<option value="C">C</option>
+<option value="D">D</option>
+<option value="E">E</option>
+<option value="F">F</option>
+
+</select>
+-->
+
 </fieldset>  
 <br><br>
-<button type="submit" name="submit" class="btn btn-primary">Submit</button><br><br>
+<button type="submit" name="submit" class="btn btn-primary" style="">Submit</button><br><br>
 <?php echo validation_errors(); ?>
 </form>
 

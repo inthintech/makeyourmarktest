@@ -3,7 +3,7 @@
 <div class="panel-heading">Add a New Exam Entry</div>
 <div class="panel-body">
 
-<form class="exam_form" action="<?php echo site_url('exams/addexam');?>" method="POST" enctype="multipart/form-data">
+<form class="exam_form" action="<?php echo site_url('exams/addexamstatus');?>" method="POST" enctype="multipart/form-data">
 <fieldset>
 <label>Enter the exam name (Only alphabets,numbers and spaces allowed)</label>
 <br>
@@ -11,7 +11,6 @@
 </fieldset>  
 <br><br>
 <button type="submit" name="submit" class="btn btn-primary">Submit</button>
-<?php echo $success ?>
 <?php echo validation_errors(); ?>
 </form>
 

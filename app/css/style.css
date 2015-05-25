@@ -116,6 +116,7 @@ padding-right: 8px;
 }
 .upload_form button
 {
-  margin-left: 0%;
+  margin-left: 40%;
+  margin-top: 5%;
   width: 20%;
 }
