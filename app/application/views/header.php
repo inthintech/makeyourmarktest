@@ -201,7 +201,7 @@ font-size: 0.9em;
 <li><span><a href="<?php echo site_url('exams'); ?>">How to Create CSV File</a></span></li>
 <li><span><a href="<?php echo site_url('exams'); ?>">Feedback / Help</a></span></li>
 <li class="menuitem"><span>Reports</span></li>
-<li><span><a href="<?php echo site_url('exams'); ?>">College Level</a></span></li>
+<li><span><a href="<?php echo site_url('reports/college'); ?>">College Level</a></span></li>
 <li><span><a href="<?php echo site_url('exams'); ?>">Department Level</a></span></li>
 <li><span><a href="<?php echo site_url('exams'); ?>">Year Level</a></span></li>
 <li><span><a href="<?php echo site_url('exams'); ?>">Class Level</a></span></li>
