@@ -120,3 +120,15 @@ padding-right: 8px;
   margin-top: 5%;
   width: 20%;
 }
+.report_header
+{
+	border:1px solid grey;
+	text-align: center;
+	font-size: 1.1em;
+	width: 50%;
+	margin-left: auto;
+	margin-right: auto;
+	/*background: #B0E2FF;*/
+	background : grey;
+	color : white;
+}
