@@ -22,15 +22,19 @@
 <label>Select the report</label>
 <br><br>
 <select id="reportID" class="exam_select" name="reportid" onchange="myFunction()">
-<option selected value="1">CSE</option>
-<option value="2">EEE</option>
+<option selected value="1">Overall Pass Percentage</option>
+<option value="2">Department Pass Percentage</option>
+<option value="3">Overall College Topper</option>
+<option value="4">Department College Toppers</option>
+<option value="5">Student Rank</option>
 </select>
 
 <br><br><br><br>
 <p class="report_header">Report Information</p>
 
 <br><br>
-<div id="info" class="alert alert-success" role="alert">Well done! You successfully read this important alert message. </div>
+<div id="info" class="alert alert-success" role="alert">The Overall Pass Percentage report displays the percentage of students 
+who have passed in all subjects. </div>
 
 </fieldset>  
 <br><br>
@@ -45,10 +49,19 @@ function myFunction() {
     switch(x)
 	{
 		case '1':
-		document.getElementById("info").innerHTML = "The vrepoio efofof frfmoremorf frmfoermforemvorv vrkmvrmvr mninvirenvirv  vkrnvirnvir vrnviernvir vnrvnrev. fherififnif kferfnernfifremffeofrf. kfneifeiwfn";
+		document.getElementById("info").innerHTML = "The Overall Pass Percentage report displays the percentage of students who have passed in all subjects.";
 		break;
 		case '2':
-		document.getElementById("info").innerHTML = "yes";
+		document.getElementById("info").innerHTML = "The Department Pass Percentage report displays the percentage of students who have passed in all subjects for each department.";
+		break;
+		case '3':
+		document.getElementById("info").innerHTML = "The Overall College Topper report displays the student who has the highest percentage.";
+		break;
+		case '4':
+		document.getElementById("info").innerHTML = "The Department Pass Percentage report provides the percentage of students who have passed in all subjects for each department of college.";
+		break;
+		case '5':
+		document.getElementById("info").innerHTML = "The Student Rank report provides the percentage of students who have passed in all subjects for each department of college.";
 		break;
 	}
 	
