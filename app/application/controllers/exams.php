@@ -517,6 +517,7 @@ class Exams extends CI_Controller {
 		$headerdata = array('client_name' => $client_name ,'title' => 'Add New User','container_height' => 150 );
 		$this->load->view('header',$headerdata);
 		$this->load->helper(array('form'));
+		$this->load->view('vadduser');
 		$this->load->view('footer');
 		
 	}
