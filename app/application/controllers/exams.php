@@ -502,9 +502,24 @@ class Exams extends CI_Controller {
 	}
 
 
+/*----------------------------------------------  Add User ----------------------------------------------*/
 
+	public function adduser()
 
+	{
 
+		$result = $this->user->getClientName($this->session->userdata('client_id'));
+		foreach($result as $row)
+		{
+
+		$client_name= $row->client_name;
+		} 
+		$headerdata = array('client_name' => $client_name ,'title' => 'Add New User','container_height' => 150 );
+		$this->load->view('header',$headerdata);
+		$this->load->helper(array('form'));
+		$this->load->view('footer');
+		
+	}
 
 }
 
