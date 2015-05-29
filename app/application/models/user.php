@@ -327,7 +327,7 @@ function newUserEntry($client_id,$uname,$pass)
 function getUserList($client_id)
  {
    
-    $query = $this->db->query("select user_id,username from users where client_id=".$this->db->escape($client_id));
+    $query = $this->db->query("select user_id,username from users where lgcl_del_f='N' and user_type=2 and client_id=".$this->db->escape($client_id));
 
    if($query -> num_rows() >= 1)
    {
@@ -339,6 +339,20 @@ function getUserList($client_id)
    }
  }
 
+ function removeUser($client_id,$userid)
+ {
+   
+    $query = $this->db->query("update users set lgcl_del_f='Y' where user_type=2 and client_id=".$this->db->escape($client_id)." and user_id=".$this->db->escape($userid));
+
+   if($query)
+   {
+     return true;
+   }
+   else
+   {
+     return false;
+   }
+ }
 
 }
 ?>

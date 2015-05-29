@@ -197,7 +197,7 @@ font-size: 0.9em;
 <li><span><a href="<?php echo site_url('exams/verify'); ?>">Verify Results</a></span></li>
 <li><span><a href="<?php echo site_url('exams/adduser'); ?>">Add User</a></span></li>
 <li><span><a href="<?php echo site_url('exams/deleteuser'); ?>">Delete User</a></span></li>
-<li><span><a href="<?php echo site_url('exams'); ?>">Change Password</a></span></li>
+<li><span><a href="<?php echo site_url('exams/changepass'); ?>">Change Password</a></span></li>
 <li><span><a href="<?php echo site_url('exams'); ?>">How to Create CSV File</a></span></li>
 <li><span><a href="<?php echo site_url('exams'); ?>">Feedback / Help</a></span></li>
 <li class="menuitem"><span>Reports</span></li>

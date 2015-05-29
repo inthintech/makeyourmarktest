@@ -24,32 +24,6 @@
 <?php echo validation_errors(); ?>
 </form>
 
-
-<script>
-function myFunction() {
-    var x = document.getElementById("reportID").value;
-    switch(x)
-	{
-		case '1':
-		document.getElementById("info").innerHTML = "The Overall Pass Percentage report displays the percentage of students who have passed in all subjects.";
-		break;
-		case '2':
-		document.getElementById("info").innerHTML = "The Department Pass Percentage report displays the percentage of students who have passed in all subjects for each department.";
-		break;
-		case '3':
-		document.getElementById("info").innerHTML = "The Overall College Topper report displays the student who has the highest percentage.";
-		break;
-		case '4':
-		document.getElementById("info").innerHTML = "The Department Pass Percentage report provides the percentage of students who have passed in all subjects for each department of college.";
-		break;
-		case '5':
-		document.getElementById("info").innerHTML = "The Student Rank report provides the percentage of students who have passed in all subjects for each department of college.";
-		break;
-	}
-	
-}
-</script>
-
 </div>
 </div>
 </div>

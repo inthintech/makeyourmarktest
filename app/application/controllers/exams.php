@@ -612,7 +612,7 @@ class Exams extends CI_Controller {
 		}		
 	}
 
-/*----------------------------------------------  Add User ----------------------------------------------*/
+/*----------------------------------------------  Delete User ----------------------------------------------*/
 
 	public function deleteuser()
 	{
@@ -645,14 +645,72 @@ class Exams extends CI_Controller {
 				$this->load->view('vmessage',$statusdata);
 			}
 
-
-		
 		$this->load->view('footer');
 
+	}
+	
+	public function deleteuserstatus()
+	{
+		if(!isset($_POST['submit']))
+		{
+			redirect('exams/deleteuser');
+		}
+		$result = $this->user->getClientName($this->session->userdata('client_id'));
+		foreach($result as $row)
+		{
 
-
+		$client_name= $row->client_name;
+		} 
+		$headerdata = array('client_name' => $client_name ,'title' => 'Delete User','container_height' => 150 );
+		$this->load->view('header',$headerdata);
+	
+		$result = $this->user->removeUser($this->session->userdata('client_id'),$this->input->post('userid'));
+		if($result)
+		{
+			$statusdata = array('message' => 'User is successfully deleted.');
+			$this->load->view('vmessage',$statusdata);			
+		}
+		else
+		{
+			$statusdata = array('message' => 'Error : Please try again.');
+			$this->load->view('vmessage',$statusdata);			
+		}
+		$this->load->view('footer');
 	}
 
+/*----------------------------------------------  Change Password ----------------------------------------------*/
+	
+	public function changepass()
+	{
+		$result = $this->user->getClientName($this->session->userdata('client_id'));
+		foreach($result as $row)
+		{
+
+		$client_name= $row->client_name;
+		} 
+		$headerdata = array('client_name' => $client_name ,'title' => 'Change Password','container_height' => 150 );
+		$this->load->view('header',$headerdata);
+		$this->load->helper(array('form'));
+		$this->load->view('vchangepass');
+		$this->load->view('footer');
+	}
+	
+	public function changepassstatus()
+	{
+		if(!isset($_POST['submit']))
+		{
+			redirect('exams/changepass');
+			$result = $this->user->getClientName($this->session->userdata('client_id'));
+			foreach($result as $row)
+			{
+
+			$client_name= $row->client_name;
+			} 
+			$headerdata = array('client_name' => $client_name ,'title' => 'Change Password','container_height' => 150 );
+			$this->load->view('header',$headerdata);
+		}	
+		
+	}
 }
 
 
