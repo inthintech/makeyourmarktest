@@ -6,8 +6,8 @@ Class User extends CI_Model
  function login($username, $password)
  {
    
-    $query = $this->db->query("select clients.client_id,clients.is_active from users join clients 
-    on users.client_id=clients.client_id where username=".$this->db->escape($username)." and passwd=".$this->db->escape($password));
+    $query = $this->db->query("select clients.client_id,clients.is_active,users.user_type from users join clients 
+    on users.client_id=clients.client_id where users.lgcl_del_f='N' and username=".$this->db->escape($username)." and passwd=".$this->db->escape($password));
 
    if($query -> num_rows() == 1)
    {
@@ -289,7 +289,55 @@ function removeResults($client_id,$exam_id,$batch_id)
 
   }
 
+  function checkUsername($uname)
 
+  {
+
+    $query = $this->db->query("select * from users where username=".$this->db->escape($uname));
+
+    if($query -> num_rows() >= 1)
+   {
+     return true;
+   }
+   else
+   {
+     return false;
+   }
+
+  }
+
+function newUserEntry($client_id,$uname,$pass)
+
+{
+
+  $query = $this->db->query("insert into users(client_id,username,passwd,user_type,crte_ts,updt_ts) 
+  values(".$this->db->escape($client_id).",".$this->db->escape($uname).",".$this->db->escape($pass).",2,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)");
+
+   if($query)
+   {
+     return true;
+   }
+   else
+   {
+     return false;
+   }
+
+}
+
+function getUserList($client_id)
+ {
+   
+    $query = $this->db->query("select user_id,username from users where client_id=".$this->db->escape($client_id));
+
+   if($query -> num_rows() >= 1)
+   {
+     return $query->result();
+   }
+   else
+   {
+     return false;
+   }
+ }
 
 
 }

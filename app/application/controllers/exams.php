@@ -522,6 +522,137 @@ class Exams extends CI_Controller {
 		
 	}
 
+	public function adduserstatus()
+
+	{
+
+		if(!isset($_POST['submit']))
+		{
+			redirect('exams/adduser');
+		}
+		$this->load->library('form_validation');
+		$this->form_validation->set_rules('uname', 'User Name', 'trim|required|xss_clean|max_length[15]|callback_alphanumericValnoSpc[User Name]|callback_checkUname');
+		$this->form_validation->set_rules('pass', 'Password', 'trim|required|xss_clean|max_length[15]');
+		$this->form_validation->set_error_delimiters('<p class="errorMsg">', '</p>');
+
+		if($this->form_validation->run() == FALSE)
+	   	{
+		    $this->adduser();		 
+		}
+		else
+
+		{
+			if($this->user->newUserEntry($this->session->userdata('client_id'),$this->input->post('uname'),$this->input->post('pass')))
+			{
+
+				$result = $this->user->getClientName($this->session->userdata('client_id'));
+				foreach($result as $row)
+					{
+
+					$client_name= $row->client_name;
+					} 
+				$headerdata = array('client_name' => $client_name ,'title' => 'Add new user','container_height' => 150 );
+				$this->load->view('header',$headerdata);
+				$statusdata = array('message' => 'User has been added Successfully.');
+				$this->load->view('vmessage',$statusdata);
+				$this->load->view('footer');
+
+
+			}
+			else
+			{
+				$result = $this->user->getClientName($this->session->userdata('client_id'));
+				foreach($result as $row)
+					{
+
+					$client_name= $row->client_name;
+					} 
+				$headerdata = array('client_name' => $client_name ,'title' => 'Add new user','container_height' => 150 );
+				$this->load->view('header',$headerdata);
+				$statusdata = array('message' => 'Unknown Error. Please try again.');
+				$this->load->view('vmessage',$statusdata);
+				$this->load->view('footer');
+
+			}
+
+		}
+
+	
+		
+	}
+
+
+	public function checkUname($inp)
+	{
+		
+		if($this->user->checkUsername($inp))
+		{
+			
+			$this->form_validation->set_message('checkUname', 'Username already exists');
+     		return FALSE;			
+		}
+		else
+		{	
+			return TRUE;	
+		}		
+	}
+
+	public function alphanumericValnoSpc($inp,$name)
+	{
+		
+		if(preg_match('/^[a-zA-Z0-9]+$/', $inp))
+		//check if only alphanumeric,numbers are present	
+		{
+			return TRUE;
+		}
+		else
+		{		
+			$this->form_validation->set_message('alphanumericValnoSpc', 'Please enter only alphabets and numbers for '.$name.' field');
+     		return FALSE;
+		}		
+	}
+
+/*----------------------------------------------  Add User ----------------------------------------------*/
+
+	public function deleteuser()
+	{
+		
+		$result = $this->user->getClientName($this->session->userdata('client_id'));
+		foreach($result as $row)
+		{
+
+		$client_name= $row->client_name;
+		} 
+		$headerdata = array('client_name' => $client_name ,'title' => 'Delete User','container_height' => 150 );
+		$this->load->view('header',$headerdata);
+		$this->load->helper(array('form'));
+
+		$result = $this->user->getUserList($this->session->userdata('client_id'));
+			if($result)
+			{
+				$userlist = '';
+				foreach($result as $row)
+	 			{
+	   			$userlist = "<option selected value=".$row->user_id.">".$row->username."</option>".$userlist;
+	   			
+	  			} 
+	  			$data = array('userlist' => $userlist);
+				$this->load->view('vdeleteuser',$data);
+			}
+			else
+			{
+				$statusdata = array('message' => 'Error : Please create atleast one user.');
+				$this->load->view('vmessage',$statusdata);
+			}
+
+
+		
+		$this->load->view('footer');
+
+
+
+	}
+
 }
 
 

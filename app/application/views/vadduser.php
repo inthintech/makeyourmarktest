@@ -4,21 +4,19 @@
 <div class="panel-heading">Add a New User</div>
 <div class="panel-body">
 
-<form class="upload_form" action="<?php echo site_url('exams/uploadstatus');?>" method="POST" enctype="multipart/form-data">
+<form class="exam_form" action="<?php echo site_url('exams/adduserstatus');?>" method="POST" enctype="multipart/form-data">
 
 <fieldset>
 
+<label>Enter the User Name</label>
+<br>
+<input type="text" name="uname" value="<?php echo set_value('uname'); ?>" size="250" class="form-control">
 
-<p class="report_header">Exam Selector</p>
+
 <br><br>
-<label>Select the exam to report</label>
-<br><br>
-<select class="exam_select" name="examid" ><?php echo $examlist ?></select>
-
-<br><br><br><br>
-<p class="report_header">Report Selector</p>
-
-
+<label>Enter the Password</label>
+<br>
+<input type="password" name="pass" value="<?php echo set_value('pass'); ?>" size="250" class="form-control">
 
 </fieldset>  
 <br><br>
