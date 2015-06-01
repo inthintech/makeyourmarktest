@@ -34,10 +34,45 @@ class Reports extends CI_Controller {
 
 			$client_name= $row->client_name;
 			} 
-		$headerdata = array('client_name' => $client_name ,'title' => 'Add new exam','container_height' => 170 );
+		$headerdata = array('usertype' => $this->session->userdata('user_type'), 'client_name' => $client_name ,'title' => 'Add new exam','container_height' => 170 );
 		$this->load->view('header',$headerdata);
 		$this->load->helper(array('form'));
 		$this->load->view('vcollegelevel');
+		$this->load->view('footer');		
+					
+						
+	}
+
+	public function generate()
+	{
+
+	
+		$result = $this->user->getClientName($this->session->userdata('client_id'));
+		foreach($result as $row)
+			{
+
+			$client_name= $row->client_name;
+			} 
+		$headerdata = array('usertype' => $this->session->userdata('user_type'), 'client_name' => $client_name ,'title' => 'Generate Report','container_height' => 270 );
+		$this->load->view('header',$headerdata);
+		$this->load->helper(array('form'));
+		$result = $this->user->getExamListWithData($this->session->userdata('client_id'));
+			if($result)
+			{
+				$examlist = '';
+				foreach($result as $row)
+	 			{
+	   			$examlist = "<option selected value=".$row->exam_id.">".$row->exam_name."</option>".$examlist;
+	   			
+	  			} 
+	  			$examdata = array('examlist' => $examlist);
+				$this->load->view('vgeneratereport',$examdata);
+			}
+			else
+			{
+				$statusdata = array('message' => '<div class="alert alert-danger" role="alert">Error : There are no exams with results uploaded.</div>');
+				$this->load->view('vmessage',$statusdata);
+			}
 		$this->load->view('footer');		
 					
 						

@@ -87,11 +87,16 @@ padding-right: 8px;
 {
 	border:1px solid grey;
 	text-align: center;
-	font-size: 1.1em;
+	font-size: 1em;
 	width: 70%;
 	margin-left: auto;
 	margin-right: auto;
 	background: #B0E2FF;
+	background : #6495ED;
+	color:black;
+	border-radius: 12px;
+	padding-top: 5px;
+	padding-bottom: 5px;
 }
 .upload_form input[type=file]
 {
@@ -122,13 +127,20 @@ padding-right: 8px;
 }
 .report_header
 {
-	border:1px solid grey;
 	text-align: center;
-	font-size: 1.1em;
-	width: 50%;
+	font-size: 1em;
+	width: 70%;
 	margin-left: auto;
 	margin-right: auto;
 	/*background: #B0E2FF;*/
-	background : grey;
-	color : white;
+	background : #6495ED;
+	color : black;
+	border-radius: 12px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+.help
+{
+	margin-top: 1%;
+	font-size: 1.1em;
 }

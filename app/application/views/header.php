@@ -180,7 +180,7 @@ font-size: 0.9em;
 <div class="headerdiv">
 <h4 class="headertxt">Make Your Mark</h4>
 <p class="welcometxt">Welcome to Application Control Panel</p>
-<a id="logout" href="php/logout.php" class="btn btn-danger">Logout</a>
+<a id="logout" href="<?php echo site_url('login/logout'); ?>" class="btn btn-danger">Logout</a>
 </div>
 </div>
 <div class="topbar2">
@@ -191,23 +191,27 @@ font-size: 0.9em;
 <ul> 
 <li class="menuitem"><span>Exams</span></li>
 <li><span><a href="<?php echo site_url('exams'); ?>">Home</a></span></li>
-<li><span><a href="<?php echo site_url('exams/addexam'); ?>">New Exam</a></span></li>
-<li><span><a href="<?php echo site_url('exams/status'); ?>">Exam Status</a></span></li>
+<?php
+if($usertype==1)
+{
+echo '<li><span><a href="'.site_url('exams/addexam').'">New Exam</a></span></li>';
+echo '<li><span><a href="'.site_url('exams/status').'">Exam Status</a></span></li>';
+}
+?>
 <li><span><a href="<?php echo site_url('exams/upload'); ?>">Upload Results</a></span></li>
 <li><span><a href="<?php echo site_url('exams/verify'); ?>">Verify Results</a></span></li>
-<li><span><a href="<?php echo site_url('exams/adduser'); ?>">Add User</a></span></li>
-<li><span><a href="<?php echo site_url('exams/deleteuser'); ?>">Delete User</a></span></li>
-<li><span><a href="<?php echo site_url('exams/changepass'); ?>">Change Password</a></span></li>
-<li><span><a href="<?php echo site_url('exams'); ?>">How to Create CSV File</a></span></li>
-<li><span><a href="<?php echo site_url('exams'); ?>">Feedback / Help</a></span></li>
+<?php
+if($usertype==1)
+{
+echo '<li><span><a href="'.site_url('exams/adduser').'">Add User</a></span></li>';
+echo '<li><span><a href="'.site_url('exams/deleteuser').'">Delete User</a></span></li>';
+}
+?>
+<li><span><a href="<?php echo site_url('exams/changepassword'); ?>">Change Password</a></span></li>
+<li><span><a href="<?php echo site_url('exams/createcsv'); ?>">How to Create CSV File</a></span></li>
+<li><span><a href="<?php echo site_url('exams/help'); ?>">Feedback / Help</a></span></li>
 <li class="menuitem"><span>Reports</span></li>
-<li><span><a href="<?php echo site_url('reports/college'); ?>">College Level</a></span></li>
-<li><span><a href="<?php echo site_url('exams'); ?>">Department Level</a></span></li>
-<li><span><a href="<?php echo site_url('exams'); ?>">Year Level</a></span></li>
-<li><span><a href="<?php echo site_url('exams'); ?>">Class Level</a></span></li>
-<li><span><a href="<?php echo site_url('exams'); ?>">Student Level</a></span></li>
-<li><span><a href="<?php echo site_url('exams'); ?>">Staff Level</a></span></li>
-
+<li><span><a href="<?php echo site_url('reports/generate'); ?>">Generate Report</a></span></li>
 </ul>
 </div>
 <div class="rightcontainer">

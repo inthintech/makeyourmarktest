@@ -146,11 +146,11 @@ float: left;
 <form class="lform" action="<?php echo site_url('login/verify');?>" method="POST">
 <fieldset>
 <label>Username</label>
-<input type="text" name="username" class="form-control">
+<input type="text" name="username" value="<?php echo set_value('username'); ?>" class="form-control">
 </fieldset>  
 <fieldset>
 <label>Password</label>
-<input type="password" name="password" class="form-control">
+<input type="password" name="password" value="<?php echo set_value('password'); ?>" class="form-control">
 </fieldset>  
 <button type="submit" name="submit" class="btn btn-danger">Sign In</button>
 <?php echo validation_errors(); ?>

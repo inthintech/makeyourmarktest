@@ -23,11 +23,12 @@ class Login extends CI_Controller {
       	parent::__construct();
         // Your own constructor code
         $this->load->model('user','',TRUE);
+        $this->load->helper(array('form'));
     }
 
 	public function index()
 	{
-		$this->load->helper(array('form'));
+		
 		if($this->session->userdata('client_id'))
 			{
 				redirect('exams');
@@ -38,6 +39,15 @@ class Login extends CI_Controller {
 			}
 		
 	}
+
+  public function logout()
+
+  {
+
+    $this->session->sess_destroy();
+    redirect('login');
+
+  }
 
 	public function verify()
  	{
@@ -79,7 +89,7 @@ class Login extends CI_Controller {
        $client_id = $row->client_id;
        $flag = $row->is_active;
        $usertype = $row->user_type; 
-
+       $userid = $row->user_id;
       } 
 
       if($flag=='Y')
@@ -87,6 +97,7 @@ class Login extends CI_Controller {
 
         $this->session->set_userdata('client_id', $client_id);
         $this->session->set_userdata('user_type', $usertype);
+        $this->session->set_userdata('user_id', $userid);
         return TRUE;
       }
       else

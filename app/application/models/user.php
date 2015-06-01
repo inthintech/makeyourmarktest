@@ -6,7 +6,7 @@ Class User extends CI_Model
  function login($username, $password)
  {
    
-    $query = $this->db->query("select clients.client_id,clients.is_active,users.user_type from users join clients 
+    $query = $this->db->query("select clients.client_id,clients.is_active,users.user_id,users.user_type from users join clients 
     on users.client_id=clients.client_id where users.lgcl_del_f='N' and username=".$this->db->escape($username)." and passwd=".$this->db->escape($password));
 
    if($query -> num_rows() == 1)
@@ -203,7 +203,7 @@ function newResult($client_id,$exam_id,$target_path,$staffname,$staffid,$subname
       client_id='.$this->db->escape($client_id).',
       crte_ts=CURRENT_TIMESTAMP,
       updt_ts=CURRENT_TIMESTAMP,
-      batch_id='.$this->db->escape($batchid).'
+      batch_id='.$this->db->escape($batchid).',
       lgcl_del_f="N"');
 
      if($query)
@@ -310,8 +310,8 @@ function newUserEntry($client_id,$uname,$pass)
 
 {
 
-  $query = $this->db->query("insert into users(client_id,username,passwd,user_type,crte_ts,updt_ts) 
-  values(".$this->db->escape($client_id).",".$this->db->escape($uname).",".$this->db->escape($pass).",2,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)");
+  $query = $this->db->query("insert into users(client_id,username,passwd,user_type,crte_ts,updt_ts,lgcl_del_f) 
+  values(".$this->db->escape($client_id).",".$this->db->escape($uname).",".$this->db->escape($pass).",2,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,'N')");
 
    if($query)
    {
@@ -353,6 +353,42 @@ function getUserList($client_id)
      return false;
    }
  }
+
+
+function checkPassword($uid,$pass)
+
+  {
+
+    $query = $this->db->query("select * from users where user_id=".$this->db->escape($uid)." and passwd=".$this->db->escape($pass));
+
+    if($query -> num_rows() == 1)
+   {
+     return true;
+   }
+   else
+   {
+     return false;
+   }
+
+  }
+
+
+function changePassword($uid,$pass)
+
+  {
+
+    $query = $this->db->query("update users set passwd=".$this->db->escape($pass)." where user_id=".$this->db->escape($uid));
+
+    if($query)
+   {
+     return true;
+   }
+   else
+   {
+     return false;
+   }
+
+  }
 
 }
 ?>

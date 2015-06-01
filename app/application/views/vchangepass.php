@@ -10,18 +10,14 @@
 
 <label>Enter your old password</label>
 <br>
-<input type="password" name="uname" value="<?php echo set_value('oldpass'); ?>" size="250" class="form-control">
+<input type="password" name="oldpass" value="<?php echo set_value('oldpass'); ?>" size="250" class="form-control">
 
 
 <br><br>
 <label>Enter the new password</label>
 <br>
-<input type="password" name="pass" value="<?php echo set_value('newpass'); ?>" size="250" class="form-control">
+<input type="text" name="newpass" value="<?php echo set_value('newpass'); ?>" size="250" class="form-control">
 
-<br><br>
-<label>Retype the new password</label>
-<br>
-<input type="password" name="pass" value="<?php echo set_value('newpass2'); ?>" size="250" class="form-control">
 
 </fieldset>  
 <br><br>

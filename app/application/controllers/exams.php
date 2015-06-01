@@ -25,7 +25,7 @@ class Exams extends CI_Controller {
 
 			$client_name= $row->client_name;
 			} 
-		$headerdata = array('client_name' => $client_name ,'title' => 'Welcome to Make Your Mark','container_height' => 170 );
+		$headerdata = array('usertype' => $this->session->userdata('user_type'), 'client_name' => $client_name ,'title' => 'Welcome to Make Your Mark','container_height' => 150 );
 		$this->load->view('header',$headerdata);
 		$result = $this->user->getSubscriptionDetails($this->session->userdata('client_id'));
 		$subscriptiondata = '';
@@ -56,7 +56,7 @@ class Exams extends CI_Controller {
 
 			$client_name= $row->client_name;
 			} 
-		$headerdata = array('client_name' => $client_name ,'title' => 'Add new exam','container_height' => 170 );
+		$headerdata = array('usertype' => $this->session->userdata('user_type'), 'client_name' => $client_name ,'title' => 'Add new exam','container_height' => 150 );
 		$this->load->view('header',$headerdata);
 		$this->load->helper(array('form'));
 	    $this->load->view('vnewexam');
@@ -91,15 +91,15 @@ class Exams extends CI_Controller {
 				{
 					$client_name= $row->client_name;
 				} 
-				$headerdata = array('client_name' => $client_name ,'title' => 'Add new exam','container_height' => 170 );
+				$headerdata = array('usertype' => $this->session->userdata('user_type'), 'client_name' => $client_name ,'title' => 'Add new exam','container_height' => 150 );
 				$this->load->view('header',$headerdata);
 				if($this->user->newExamEntry($this->session->userdata('client_id'),$this->input->post('ename')))
 				{
-					$statusdata = array('message' => 'Exam Uploaded Successfully');
+					$statusdata = array('message' => '<div class="alert alert-success" role="alert">Success : New exam record has been created.</div>');
 				}
 				else
 				{
-					$statusdata = array('message' => 'Unknown Error. Please try again.');
+					$statusdata = array('message' => '<div class="alert alert-danger" role="alert">Error : Connection failed. Please try again.</div>');
 				}
 			   	
 			    $this->load->view('vmessage',$statusdata);
@@ -137,7 +137,7 @@ class Exams extends CI_Controller {
 
 			$client_name= $row->client_name;
 			} 
-		$headerdata = array('client_name' => $client_name ,'title' => 'Exam Status','container_height' => 170 );
+		$headerdata = array('usertype' => $this->session->userdata('user_type'), 'client_name' => $client_name ,'title' => 'Exam Status','container_height' => 150 );
 		$this->load->view('header',$headerdata);
 		
 		
@@ -158,7 +158,7 @@ class Exams extends CI_Controller {
 			}
 		else
 			{
-				$statusdata = array('message' => 'Error : Please create atleast one Exam to use this feature.');
+				$statusdata = array('message' => '<div class="alert alert-danger" role="alert">Error : No exam has been created. Please create an exam.</div>');
 				$this->load->view('vmessage',$statusdata);
 			}
 
@@ -181,7 +181,7 @@ class Exams extends CI_Controller {
 
 			$client_name= $row->client_name;
 			} 
-		$headerdata = array('client_name' => $client_name ,'title' => 'Upload Exam Results','container_height' => 300 );
+		$headerdata = array('usertype' => $this->session->userdata('user_type'), 'client_name' => $client_name ,'title' => 'Upload Exam Results','container_height' => 300 );
 		$this->load->view('header',$headerdata);
 		$this->load->helper(array('form'));
 		$result = $this->user->getExamList($this->session->userdata('client_id'));
@@ -198,7 +198,7 @@ class Exams extends CI_Controller {
 		}
 		else
 		{
-			$statusdata = array('message' => 'Error : Please create atleast one Exam to use this feature.');
+			$statusdata = array('message' => '<div class="alert alert-danger" role="alert">Error : No exam has been created. Please create an exam.</div>');
 			$this->load->view('vmessage',$statusdata);
 		}
 
@@ -240,9 +240,9 @@ class Exams extends CI_Controller {
 
 				$client_name= $row->client_name;
 				} 
-			$headerdata = array('client_name' => $client_name ,'title' => 'Upload Exam Results','container_height' => 170 );
+			$headerdata = array('usertype' => $this->session->userdata('user_type'), 'client_name' => $client_name ,'title' => 'Upload Exam Results','container_height' => 150 );
 			$this->load->view('header',$headerdata);
-			$statusdata = array('message' => 'Results have been uploaded Successfully.');
+			$statusdata = array('message' => '<div class="alert alert-success" role="alert">Success : Results have been uploaded.</div>');
 			$this->load->view('vmessage',$statusdata);
 			$this->load->view('footer');
 		}
@@ -370,7 +370,7 @@ class Exams extends CI_Controller {
    
    			$client_name= $row->client_name;
   			} 
-			$headerdata = array('client_name' => $client_name ,'title' => 'Verify your results','container_height' => 170 );
+			$headerdata = array('usertype' => $this->session->userdata('user_type'), 'client_name' => $client_name ,'title' => 'Verify your results','container_height' => 150 );
 			$this->load->view('header',$headerdata);
 			$result = $this->user->getExamListWithData($this->session->userdata('client_id'));
 			if($result)
@@ -386,7 +386,7 @@ class Exams extends CI_Controller {
 			}
 			else
 			{
-				$statusdata = array('message' => 'Error : Please create atleast one exam and upload results.');
+				$statusdata = array('message' => '<div class="alert alert-danger" role="alert">Error : There are no exams with results uploaded.</div>');
 				$this->load->view('vmessage',$statusdata);
 			}
 			$this->load->view('footer');
@@ -407,7 +407,7 @@ class Exams extends CI_Controller {
 
 			$client_name= $row->client_name;
 			} 
-		$headerdata = array('client_name' => $client_name ,'title' => 'Check or Delete Results','container_height' => 170 );
+		$headerdata = array('usertype' => $this->session->userdata('user_type'), 'client_name' => $client_name ,'title' => 'Check or Delete Results','container_height' => 150 );
 		$this->load->view('header',$headerdata);
 		$result = $this->user->getResultInfo($this->session->userdata('client_id'),$this->input->post('examid'));
 
@@ -459,7 +459,7 @@ class Exams extends CI_Controller {
 
 			$client_name= $row->client_name;
 			} 
-		$headerdata = array('client_name' => $client_name ,'title' => 'View Results','container_height' => 150 );
+		$headerdata = array('usertype' => $this->session->userdata('user_type'), 'client_name' => $client_name ,'title' => 'View Results','container_height' => 150 );
 		$this->load->view('rptheader',$headerdata);
 		$result = $this->user->getResultDetails($this->session->userdata('client_id'),$this->input->post('examid'),$this->input->post('batchid'));
 		if($result)
@@ -494,9 +494,9 @@ class Exams extends CI_Controller {
 
 			$client_name= $row->client_name;
 			} 
-		$headerdata = array('client_name' => $client_name ,'title' => 'Welcome to Make Your Mark','container_height' => 170 );
+		$headerdata = array('usertype' => $this->session->userdata('user_type'), 'client_name' => $client_name ,'title' => 'Welcome to Make Your Mark','container_height' => 150 );
 		$this->load->view('header',$headerdata);
-		$statusdata = array('message' => 'Results have been deleted Successfully.');
+		$statusdata = array('message' => '<div class="alert alert-success" role="alert">Success : Results are deleted from system.</div>');
 		$this->load->view('vmessage',$statusdata);
 		$this->load->view('footer');
 	}
@@ -514,7 +514,7 @@ class Exams extends CI_Controller {
 
 		$client_name= $row->client_name;
 		} 
-		$headerdata = array('client_name' => $client_name ,'title' => 'Add New User','container_height' => 150 );
+		$headerdata = array('usertype' => $this->session->userdata('user_type'), 'client_name' => $client_name ,'title' => 'Add New User','container_height' => 150 );
 		$this->load->view('header',$headerdata);
 		$this->load->helper(array('form'));
 		$this->load->view('vadduser');
@@ -551,9 +551,9 @@ class Exams extends CI_Controller {
 
 					$client_name= $row->client_name;
 					} 
-				$headerdata = array('client_name' => $client_name ,'title' => 'Add new user','container_height' => 150 );
+				$headerdata = array('usertype' => $this->session->userdata('user_type'), 'client_name' => $client_name ,'title' => 'Add new user','container_height' => 150 );
 				$this->load->view('header',$headerdata);
-				$statusdata = array('message' => 'User has been added Successfully.');
+				$statusdata = array('message' => '<div class="alert alert-success" role="alert">Success : New user has been created.</div>');
 				$this->load->view('vmessage',$statusdata);
 				$this->load->view('footer');
 
@@ -567,9 +567,9 @@ class Exams extends CI_Controller {
 
 					$client_name= $row->client_name;
 					} 
-				$headerdata = array('client_name' => $client_name ,'title' => 'Add new user','container_height' => 150 );
+				$headerdata = array('usertype' => $this->session->userdata('user_type'), 'client_name' => $client_name ,'title' => 'Add new user','container_height' => 150 );
 				$this->load->view('header',$headerdata);
-				$statusdata = array('message' => 'Unknown Error. Please try again.');
+				$statusdata = array('message' => '<div class="alert alert-danger" role="alert">Error : Connection failed. Please try again.</div>');
 				$this->load->view('vmessage',$statusdata);
 				$this->load->view('footer');
 
@@ -623,7 +623,7 @@ class Exams extends CI_Controller {
 
 		$client_name= $row->client_name;
 		} 
-		$headerdata = array('client_name' => $client_name ,'title' => 'Delete User','container_height' => 150 );
+		$headerdata = array('usertype' => $this->session->userdata('user_type'), 'client_name' => $client_name ,'title' => 'Delete User','container_height' => 150 );
 		$this->load->view('header',$headerdata);
 		$this->load->helper(array('form'));
 
@@ -641,7 +641,7 @@ class Exams extends CI_Controller {
 			}
 			else
 			{
-				$statusdata = array('message' => 'Error : Please create atleast one user.');
+				$statusdata = array('message' => '<div class="alert alert-danger" role="alert">Error : No user has been created. Please create a user.</div>');
 				$this->load->view('vmessage',$statusdata);
 			}
 
@@ -661,18 +661,18 @@ class Exams extends CI_Controller {
 
 		$client_name= $row->client_name;
 		} 
-		$headerdata = array('client_name' => $client_name ,'title' => 'Delete User','container_height' => 150 );
+		$headerdata = array('usertype' => $this->session->userdata('user_type'), 'client_name' => $client_name ,'title' => 'Delete User','container_height' => 150 );
 		$this->load->view('header',$headerdata);
 	
 		$result = $this->user->removeUser($this->session->userdata('client_id'),$this->input->post('userid'));
 		if($result)
 		{
-			$statusdata = array('message' => 'User is successfully deleted.');
+			$statusdata = array('message' => '<div class="alert alert-success" role="alert">Success : User is deleted from system.</div>');
 			$this->load->view('vmessage',$statusdata);			
 		}
 		else
 		{
-			$statusdata = array('message' => 'Error : Please try again.');
+			$statusdata = array('message' => '<div class="alert alert-danger" role="alert">Error : Connection failed. Please try again.</div>');
 			$this->load->view('vmessage',$statusdata);			
 		}
 		$this->load->view('footer');
@@ -680,7 +680,7 @@ class Exams extends CI_Controller {
 
 /*----------------------------------------------  Change Password ----------------------------------------------*/
 	
-	public function changepass()
+	public function changepassword()
 	{
 		$result = $this->user->getClientName($this->session->userdata('client_id'));
 		foreach($result as $row)
@@ -688,29 +688,122 @@ class Exams extends CI_Controller {
 
 		$client_name= $row->client_name;
 		} 
-		$headerdata = array('client_name' => $client_name ,'title' => 'Change Password','container_height' => 150 );
+		$headerdata = array('usertype' => $this->session->userdata('user_type'), 'client_name' => $client_name ,'title' => 'Change Password','container_height' => 150 );
 		$this->load->view('header',$headerdata);
 		$this->load->helper(array('form'));
 		$this->load->view('vchangepass');
 		$this->load->view('footer');
 	}
 	
-	public function changepassstatus()
+	public function changepasswordstatus()
 	{
 		if(!isset($_POST['submit']))
 		{
-			redirect('exams/changepass');
-			$result = $this->user->getClientName($this->session->userdata('client_id'));
-			foreach($result as $row)
-			{
+			redirect('exams/changepassword');
+		}
+		
 
-			$client_name= $row->client_name;
-			} 
-			$headerdata = array('client_name' => $client_name ,'title' => 'Change Password','container_height' => 150 );
-			$this->load->view('header',$headerdata);
-		}	
+		$this->load->library('form_validation');
+		$this->form_validation->set_rules('oldpass', 'Current Password', 'trim|required|xss_clean|max_length[15]|callback_checkOldPass');
+		$this->form_validation->set_rules('newpass', 'Password', 'trim|required|xss_clean|max_length[15]');
+		$this->form_validation->set_error_delimiters('<p class="errorMsg">', '</p>');
+
+		if($this->form_validation->run() == FALSE)
+	   	{
+		    $this->changepassword();		 
+		}
+		else
+
+		{
+
+		$result = $this->user->getClientName($this->session->userdata('client_id'));
+		foreach($result as $row)
+		{
+
+		$client_name= $row->client_name;
+		} 
+		$headerdata = array('usertype' => $this->session->userdata('user_type'), 'client_name' => $client_name ,'title' => 'Change Password','container_height' => 150 );
+		$this->load->view('header',$headerdata);
+
+		if($this->user->changePassword($this->session->userdata('user_id'),$this->input->post('newpass')))
+		{
+			$statusdata = array('message' => '<div class="alert alert-success" role="alert">Success : Password is changed.</div>');
+			$this->load->view('vmessage',$statusdata);
+		}
+		else
+		{
+			$statusdata = array('message' => '<div class="alert alert-danger" role="alert">Error : Connection failed. Please try again.</div>');
+			$this->load->view('vmessage',$statusdata);
+		}
+
+		$this->load->view('footer');
+
+
+		}
+
 		
 	}
+
+	public function checkOldPass($inp)
+	{
+
+		if($this->user->checkPassword($this->session->userdata('user_id'),$inp))
+		{
+			
+			return TRUE;		
+		}
+		else
+		{	
+				
+			$this->form_validation->set_message('checkOldPass', 'Current Password entered is wrong.'.$this->session->userdata('user_id'));
+     		return FALSE;	
+		}		
+
+	}
+
+/*----------------------------------------------  Create CSV ----------------------------------------------*/
+
+	public function createcsv()
+
+	{
+
+		$result = $this->user->getClientName($this->session->userdata('client_id'));
+		foreach($result as $row)
+		{
+
+		$client_name= $row->client_name;
+		} 
+		$headerdata = array('usertype' => $this->session->userdata('user_type'), 'client_name' => $client_name ,'title' => 'How to Create CSV file','container_height' => 180 );
+		$this->load->view('header',$headerdata);
+		$this->load->view('vcreatecsv');
+		$this->load->view('footer');
+
+	}
+
+
+
+/*----------------------------------------------  Create CSV ----------------------------------------------*/
+
+	public function help()
+
+	{
+
+		$result = $this->user->getClientName($this->session->userdata('client_id'));
+		foreach($result as $row)
+		{
+
+		$client_name= $row->client_name;
+		} 
+		$headerdata = array('usertype' => $this->session->userdata('user_type'), 'client_name' => $client_name ,'title' => 'How to Create CSV file','container_height' => 180 );
+		$this->load->view('header',$headerdata);
+		$statusdata = array('message' => '<p class="help">If you need any technical support or if you have any feedback about our product, please contact us at 
+<span style="color:blue;">keyrelations@gmail.com</span> <br><br>Note : Please include your Institution name and contact number in the mail.</p>');
+		$this->load->view('vmessage',$statusdata);
+		$this->load->view('footer');
+
+	}
+
+
 }
 
 
