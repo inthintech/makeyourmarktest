@@ -179,7 +179,7 @@ font-size: 0.9em;
 <div class="headerdiv">
 <h4 class="headertxt">Make Your Mark</h4>
 <p class="welcometxt">Welcome to Application Control Panel</p>
-<a id="logout" href="php/logout.php" class="btn btn-danger">Logout</a>
+<a id="logout" href="<?php echo site_url('login/logout'); ?>" class="btn btn-danger">Logout</a>
 </div>
 </div>
 <div class="topbar2">

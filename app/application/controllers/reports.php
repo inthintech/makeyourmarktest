@@ -77,6 +77,23 @@ class Reports extends CI_Controller {
 					
 						
 	}
+
+	public function output()
+	{
+
+		if(!isset($_POST['submit']))
+		{
+			redirect('reports/generate');
+		}
+		$result = $this->user->getClientName($this->session->userdata('client_id'));
+		foreach($result as $row)
+			{
+
+			$client_name= $row->client_name;
+			} 
+		$headerdata = array('client_name' => $client_name ,'title' => 'Report Output','container_height' => 150 );
+		$this->load->view('rptheader',$headerdata);
+	}
 	
 }
 /* End of file welcome.php */
