@@ -93,8 +93,8 @@ font-family: 'Play', sans-serif;
 }
 .containerdiv
 {
-width: 100%;
-height: <?php echo $container_height ?>%;
+width: 75%;
+height: 100%;
 background: #fff;
 margin-left: auto;
 margin-right: auto;

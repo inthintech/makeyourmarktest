@@ -91,9 +91,54 @@ class Reports extends CI_Controller {
 
 			$client_name= $row->client_name;
 			} 
-		$headerdata = array('client_name' => $client_name ,'title' => 'Report Output','container_height' => 150 );
+		$headerdata = array('client_name' => $client_name ,'title' => 'Report Output');
 		$this->load->view('rptheader',$headerdata);
+		$reportId = $this->input->post('reportid');
+
+		switch($reportId)
+		{
+			case 1:
+			$this->passPercentageReport($this->input->post('examid'),$this->input->post('levelid'));
+			break;
+			case 2:
+			break;
+		}
+
+		$this->load->view('footer');
 	}
+
+	private function passPercentageReport($examid,$levelid)
+
+	{
+
+		$result = $this->user->getExamName($examid);
+		foreach($result as $row)
+		{
+			$exam_name= $row->exam_name;
+		} 
+		if($levelid==1)
+		{
+			$table_headers = "<th style=\"width:40%;\">College Name</th>
+			<th style=\"white-space: nowrap;\">No of Students Attempted</th>
+			<th>No of Students Passed</th><th>Overall Pass Percentage</th>";
+
+			$output = $this->analysis->passPercentageReportCollege($this->session->userdata('client_id'),$examid);
+			$opt_data = '';
+			foreach($output as $row)
+			{
+				
+				$opt_data = $opt_data."<tr><td>".$row->client_name."</td><td>".$row->student_cnt."</td>
+				<td>".$row->student_pass_cnt."</td><td>".$row->pass_percentage."</td></tr>";
+				
+			} 
+
+
+		}
+		$rptdata = array('exam_name' => $exam_name,'table_headers' => $table_headers,'data' => $opt_data);
+		$this->load->view('vpasspercentrpt',$rptdata);
+	}
+
+
 	
 }
 /* End of file welcome.php */

@@ -33,6 +33,21 @@ function getClientName($client_id)
      return false;
    }
  }
+
+ function getExamName($examid)
+ {
+   
+    $query = $this->db->query("select exam_name from exams where exam_id=".$this->db->escape($examid));
+
+   if($query -> num_rows() == 1)
+   {
+     return $query->result();
+   }
+   else
+   {
+     return false;
+   }
+ }
  
 
  function getSubscriptionDetails($client_id)

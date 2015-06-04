@@ -4,7 +4,7 @@
 <div class="panel-heading">Report Generator</div>
 <div class="panel-body">
 
-<form class="upload_form" action="<?php echo site_url('reports/output');?>" method="POST" enctype="multipart/form-data">
+<form class="upload_form" target="_blank" action="<?php echo site_url('reports/output');?>" method="POST" enctype="multipart/form-data">
 
 <fieldset>
 

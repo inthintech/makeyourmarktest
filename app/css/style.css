@@ -144,3 +144,25 @@ padding-right: 8px;
 	margin-top: 1%;
 	font-size: 1.1em;
 }
+.report_table
+{
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 20%;
+	margin-top: 5%;
+}
+.report_table, th, td {
+    border: 1px solid #DDD;
+	    padding-top: 10px;
+	padding-bottom: 10px;
+		padding-left: 8px;
+	padding-right: 8px;
+}
+.report_table th
+{
+	
+	background : #286090;
+	font-weight:normal;
+  	color: white;
+  	
+}
