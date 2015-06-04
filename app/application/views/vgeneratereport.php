@@ -125,35 +125,35 @@ generated for the results of students of all departments.</div>
 <br><br>
 <label>Dept Filter</label>
 <br><br>
-<select class="exam_select" name="deptid">
+<select class="exam_select" name="deptfilter">
 <option selected value="1">All</option>
 </select>
 
 <br><br>
 <label>Year Filter</label>
 <br><br>
-<select class="exam_select" name="yearid">
+<select class="exam_select" name="yearfilter">
 <option selected value="1">All</option>
 </select>
 
 <br><br>
 <label>Section Filter</label>
 <br><br>
-<select class="exam_select" name="sectionid">
+<select class="exam_select" name="sectionfilter">
 <option selected value="1">All</option>
 </select>
 
 <br><br>
 <label>Subject Filter</label>
 <br><br>
-<select class="exam_select" name="subjectid">
+<select class="exam_select" name="subjectfilter">
 <option selected value="1">All</option>
 </select>
 
 <br><br>
 <label>Student Filter</label>
 <br><br>
-<select class="exam_select" name="studentid">
+<select class="exam_select" name="studentfilter">
 <option selected value="1">All</option>
 </select>
 

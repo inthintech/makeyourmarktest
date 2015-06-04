@@ -94,11 +94,27 @@ class Reports extends CI_Controller {
 		$headerdata = array('client_name' => $client_name ,'title' => 'Report Output');
 		$this->load->view('rptheader',$headerdata);
 		$reportId = $this->input->post('reportid');
-
+		$filterQry = "where 1=1";
+		if($this->input->post('deptfilter')<>1)
+		{
+			$filterQry = $filterQry." and dept_code='".$this->input->post('deptfilter')."'";
+		}
+		if($this->input->post('yearfilter')<>1)
+		{
+			$filterQry = $filterQry." and year=".$this->input->post('yearfilter');
+		}
+		if($this->input->post('sectionfilter')<>1)
+		{
+			$filterQry = $filterQry." and section='".$this->input->post('sectionfilter')."'";
+		}
+		if($this->input->post('subjectfilter')<>1)
+		{
+			$filterQry = $filterQry." and subject_code='".$this->input->post('subjectfilter')."'";
+		}
 		switch($reportId)
 		{
 			case 1:
-			$this->passPercentageReport($this->input->post('examid'),$this->input->post('levelid'));
+			$this->passPercentageReport($this->input->post('examid'),$this->input->post('levelid'),$filterQry);
 			break;
 			case 2:
 			break;
@@ -107,7 +123,7 @@ class Reports extends CI_Controller {
 		$this->load->view('footer');
 	}
 
-	private function passPercentageReport($examid,$levelid)
+	private function passPercentageReport($examid,$levelid,$filterQry)
 
 	{
 
@@ -118,20 +134,28 @@ class Reports extends CI_Controller {
 		} 
 		if($levelid==1)
 		{
+			
+			$output = $this->analysis->passPercentageReportCollege($this->session->userdata('client_id'),$examid,$filterQry);
+			
+			if($output)
+			{
 			$table_headers = "<th style=\"width:40%;\">College Name</th>
 			<th style=\"white-space: nowrap;\">No of Students Attempted</th>
 			<th>No of Students Passed</th><th>Overall Pass Percentage</th>";
 
-			$output = $this->analysis->passPercentageReportCollege($this->session->userdata('client_id'),$examid);
 			$opt_data = '';
 			foreach($output as $row)
+				{
+				
+					$opt_data = $opt_data."<tr><td>".$row->client_name."</td><td>".$row->student_cnt."</td>
+					<td>".$row->student_pass_cnt."</td><td>".$row->pass_percentage."</td></tr>";
+				
+				} 
+			}
+			else
 			{
 				
-				$opt_data = $opt_data."<tr><td>".$row->client_name."</td><td>".$row->student_cnt."</td>
-				<td>".$row->student_pass_cnt."</td><td>".$row->pass_percentage."</td></tr>";
-				
-			} 
-
+			}
 
 		}
 		$rptdata = array('exam_name' => $exam_name,'table_headers' => $table_headers,'data' => $opt_data);
