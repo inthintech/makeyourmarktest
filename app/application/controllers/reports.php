@@ -53,7 +53,7 @@ class Reports extends CI_Controller {
 
 			$client_name= $row->client_name;
 			} 
-		$headerdata = array('usertype' => $this->session->userdata('user_type'), 'client_name' => $client_name ,'title' => 'Generate Report','container_height' => 270 );
+		$headerdata = array('usertype' => $this->session->userdata('user_type'), 'client_name' => $client_name ,'title' => 'Generate Report','container_height' => 340 );
 		$this->load->view('header',$headerdata);
 		$this->load->helper(array('form'));
 		$result = $this->user->getExamListWithData($this->session->userdata('client_id'));
@@ -94,27 +94,12 @@ class Reports extends CI_Controller {
 		$headerdata = array('client_name' => $client_name ,'title' => 'Report Output');
 		$this->load->view('rptheader',$headerdata);
 		$reportId = $this->input->post('reportid');
-		$filterQry = "where 1=1";
-		if($this->input->post('deptfilter')<>1)
-		{
-			$filterQry = $filterQry." and dept_code='".$this->input->post('deptfilter')."'";
-		}
-		if($this->input->post('yearfilter')<>1)
-		{
-			$filterQry = $filterQry." and year=".$this->input->post('yearfilter');
-		}
-		if($this->input->post('sectionfilter')<>1)
-		{
-			$filterQry = $filterQry." and section='".$this->input->post('sectionfilter')."'";
-		}
-		if($this->input->post('subjectfilter')<>1)
-		{
-			$filterQry = $filterQry." and subject_code='".$this->input->post('subjectfilter')."'";
-		}
+		
+
 		switch($reportId)
 		{
 			case 1:
-			$this->passPercentageReport($this->input->post('examid'),$this->input->post('levelid'),$filterQry);
+			$this->passPercentageReport($this->input->post('examid'),$this->input->post('levelid'));
 			break;
 			case 2:
 			break;
@@ -123,7 +108,7 @@ class Reports extends CI_Controller {
 		$this->load->view('footer');
 	}
 
-	private function passPercentageReport($examid,$levelid,$filterQry)
+	private function passPercentageReport($examid,$levelid)
 
 	{
 
@@ -132,9 +117,30 @@ class Reports extends CI_Controller {
 		{
 			$exam_name= $row->exam_name;
 		} 
+		
+		/* College Level Report*/
+		
 		if($levelid==1)
 		{
-			
+			$filterQry = "where 1=1";
+			/*
+			if($this->input->post('deptfilter')<>1)
+			{
+				$filterQry = $filterQry." and dept_code='".$this->input->post('deptfilter')."'";
+			}
+			if($this->input->post('yearfilter')<>1)
+			{
+				$filterQry = $filterQry." and year=".$this->input->post('yearfilter');
+			}
+			if($this->input->post('sectionfilter')<>1)
+			{
+				$filterQry = $filterQry." and section='".$this->input->post('sectionfilter')."'";
+			}
+			if($this->input->post('subjectfilter')<>1)
+			{
+				$filterQry = $filterQry." and subject_code='".$this->input->post('subjectfilter')."'";
+			}
+			*/
 			$output = $this->analysis->passPercentageReportCollege($this->session->userdata('client_id'),$examid,$filterQry);
 			
 			if($output)
@@ -151,15 +157,70 @@ class Reports extends CI_Controller {
 					<td>".$row->student_pass_cnt."</td><td>".$row->pass_percentage."</td></tr>";
 				
 				} 
+			
+			$rptdata = array('exam_name' => $exam_name,'table_headers' => $table_headers,'data' => $opt_data);
+			$this->load->view('vpasspercentrpt',$rptdata);
 			}
 			else
 			{
-				
+				$statusdata = array('message' => '<div class="alert alert-danger" role="alert">No data was returned. Either there is no data for the input or there are any filters applied. Please remove any unneccessary filter and try again.</div>');
+				$this->load->view('vmessage',$statusdata);
 			}
 
 		}
-		$rptdata = array('exam_name' => $exam_name,'table_headers' => $table_headers,'data' => $opt_data);
-		$this->load->view('vpasspercentrpt',$rptdata);
+		
+		/* Dept Level Report*/
+		
+		if($levelid==2)
+		{
+			$filterQry = "where 1=1";
+			
+			if($this->input->post('deptfilter')<>1)
+			{
+				$filterQry = $filterQry." and dept_code='".$this->input->post('deptfilter')."'";
+			}
+			/*
+			if($this->input->post('yearfilter')<>1)
+			{
+				$filterQry = $filterQry." and year=".$this->input->post('yearfilter');
+			}
+			if($this->input->post('sectionfilter')<>1)
+			{
+				$filterQry = $filterQry." and section='".$this->input->post('sectionfilter')."'";
+			}
+			if($this->input->post('subjectfilter')<>1)
+			{
+				$filterQry = $filterQry." and subject_code='".$this->input->post('subjectfilter')."'";
+			}
+			*/
+			$output = $this->analysis->passPercentageReportDept($this->session->userdata('client_id'),$examid,$filterQry);
+			
+			if($output)
+			{
+			$table_headers = "<th style=\"width:40%;\">Department Code</th>
+			<th style=\"white-space: nowrap;\">No of Students Attempted</th>
+			<th>No of Students Passed</th><th>Overall Pass Percentage</th>";
+
+			$opt_data = '';
+			foreach($output as $row)
+				{
+				
+					$opt_data = $opt_data."<tr><td>".$row->dept_code."</td><td>".$row->student_cnt."</td>
+					<td>".$row->student_pass_cnt."</td><td>".$row->pass_percentage."</td></tr>";
+				
+				} 
+			
+			$rptdata = array('exam_name' => $exam_name,'table_headers' => $table_headers,'data' => $opt_data);
+			$this->load->view('vpasspercentrpt',$rptdata);
+			}
+			else
+			{
+				$statusdata = array('message' => '<div class="alert alert-danger" role="alert">No data was returned. Either there is no data for the input or there are any filters applied. Please remove any unneccessary filter and try again.</div>');
+				$this->load->view('vmessage',$statusdata);
+			}
+
+		}
+		
 	}
 
 

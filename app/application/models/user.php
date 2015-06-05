@@ -191,7 +191,7 @@ function newResult($client_id,$exam_id,$target_path,$staffname,$staffid,$subname
 
   {
 
-      $query = $this->db->query("select max(batch_id)+1 batch_id from results");
+      $query = $this->db->query("select IFNULL(max(batch_id),0)+1 batch_id from results");
       foreach($query->result() as $row)
         {
           $batchid= $row->batch_id;

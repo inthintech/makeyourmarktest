@@ -52,8 +52,8 @@
 <br><br>
 <select class="exam_select" name="dept_code" >
 <option selected value="CSE">CSE</option>
-<option selected value="CSE">IT</option>
-<option selected value="CSE">EEE</option>
+<option value="IT">IT</option>
+<option value="EEE">EEE</option>
 
 </select>
 

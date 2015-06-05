@@ -127,6 +127,8 @@ generated for the results of students of all departments.</div>
 <br><br>
 <select class="exam_select" name="deptfilter">
 <option selected value="1">All</option>
+<option value="CSE">CSE</option>
+<option value="EEE">EEE</option>
 </select>
 
 <br><br>
