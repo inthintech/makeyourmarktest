@@ -53,7 +53,7 @@ class Reports extends CI_Controller {
 
 			$client_name= $row->client_name;
 			} 
-		$headerdata = array('usertype' => $this->session->userdata('user_type'), 'client_name' => $client_name ,'title' => 'Generate Report','container_height' => 340 );
+		$headerdata = array('usertype' => $this->session->userdata('user_type'), 'client_name' => $client_name ,'title' => 'Generate Report','container_height' => 280 );
 		$this->load->view('header',$headerdata);
 		$this->load->helper(array('form'));
 		$result = $this->user->getExamListWithData($this->session->userdata('client_id'));

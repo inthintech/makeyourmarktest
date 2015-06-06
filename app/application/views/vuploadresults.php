@@ -54,6 +54,12 @@
 <option selected value="CSE">CSE</option>
 <option value="IT">IT</option>
 <option value="EEE">EEE</option>
+<option value="EIE">EIE</option>
+<option value="ECE">ECE</option>
+<option value="MECH">MECH</option>
+<option value="ICE">ICE</option>
+
+
 
 </select>
 

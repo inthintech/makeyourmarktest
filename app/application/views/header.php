@@ -201,6 +201,7 @@ echo '<li><span><a href="'.site_url('exams/addexam').'">New Exam</a></span></li>
 echo '<li><span><a href="'.site_url('exams/status').'">Exam Status</a></span></li>';
 }
 ?>
+<li><span><a href="<?php echo site_url('exams/createcsv'); ?>">How to Create CSV File</a></span></li>
 <li><span><a href="<?php echo site_url('exams/upload'); ?>">Upload Results</a></span></li>
 <li><span><a href="<?php echo site_url('exams/verify'); ?>">Verify Results</a></span></li>
 <?php
@@ -211,7 +212,7 @@ echo '<li><span><a href="'.site_url('exams/deleteuser').'">Delete User</a></span
 }
 ?>
 <li><span><a href="<?php echo site_url('exams/changepassword'); ?>">Change Password</a></span></li>
-<li><span><a href="<?php echo site_url('exams/createcsv'); ?>">How to Create CSV File</a></span></li>
+
 <li><span><a href="<?php echo site_url('exams/help'); ?>">Feedback / Help</a></span></li>
 <li class="menuitem"><span>Reports</span></li>
 <li><span><a href="<?php echo site_url('reports/generate'); ?>">Generate Report</a></span></li>

@@ -1,5 +1,5 @@
 
-<div class="subcontainer" style="width:95%;">
+<div class="subcontainer" style="width:90%;padding-bottom:5%;margin-top:5%;">
 <div class="panel panel-default">
 <div class="panel-heading">Pass Percentage Report for the Exam <?php echo $exam_name ?></div>
 <div class="panel-body">
@@ -8,13 +8,8 @@
 <tr>
 <?php echo $table_headers ?>
 </tr>
-<?php echo $data ?>
-
-	
+<?php echo $data ?>	
 </table>
-
-
-
 </div>
 </div>
 </div>

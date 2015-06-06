@@ -804,7 +804,7 @@ class Exams extends CI_Controller {
 
 		$client_name= $row->client_name;
 		} 
-		$headerdata = array('usertype' => $this->session->userdata('user_type'), 'client_name' => $client_name ,'title' => 'How to Create CSV file','container_height' => 180 );
+		$headerdata = array('usertype' => $this->session->userdata('user_type'), 'client_name' => $client_name ,'title' => 'How to Create CSV file','container_height' => 130 );
 		$this->load->view('header',$headerdata);
 		$statusdata = array('message' => '<p class="help">If you need any technical support or if you have any feedback about our product, please contact us at 
 <span style="color:blue;">keyrelations@gmail.com</span> <br><br>Note : Please include your Institution name and contact number in the mail.</p>');
