@@ -1,5 +1,5 @@
 
-<div class="subcontainer" style="width:95%;">
+<div class="subcontainer" style="width:90%;padding-bottom:10%;margin-top:5%;">
 <div class="panel panel-default">
 <div class="panel-heading">DATA ENTERED IN THE SYSTEM</div>
 <div class="panel-body">

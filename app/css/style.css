@@ -166,3 +166,12 @@ padding-right: 8px;
   	color: white;
   	
 }
+.home_header
+{
+	background: #87CEFA;
+}
+.scrollable_table
+{
+	overflow:scroll;
+    
+}

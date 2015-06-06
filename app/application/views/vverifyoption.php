@@ -1,5 +1,5 @@
 
-<div class="subcontainer" style="width:98%;">
+<div class="subcontainer" style="width:98%;height:80%;overflow:scroll;">
 <div class="panel panel-default">
 <div class="panel-heading">Results Uploaded for the Exam</div>
 <div class="panel-body">

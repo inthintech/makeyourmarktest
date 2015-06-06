@@ -94,7 +94,7 @@ font-family: 'Play', sans-serif;
 .containerdiv
 {
 width: 75%;
-height: 100%;
+
 background: #fff;
 margin-left: auto;
 margin-right: auto;
@@ -113,6 +113,7 @@ float : left;
 {
 width: 100%;
 height: 100%;
+overflow: hidden;
 /*background: green;*/
 }
 

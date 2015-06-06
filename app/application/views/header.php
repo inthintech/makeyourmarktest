@@ -20,7 +20,7 @@ html,body
       /*background: #B0E0E6;*/
       /*background: #EED5B7;*/
       background: #84A749;
-
+      
       height: 100%; 
       width: 100%; 
 }
@@ -95,6 +95,7 @@ font-family: 'Play', sans-serif;
 {
 width: 75%;
 height: <?php echo $container_height ?>%;
+
 background: #fff;
 margin-left: auto;
 margin-right: auto;
@@ -115,6 +116,7 @@ width: 67%;
 height: 100%;
 /*background: green;*/
 margin-left: 30%;
+
 }
 
 .menuitem
@@ -189,6 +191,7 @@ font-size: 0.9em;
 <div class="containerdiv">
 <div class="leftnav">
 <ul> 
+
 <li class="menuitem"><span>Exams</span></li>
 <li><span><a href="<?php echo site_url('exams'); ?>">Home</a></span></li>
 <?php

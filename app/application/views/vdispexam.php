@@ -20,7 +20,7 @@
 </div>
 
 -->
-<div class="subcontainer" style="width:90%;">
+<div class="subcontainer" style="width:90%;overflow:scroll;">
 <div class="panel panel-default">
 <div class="panel-heading">Exam Status</div>
 <div class="panel-body">
