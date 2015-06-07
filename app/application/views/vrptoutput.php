@@ -8,10 +8,10 @@ Exam Name :
 <span class="report_panel_name" style="margin-left:2.6%;";><?php echo $exam_name ?></span>
 <br><br>
 Report Name :
-<span class="report_panel_name" style="margin-left:1.8%;";>Pass Percentage Report</span>
+<span class="report_panel_name" style="margin-left:1.8%;";><?php echo $report_name ?></span>
 <br><br>
 Level :
-<span class="report_panel_name" style="margin-left:7%;";>College Level</span>
+<span class="report_panel_name" style="margin-left:7%;";><?php echo $level ?></span>
 
 
 </div>

@@ -75,6 +75,7 @@ who have passed in all subjects. </div>
 <option selected value="1">College Level</option>
 <option value="2">Department Level</option>
 <option value="3">Year Level</option>
+<option value="5">Department and Year Level</option>
 <option value="4">Class Level</option>
 <!--
 <option value="5">Subject Level</option>
@@ -98,6 +99,9 @@ function myFunctionlevel() {
 		break;
 		case '4':
 		document.getElementById("level").innerHTML = "Class level report will be generated for the results of students of each class in college.";
+		break;
+		case '5':
+		document.getElementById("level").innerHTML = "Department and Year level report will be generated for the results of students of each department and year in college.";
 		break;
 		/*
 		case '5':
@@ -126,43 +130,49 @@ generated for the results of students of all departments.</div>
 <label>Dept Filter</label>
 <br><br>
 <select class="exam_select" name="deptfilter">
-<option selected value="1">All</option>
+<option selected value="99">All</option>
 <option value="CSE">CSE</option>
 <option value="EEE">EEE</option>
+<option value="EIE">EIE</option>
 </select>
 
 <br><br>
 <label>Year Filter</label>
 <br><br>
 <select class="exam_select" name="yearfilter">
-<option selected value="1">All</option>
+<option selected value="99">All</option>
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
 </select>
 
 <br><br>
 <label>Section Filter</label>
 <br><br>
 <select class="exam_select" name="sectionfilter">
-<option selected value="1">All</option>
+<option selected value="99">All</option>
+<option value="A">A</option>
+<option value="B">B</option>
 </select>
 
 <br><br>
 <label>Subject Filter</label>
 <br><br>
 <select class="exam_select" name="subjectfilter">
-<option selected value="1">All</option>
+<option selected value="99">All</option>
 </select>
 
 <br><br>
 <label>Student Filter</label>
 <br><br>
 <select class="exam_select" name="studentfilter">
-<option selected value="1">All</option>
+<option selected value="99">All</option>
 </select>
 
 <br><br><br>
 <div class="alert alert-danger" role="alert">Warning : Filters can be used to 
-restrict the results based on the filters applied. Usage of unnecessary filters 
-may return incorrect result. Please use wherever necessary.</div>
+restrict the results based on the filters applied. Please use wherever necessary.</div>
 
 
 </fieldset>  

@@ -176,3 +176,7 @@ padding-right: 8px;
 	overflow:scroll;
     
 }
+.report_panel_name
+{
+	font-weight:bold;
+}

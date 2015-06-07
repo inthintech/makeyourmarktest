@@ -158,8 +158,6 @@ class Exams extends CI_Controller {
 			}
 		else
 			{
-				$headerdata = array('usertype' => $this->session->userdata('user_type'), 'client_name' => $client_name ,'title' => 'Exam Status','container_height' => 130 );
-				$this->load->view('header',$headerdata);
 				$statusdata = array('message' => '<div class="alert alert-danger" role="alert">Error : No exam has been created. Please create an exam.</div>');
 				$this->load->view('vmessage',$statusdata);
 			}
@@ -183,8 +181,7 @@ class Exams extends CI_Controller {
 
 			$client_name= $row->client_name;
 			} 
-		$headerdata = array('usertype' => $this->session->userdata('user_type'), 'client_name' => $client_name ,'title' => 'Upload Exam Results','container_height' => 300 );
-		$this->load->view('header',$headerdata);
+
 		$this->load->helper(array('form'));
 		$result = $this->user->getExamList($this->session->userdata('client_id'));
 		if($result)
@@ -196,10 +193,14 @@ class Exams extends CI_Controller {
    			
   			} 
   			$examdata = array('examlist' => $examlist);
+  			$headerdata = array('usertype' => $this->session->userdata('user_type'), 'client_name' => $client_name ,'title' => 'Upload Exam Results','container_height' => 300 );
+			$this->load->view('header',$headerdata);
 			$this->load->view('vuploadresults',$examdata);
 		}
 		else
 		{
+			$headerdata = array('usertype' => $this->session->userdata('user_type'), 'client_name' => $client_name ,'title' => 'Upload Exam Results','container_height' => 130 );
+			$this->load->view('header',$headerdata);
 			$statusdata = array('message' => '<div class="alert alert-danger" role="alert">Error : No exam has been created. Please create an exam.</div>');
 			$this->load->view('vmessage',$statusdata);
 		}
