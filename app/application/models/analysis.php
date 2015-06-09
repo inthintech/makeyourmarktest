@@ -348,5 +348,209 @@ order by dept_code,year,percentage desc
 
 
 
+function studentRankListReportCollege($client_id,$exam_id,$filterQry)
+
+{
+
+  $query = $this->db->query("select dept_code,year,section,student_id,student_name,percentage,rank from
+(select rset.*,
+( 
+CASE 
+WHEN percentage=@oldPercent
+THEN @curRow := @curRow + 0 
+ELSE @curRow := @curRow + 1 
+END
+)AS rank,
+@oldPercent := percentage
+from
+(select b.*,a.percentage
+from
+(select student_id,AVG(marks_obtained) percentage
+from results
+where lgcl_del_f='N' and exam_id=".$this->db->escape($exam_id)." and client_id=".$this->db->escape($client_id)." group by student_id)a
+join
+(select distinct client_id,dept_code,year,section,student_id,student_name
+from results
+where lgcl_del_f='N' and exam_id=".$this->db->escape($exam_id)." and client_id=".$this->db->escape($client_id).")b
+on a.student_id=b.student_id)
+rset,
+(SELECT @curRow := 0, @oldPercent := 0) r
+order by percentage desc
+)SCR ".$filterQry);
+
+   if($query -> num_rows() >= 1)
+   {
+     return $query->result();
+   }
+   else
+   {
+     return false;
+   }
+
+}
+
+
+function studentRankListReportDept($client_id,$exam_id,$filterQry)
+
+{
+
+  $query = $this->db->query("select dept_code,year,section,student_id,student_name,percentage,rank from
+(select rset.*,
+( 
+CASE 
+WHEN dept_code = @dept and percentage=@oldPercent
+THEN @curRow := @curRow + 0 
+WHEN dept_code = @dept and percentage<>@oldPercent
+THEN @curRow := @curRow + 1 
+ELSE @curRow := 1 END
+) AS rank,@dept := dept_code,@oldPercent := percentage
+from
+(select b.*,a.percentage
+from
+(select student_id,AVG(marks_obtained) percentage
+from results
+where lgcl_del_f='N' and exam_id=".$this->db->escape($exam_id)." and client_id=".$this->db->escape($client_id)." group by student_id)a
+join
+(select distinct client_id,dept_code,year,section,student_id,student_name
+from results
+where lgcl_del_f='N' and exam_id=".$this->db->escape($exam_id)." and client_id=".$this->db->escape($client_id).")b
+on a.student_id=b.student_id)rset,
+(SELECT @curRow := 0, @oldPercent := 0, @client_id := 0, @dept := '', @year := 0, @section='') r
+order by dept_code,percentage desc
+)SCR ".$filterQry." order by dept_code");
+
+   if($query -> num_rows() >= 1)
+   {
+     return $query->result();
+   }
+   else
+   {
+     return false;
+   }
+
+}
+
+function studentRankListReportYear($client_id,$exam_id,$filterQry)
+
+{
+
+  $query = $this->db->query("select dept_code,year,section,student_id,student_name,percentage,rank from
+(select rset.*,
+( 
+CASE 
+WHEN year = @year and percentage=@oldPercent
+THEN @curRow := @curRow + 0 
+WHEN year = @year and percentage<>@oldPercent
+THEN @curRow := @curRow + 1 
+ELSE @curRow := 1 END
+) AS rank,@year := year,@oldPercent := percentage
+from
+(select b.*,a.percentage
+from
+(select student_id,AVG(marks_obtained) percentage
+from results
+where lgcl_del_f='N' and exam_id=".$this->db->escape($exam_id)." and client_id=".$this->db->escape($client_id)." group by student_id)a
+join
+(select distinct client_id,dept_code,year,section,student_id,student_name
+from results
+where lgcl_del_f='N' and exam_id=".$this->db->escape($exam_id)." and client_id=".$this->db->escape($client_id).")b
+on a.student_id=b.student_id)rset,
+(SELECT @curRow := 0, @oldPercent := 0, @client_id := 0, @dept := '', @year := 0, @section :='') r
+order by year,percentage desc
+)SCR ".$filterQry." order by year");
+
+   if($query -> num_rows() >= 1)
+   {
+     return $query->result();
+   }
+   else
+   {
+     return false;
+   }
+
+}
+
+function studentRankListReportDeptYear($client_id,$exam_id,$filterQry)
+
+{
+
+  $query = $this->db->query("select dept_code,year,section,student_id,student_name,percentage,rank from
+(select rset.*,
+( 
+CASE 
+WHEN dept_code=@dept and year = @year and percentage=@oldPercent
+THEN @curRow := @curRow + 0 
+WHEN dept_code=@dept and year = @year and percentage<>@oldPercent
+THEN @curRow := @curRow + 1 
+ELSE @curRow := 1 END
+) AS rank,@dept := dept_code,@year := year,@oldPercent := percentage
+from
+(select b.*,a.percentage
+from
+(select student_id,AVG(marks_obtained) percentage
+from results
+where lgcl_del_f='N' and exam_id=".$this->db->escape($exam_id)." and client_id=".$this->db->escape($client_id)." group by student_id)a
+join
+(select distinct client_id,dept_code,year,section,student_id,student_name
+from results
+where lgcl_del_f='N' and exam_id=".$this->db->escape($exam_id)." and client_id=".$this->db->escape($client_id).")b
+on a.student_id=b.student_id)rset,
+(SELECT @curRow := 0, @oldPercent := 0, @client_id := 0, @dept := '', @year := 0, @section :='') r
+order by dept_code,year,percentage desc
+)SCR ".$filterQry." order by dept_code,year");
+
+   if($query -> num_rows() >= 1)
+   {
+     return $query->result();
+   }
+   else
+   {
+     return false;
+   }
+
+}
+
+function studentRankListReportClass($client_id,$exam_id,$filterQry)
+
+{
+
+  $query = $this->db->query("select dept_code,year,section,student_id,student_name,percentage,rank from
+(select rset.*,
+( 
+CASE 
+WHEN dept_code=@dept and year = @year and section=@section and percentage=@oldPercent
+THEN @curRow := @curRow + 0 
+WHEN dept_code=@dept and year = @year and section=@section and percentage<>@oldPercent
+THEN @curRow := @curRow + 1 
+ELSE @curRow := 1 END
+) AS rank,@dept := dept_code,@year := year, @section := section,@oldPercent := percentage
+from
+(select b.*,a.percentage
+from
+(select student_id,AVG(marks_obtained) percentage
+from results
+where lgcl_del_f='N' and exam_id=".$this->db->escape($exam_id)." and client_id=".$this->db->escape($client_id)." group by student_id)a
+join
+(select distinct client_id,dept_code,year,section,student_id,student_name
+from results
+where lgcl_del_f='N' and exam_id=".$this->db->escape($exam_id)." and client_id=".$this->db->escape($client_id).")b
+on a.student_id=b.student_id)rset,
+(SELECT @curRow := 0, @oldPercent := 0, @client_id := 0, @dept := '', @year := 0, @section :='') r
+order by dept_code,year,percentage desc
+)SCR ".$filterQry." order by dept_code,year,section");
+
+   if($query -> num_rows() >= 1)
+   {
+     return $query->result();
+   }
+   else
+   {
+     return false;
+   }
+
+}
+
+
+
 }
 ?>
