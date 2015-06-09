@@ -46,7 +46,7 @@ function passPercentageReportDept($client_id,$exam_id,$filterQry)
     where marks_obtained>=pass_mark and lgcl_del_f='N' 
     and client_id=".$this->db->escape($client_id)." and exam_id=".$this->db->escape($exam_id)." group by dept_code)b
     on a.dept_code=b.dept_code)
-	SCR ".$filterQry." order by pass_percentage desc");
+	SCR ".$filterQry." order by dept_code");
 
    if($query -> num_rows() >= 1)
    {
@@ -73,7 +73,7 @@ function passPercentageReportYear($client_id,$exam_id,$filterQry)
     where marks_obtained>=pass_mark and lgcl_del_f='N' 
     and client_id=".$this->db->escape($client_id)." and exam_id=".$this->db->escape($exam_id)." group by year)b
     on a.year=b.year)
-  SCR ".$filterQry." order by pass_percentage desc");
+  SCR ".$filterQry." order by year");
 
    if($query -> num_rows() >= 1)
    {
@@ -100,7 +100,7 @@ function passPercentageReportDeptYear($client_id,$exam_id,$filterQry)
     where marks_obtained>=pass_mark and lgcl_del_f='N' 
     and client_id=".$this->db->escape($client_id)." and exam_id=".$this->db->escape($exam_id)." group by dept_code,year)b
     on a.dept_code=b.dept_code and a.year=b.year)
-  SCR ".$filterQry." order by pass_percentage desc");
+  SCR ".$filterQry." order by dept_code,year");
 
    if($query -> num_rows() >= 1)
    {
@@ -127,7 +127,7 @@ function passPercentageReportClass($client_id,$exam_id,$filterQry)
     where marks_obtained>=pass_mark and lgcl_del_f='N' 
     and client_id=".$this->db->escape($client_id)." and exam_id=".$this->db->escape($exam_id)." group by dept_code,year,section)b
     on a.dept_code=b.dept_code and a.year=b.year)
-  SCR ".$filterQry." order by pass_percentage desc");
+  SCR ".$filterQry." order by dept_code,year,section");
 
    if($query -> num_rows() >= 1)
    {
@@ -194,8 +194,8 @@ WHEN dept_code = @dept and percentage=@oldPercent
 THEN @curRow := @curRow + 0 
 WHEN dept_code = @dept and percentage<>@oldPercent
 THEN @curRow := @curRow + 1 
-ELSE @curRow := 1 AND @dept := dept_code END
-) + 1 AS rank,@oldPercent := percentage
+ELSE @curRow := 1 END
+) AS rank,@dept := dept_code,@oldPercent := percentage
 from
 (select b.*,a.percentage
 from
@@ -235,8 +235,8 @@ WHEN year = @year and percentage=@oldPercent
 THEN @curRow := @curRow + 0 
 WHEN year = @year and percentage<>@oldPercent
 THEN @curRow := @curRow + 1 
-ELSE @curRow := 1 AND @year := year END
-) AS rank,@oldPercent := percentage
+ELSE @curRow := 1 END
+) AS rank,@year := year,@oldPercent := percentage
 from
 (select b.*,a.percentage
 from
@@ -263,6 +263,89 @@ order by year,percentage desc
    }
 
 }
+
+function topperReportDeptYear($client_id,$exam_id,$filterQry)
+
+{
+
+  $query = $this->db->query("select dept_code,year,section,student_id,student_name,percentage,rank from
+(select rset.*,
+( 
+CASE 
+WHEN dept_code=@dept and year = @year and percentage=@oldPercent
+THEN @curRow := @curRow + 0 
+WHEN dept_code=@dept and year = @year and percentage<>@oldPercent
+THEN @curRow := @curRow + 1 
+ELSE @curRow := 1 END
+) AS rank,@dept := dept_code,@year := year,@oldPercent := percentage
+from
+(select b.*,a.percentage
+from
+(select student_id,AVG(marks_obtained) percentage
+from results
+where lgcl_del_f='N' and exam_id=".$this->db->escape($exam_id)." and client_id=".$this->db->escape($client_id)." and marks_obtained>=pass_mark
+group by student_id)a
+join
+(select distinct client_id,dept_code,year,section,student_id,student_name
+from results
+where lgcl_del_f='N' and exam_id=".$this->db->escape($exam_id)." and client_id=".$this->db->escape($client_id)." and marks_obtained>=pass_mark)b
+on a.student_id=b.student_id)rset,
+(SELECT @curRow := 0, @oldPercent := 0, @client_id := 0, @dept := '', @year := 0, @section :='') r
+order by dept_code,year,percentage desc
+)SCR ".$filterQry." order by dept_code,year");
+
+   if($query -> num_rows() >= 1)
+   {
+     return $query->result();
+   }
+   else
+   {
+     return false;
+   }
+
+}
+
+function topperReportClass($client_id,$exam_id,$filterQry)
+
+{
+
+  $query = $this->db->query("select dept_code,year,section,student_id,student_name,percentage,rank from
+(select rset.*,
+( 
+CASE 
+WHEN dept_code=@dept and year = @year and section=@section and percentage=@oldPercent
+THEN @curRow := @curRow + 0 
+WHEN dept_code=@dept and year = @year and section=@section and percentage<>@oldPercent
+THEN @curRow := @curRow + 1 
+ELSE @curRow := 1 END
+) AS rank,@dept := dept_code,@year := year, @section := section,@oldPercent := percentage
+from
+(select b.*,a.percentage
+from
+(select student_id,AVG(marks_obtained) percentage
+from results
+where lgcl_del_f='N' and exam_id=".$this->db->escape($exam_id)." and client_id=".$this->db->escape($client_id)." and marks_obtained>=pass_mark
+group by student_id)a
+join
+(select distinct client_id,dept_code,year,section,student_id,student_name
+from results
+where lgcl_del_f='N' and exam_id=".$this->db->escape($exam_id)." and client_id=".$this->db->escape($client_id)." and marks_obtained>=pass_mark)b
+on a.student_id=b.student_id)rset,
+(SELECT @curRow := 0, @oldPercent := 0, @client_id := 0, @dept := '', @year := 0, @section :='') r
+order by dept_code,year,percentage desc
+)SCR ".$filterQry." order by dept_code,year,section");
+
+   if($query -> num_rows() >= 1)
+   {
+     return $query->result();
+   }
+   else
+   {
+     return false;
+   }
+
+}
+
 
 
 }
