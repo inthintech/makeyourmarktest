@@ -151,6 +151,87 @@ from clientpackage where client_id=".$this->db->escape($client_id));
 
 }
 
+function getStudentsList($client_id)
+
+{
+
+  $query = $this->db->query("select 
+case when package_id=1 then 1 
+when package_id=2 then 5
+when package_id=3 then 10
+when package_id=4 then 25
+end no
+from clientpackage where client_id=".$this->db->escape($client_id));
+  foreach($query->result() as $row)
+          {
+       
+            $no= $row->no;
+            } 
+
+  $query = $this->db->query("select exam_id from exams 
+    where status=1 and client_id=".$this->db->escape($client_id)." order by crte_ts desc LIMIT ".$no);
+
+  $eid = '-1';
+
+  foreach($query->result() as $row)
+    {
+      $eid= $eid.','.$row->exam_id;
+    } 
+
+  $query = $this->db->query("select distinct student_id,student_name from results 
+    where client_id=".$this->db->escape($client_id)." and exam_id in (".$eid.") order by student_id");
+
+   if($query -> num_rows() >= 1)
+   {
+     return $query->result();
+   }
+   else
+   {
+     return false;
+   }
+
+}
+
+function getSubjectsList($client_id)
+
+{
+
+  $query = $this->db->query("select 
+case when package_id=1 then 1 
+when package_id=2 then 5
+when package_id=3 then 10
+when package_id=4 then 25
+end no
+from clientpackage where client_id=".$this->db->escape($client_id));
+  foreach($query->result() as $row)
+          {
+       
+            $no= $row->no;
+            } 
+
+  $query = $this->db->query("select exam_id from exams 
+    where status=1 and client_id=".$this->db->escape($client_id)." order by crte_ts desc LIMIT ".$no);
+
+  $eid = '-1';
+
+  foreach($query->result() as $row)
+    {
+      $eid= $eid.','.$row->exam_id;
+    } 
+
+  $query = $this->db->query("select distinct subject_code,subject_name from results 
+    where client_id=".$this->db->escape($client_id)." and exam_id in (".$eid.") order by subject_code");
+
+   if($query -> num_rows() >= 1)
+   {
+     return $query->result();
+   }
+   else
+   {
+     return false;
+   }
+
+}
 
 
 

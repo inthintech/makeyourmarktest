@@ -160,6 +160,7 @@ generated for the results of students of all departments.</div>
 <br><br>
 <select class="exam_select" name="subjectfilter">
 <option selected value="99">All</option>
+<?php echo $subjectlist ?>
 </select>
 
 <br><br>
@@ -167,6 +168,7 @@ generated for the results of students of all departments.</div>
 <br><br>
 <select class="exam_select" name="studentfilter">
 <option selected value="99">All</option>
+<?php echo $studentlist ?>
 </select>
 
 <br><br>

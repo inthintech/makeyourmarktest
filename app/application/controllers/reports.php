@@ -22,26 +22,6 @@ class Reports extends CI_Controller {
 		redirect('exams');
 	}
 
-/*----------------------------------------------  College Level  ----------------------------------------------*/
-
-	public function college()
-	{
-
-	
-		$result = $this->user->getClientName($this->session->userdata('client_id'));
-		foreach($result as $row)
-			{
-
-			$client_name= $row->client_name;
-			} 
-		$headerdata = array('usertype' => $this->session->userdata('user_type'), 'client_name' => $client_name ,'title' => 'Add new exam','container_height' => 170 );
-		$this->load->view('header',$headerdata);
-		$this->load->helper(array('form'));
-		$this->load->view('vcollegelevel');
-		$this->load->view('footer');		
-					
-						
-	}
 
 	public function generate()
 	{
@@ -62,9 +42,25 @@ class Reports extends CI_Controller {
 				foreach($result as $row)
 	 			{
 	   			$examlist = "<option selected value=".$row->exam_id.">".$row->exam_name."</option>".$examlist;
-	   			
 	  			} 
-	  			$examdata = array('examlist' => $examlist);
+
+	  			$studentlist ='';
+	  			//get student list
+	  			$result = $this->user->getStudentsList($this->session->userdata('client_id'));
+	  			foreach($result as $row)
+	 			{
+	   			$studentlist = "<option value=".$row->student_id.">".$row->student_name." (".$row->student_id.")</option>".$studentlist;
+	  			} 
+
+	  			$subjectlist ='';
+	  			//get subject list
+	  			$result = $this->user->getSubjectsList($this->session->userdata('client_id'));
+	  			foreach($result as $row)
+	 			{
+	   			$subjectlist = "<option value=".$row->subject_code.">".$row->subject_name." (".$row->subject_code.")</option>".$subjectlist;
+	  			}
+
+	  			$examdata = array('examlist' => $examlist,'studentlist' => $studentlist,'subjectlist' => $subjectlist);
 	  			$headerdata = array('usertype' => $this->session->userdata('user_type'), 'client_name' => $client_name ,'title' => 'Generate Report','container_height' => 280 );
 				$this->load->view('header',$headerdata);
 				$this->load->view('vgeneratereport',$examdata);
@@ -73,7 +69,7 @@ class Reports extends CI_Controller {
 			{
 				$headerdata = array('usertype' => $this->session->userdata('user_type'), 'client_name' => $client_name ,'title' => 'Generate Report','container_height' => 130 );
 				$this->load->view('header',$headerdata);
-				$statusdata = array('message' => '<div class="alert alert-danger" role="alert">Error : There are no exams with results uploaded.</div>');
+				$statusdata = array('message' => '<style>.containerdiv {height:70%;}</style><div style="margin-top:5%;" class="alert alert-danger" role="alert">Error : There are no exams with results uploaded.</div>');
 				$this->load->view('vmessage',$statusdata);
 			}
 		$this->load->view('footer');		
@@ -178,7 +174,7 @@ class Reports extends CI_Controller {
 			}
 			else
 			{
-				$statusdata = array('message' => '<div class="alert alert-danger" role="alert">No data was returned. Either there is no data for the input or there are any filters applied. Please remove any unneccessary filter and try again.</div>');
+				$statusdata = array('message' => '<style>.containerdiv {height:70%;}</style><div style="margin-top:5%;" class="alert alert-danger" role="alert">No data was returned. Either there is no data for the input or some invalid filters are applied. Please remove any unneccessary filters and try again.</div>');
 				$this->load->view('vmessage',$statusdata);
 			}
 
@@ -230,7 +226,7 @@ class Reports extends CI_Controller {
 			}
 			else
 			{
-				$statusdata = array('message' => '<div class="alert alert-danger" role="alert">No data was returned. Either there is no data for the input or there are any filters applied. Please remove any unneccessary filter and try again.</div>');
+				$statusdata = array('message' => '<style>.containerdiv {height:70%;}</style><div style="margin-top:5%;" class="alert alert-danger" role="alert">No data was returned. Either there is no data for the input or some invalid filters are applied. Please remove any unneccessary filters and try again.</div>');
 				$this->load->view('vmessage',$statusdata);
 			}
 
@@ -286,7 +282,7 @@ class Reports extends CI_Controller {
 			}
 			else
 			{
-				$statusdata = array('message' => '<div class="alert alert-danger" role="alert">No data was returned. Either there is no data for the input or there are any filters applied. Please remove any unneccessary filter and try again.</div>');
+				$statusdata = array('message' => '<style>.containerdiv {height:70%;}</style><div style="margin-top:5%;" class="alert alert-danger" role="alert">No data was returned. Either there is no data for the input or some invalid filters are applied. Please remove any unneccessary filters and try again.</div>');
 				$this->load->view('vmessage',$statusdata);
 			}
 
@@ -343,7 +339,7 @@ class Reports extends CI_Controller {
 			}
 			else
 			{
-				$statusdata = array('message' => '<div class="alert alert-danger" role="alert">No data was returned. Either there is no data for the input or there are any filters applied. Please remove any unneccessary filter and try again.</div>');
+				$statusdata = array('message' => '<style>.containerdiv {height:70%;}</style><div style="margin-top:5%;" class="alert alert-danger" role="alert">No data was returned. Either there is no data for the input or some invalid filters are applied. Please remove any unneccessary filters and try again.</div>');
 				$this->load->view('vmessage',$statusdata);
 			}
 
@@ -405,7 +401,7 @@ class Reports extends CI_Controller {
 			}
 			else
 			{
-				$statusdata = array('message' => '<div class="alert alert-danger" role="alert">No data was returned. Either there is no data for the input or there are any filters applied. Please remove any unneccessary filter and try again.</div>');
+				$statusdata = array('message' => '<style>.containerdiv {height:70%;}</style><div style="margin-top:5%;" class="alert alert-danger" role="alert">No data was returned. Either there is no data for the input or some invalid filters are applied. Please remove any unneccessary filters and try again.</div>');
 				$this->load->view('vmessage',$statusdata);
 			}
 
@@ -475,7 +471,7 @@ class Reports extends CI_Controller {
 			}
 			else
 			{
-				$statusdata = array('message' => '<div class="alert alert-danger" role="alert">No data was returned. Either there is no data for the input or there are any filters applied. Please remove any unneccessary filter and try again.</div>');
+				$statusdata = array('message' => '<style>.containerdiv {height:70%;}</style><div style="margin-top:5%;" class="alert alert-danger" role="alert">No data was returned. Either there is no data for the input or some invalid filters are applied. Please remove any unneccessary filters and try again.</div>');
 				$this->load->view('vmessage',$statusdata);
 			}
 
@@ -532,7 +528,7 @@ class Reports extends CI_Controller {
 			}
 			else
 			{
-				$statusdata = array('message' => '<div class="alert alert-danger" role="alert">No data was returned. Either there is no data for the input or there are any filters applied. Please remove any unneccessary filter and try again.</div>');
+				$statusdata = array('message' => '<style>.containerdiv {height:70%;}</style><div style="margin-top:5%;" class="alert alert-danger" role="alert">No data was returned. Either there is no data for the input or some invalid filters are applied. Please remove any unneccessary filters and try again.</div>');
 				$this->load->view('vmessage',$statusdata);
 			}
 
@@ -590,7 +586,7 @@ class Reports extends CI_Controller {
 			}
 			else
 			{
-				$statusdata = array('message' => '<div class="alert alert-danger" role="alert">No data was returned. Either there is no data for the input or there are any filters applied. Please remove any unneccessary filter and try again.</div>');
+				$statusdata = array('message' => '<style>.containerdiv {height:70%;}</style><div style="margin-top:5%;" class="alert alert-danger" role="alert">No data was returned. Either there is no data for the input or some invalid filters are applied. Please remove any unneccessary filters and try again.</div>');
 				$this->load->view('vmessage',$statusdata);
 			}
 
@@ -649,7 +645,7 @@ class Reports extends CI_Controller {
 			}
 			else
 			{
-				$statusdata = array('message' => '<div class="alert alert-danger" role="alert">No data was returned. Either there is no data for the input or there are any filters applied. Please remove any unneccessary filter and try again.</div>');
+				$statusdata = array('message' => '<style>.containerdiv {height:70%;}</style><div style="margin-top:5%;" class="alert alert-danger" role="alert">No data was returned. Either there is no data for the input or some invalid filters are applied. Please remove any unneccessary filters and try again.</div>');
 				$this->load->view('vmessage',$statusdata);
 			}
 
@@ -707,7 +703,7 @@ class Reports extends CI_Controller {
 			}
 			else
 			{
-				$statusdata = array('message' => '<div class="alert alert-danger" role="alert">No data was returned. Either there is no data for the input or there are any filters applied. Please remove any unneccessary filter and try again.</div>');
+				$statusdata = array('message' => '<style>.containerdiv {height:70%;}</style><div style="margin-top:5%;" class="alert alert-danger" role="alert">No data was returned. Either there is no data for the input or some invalid filters are applied. Please remove any unneccessary filters and try again.</div>');
 				$this->load->view('vmessage',$statusdata);
 			}
 
@@ -780,7 +776,7 @@ class Reports extends CI_Controller {
 			}
 			else
 			{
-				$statusdata = array('message' => '<div class="alert alert-danger" role="alert">No data was returned. Either there is no data for the input or there are any filters applied. Please remove any unneccessary filter and try again.</div>');
+				$statusdata = array('message' => '<style>.containerdiv {height:70%;}</style><div style="margin-top:5%;" class="alert alert-danger" role="alert">No data was returned. Either there is no data for the input or some invalid filters are applied. Please remove any unneccessary filters and try again.</div>');
 				$this->load->view('vmessage',$statusdata);
 			}
 
@@ -837,7 +833,7 @@ class Reports extends CI_Controller {
 			}
 			else
 			{
-				$statusdata = array('message' => '<div class="alert alert-danger" role="alert">No data was returned. Either there is no data for the input or there are any filters applied. Please remove any unneccessary filter and try again.</div>');
+				$statusdata = array('message' => '<style>.containerdiv {height:70%;}</style><div style="margin-top:5%;" class="alert alert-danger" role="alert">No data was returned. Either there is no data for the input or some invalid filters are applied. Please remove any unneccessary filters and try again.</div>');
 				$this->load->view('vmessage',$statusdata);
 			}
 
@@ -895,7 +891,7 @@ class Reports extends CI_Controller {
 			}
 			else
 			{
-				$statusdata = array('message' => '<div class="alert alert-danger" role="alert">No data was returned. Either there is no data for the input or there are any filters applied. Please remove any unneccessary filter and try again.</div>');
+				$statusdata = array('message' => '<style>.containerdiv {height:70%;}</style><div style="margin-top:5%;" class="alert alert-danger" role="alert">No data was returned. Either there is no data for the input or some invalid filters are applied. Please remove any unneccessary filters and try again.</div>');
 				$this->load->view('vmessage',$statusdata);
 			}
 
@@ -955,7 +951,7 @@ class Reports extends CI_Controller {
 			}
 			else
 			{
-				$statusdata = array('message' => '<div class="alert alert-danger" role="alert">No data was returned. Either there is no data for the input or there are any filters applied. Please remove any unneccessary filter and try again.</div>');
+				$statusdata = array('message' => '<style>.containerdiv {height:70%;}</style><div style="margin-top:5%;" class="alert alert-danger" role="alert">No data was returned. Either there is no data for the input or some invalid filters are applied. Please remove any unneccessary filters and try again.</div>');
 				$this->load->view('vmessage',$statusdata);
 			}
 
@@ -1015,7 +1011,7 @@ class Reports extends CI_Controller {
 			}
 			else
 			{
-				$statusdata = array('message' => '<div class="alert alert-danger" role="alert">No data was returned. Either there is no data for the input or there are any filters applied. Please remove any unneccessary filter and try again.</div>');
+				$statusdata = array('message' => '<style>.containerdiv {height:70%;}</style><div style="margin-top:5%;" class="alert alert-danger" role="alert">No data was returned. Either there is no data for the input or some invalid filters are applied. Please remove any unneccessary filters and try again.</div>');
 				$this->load->view('vmessage',$statusdata);
 			}
 
@@ -1087,7 +1083,7 @@ class Reports extends CI_Controller {
 			}
 			else
 			{
-				$statusdata = array('message' => '<div class="alert alert-danger" role="alert">No data was returned. Either there is no data for the input or there are any filters applied. Please remove any unneccessary filter and try again.</div>');
+				$statusdata = array('message' => '<style>.containerdiv {height:70%;}</style><div style="margin-top:5%;" class="alert alert-danger" role="alert">No data was returned. Either there is no data for the input or some invalid filters are applied. Please remove any unneccessary filters and try again.</div>');
 				$this->load->view('vmessage',$statusdata);
 			}
 
@@ -1144,7 +1140,7 @@ class Reports extends CI_Controller {
 			}
 			else
 			{
-				$statusdata = array('message' => '<div class="alert alert-danger" role="alert">No data was returned. Either there is no data for the input or there are any filters applied. Please remove any unneccessary filter and try again.</div>');
+				$statusdata = array('message' => '<style>.containerdiv {height:70%;}</style><div style="margin-top:5%;" class="alert alert-danger" role="alert">No data was returned. Either there is no data for the input or some invalid filters are applied. Please remove any unneccessary filters and try again.</div>');
 				$this->load->view('vmessage',$statusdata);
 			}
 
@@ -1202,7 +1198,7 @@ class Reports extends CI_Controller {
 			}
 			else
 			{
-				$statusdata = array('message' => '<div class="alert alert-danger" role="alert">No data was returned. Either there is no data for the input or there are any filters applied. Please remove any unneccessary filter and try again.</div>');
+				$statusdata = array('message' => '<style>.containerdiv {height:70%;}</style><div style="margin-top:5%;" class="alert alert-danger" role="alert">No data was returned. Either there is no data for the input or some invalid filters are applied. Please remove any unneccessary filters and try again.</div>');
 				$this->load->view('vmessage',$statusdata);
 			}
 
@@ -1263,7 +1259,7 @@ class Reports extends CI_Controller {
 			}
 			else
 			{
-				$statusdata = array('message' => '<div class="alert alert-danger" role="alert">No data was returned. Either there is no data for the input or there are any filters applied. Please remove any unneccessary filter and try again.</div>');
+				$statusdata = array('message' => '<style>.containerdiv {height:70%;}</style><div style="margin-top:5%;" class="alert alert-danger" role="alert">No data was returned. Either there is no data for the input or some invalid filters are applied. Please remove any unneccessary filters and try again.</div>');
 				$this->load->view('vmessage',$statusdata);
 			}
 
@@ -1323,7 +1319,7 @@ class Reports extends CI_Controller {
 			}
 			else
 			{
-				$statusdata = array('message' => '<div class="alert alert-danger" role="alert">No data was returned. Either there is no data for the input or there are any filters applied. Please remove any unneccessary filter and try again.</div>');
+				$statusdata = array('message' => '<style>.containerdiv {height:70%;}</style><div style="margin-top:5%;" class="alert alert-danger" role="alert">No data was returned. Either there is no data for the input or some invalid filters are applied. Please remove any unneccessary filters and try again.</div>');
 				$this->load->view('vmessage',$statusdata);
 			}
 
@@ -1418,7 +1414,7 @@ class Reports extends CI_Controller {
 			}
 			else
 			{
-				$statusdata = array('message' => '<div class="alert alert-danger" role="alert">No data was returned. Either there is no data for the input or there are any filters applied. Please remove any unneccessary filter and try again.</div>');
+				$statusdata = array('message' => '<style>.containerdiv {height:70%;}</style><div style="margin-top:5%;" class="alert alert-danger" role="alert">No data was returned. Either there is no data for the input or some invalid filters are applied. Please remove any unneccessary filters and try again.</div>');
 				$this->load->view('vmessage',$statusdata);
 			}
 
