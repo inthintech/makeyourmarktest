@@ -108,7 +108,7 @@ top: 6%;
 {
 margin: 0;
 padding: 0;
-color: #6495ED;
+color: #EEAD0E;
 
 font-family: 'Play', sans-serif;
 position: relative;
