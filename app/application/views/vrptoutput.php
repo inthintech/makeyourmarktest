@@ -11,7 +11,7 @@ Report Name :
 <span class="report_panel_name" style="margin-left:1.8%;";><?php echo $report_name ?></span>
 <br><br>
 Level :
-<span class="report_panel_name" style="margin-left:7%;";><?php echo $level ?></span>
+<span class="report_panel_name" style="margin-left:7.1%;";><?php echo $level ?></span>
 
 
 </div>

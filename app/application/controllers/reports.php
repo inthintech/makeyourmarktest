@@ -107,6 +107,15 @@ class Reports extends CI_Controller {
 			case 2:
 			$this->topperReport($this->input->post('examid'),$this->input->post('levelid'),$client_name);
 			break;
+			case 3:
+			$this->studentRankListReport($this->input->post('examid'),$this->input->post('levelid'),$client_name);
+			break;
+			case 5:
+			$this->subjectRankListReport($this->input->post('examid'),$this->input->post('levelid'),$client_name);
+			break;
+			case 6:
+			$this->studentMarkListReport($this->input->post('examid'),$this->input->post('levelid'),$client_name);
+			break;
 		}
 
 		$this->load->view('footer');
@@ -706,6 +715,715 @@ class Reports extends CI_Controller {
 
 	
 	}
+
+
+
+/*--------------------------------- STUDENT RANK LIST REPORT ---------------------------------*/
+
+	private function studentRankListReport($examid,$levelid,$client_name)
+
+	{
+
+		$result = $this->user->getExamName($examid);
+		foreach($result as $row)
+		{
+			$exam_name= $row->exam_name;
+		} 
+		
+		$filterQry = "where 1=1";
+
+		/* College Level Report*/
+		
+		if($levelid==1)
+		{
+			
+			/*
+			if($this->input->post('deptfilter')<>99)
+			{
+				$filterQry = $filterQry." and dept_code='".$this->input->post('deptfilter')."'";
+			}
+			if($this->input->post('yearfilter')<>99)
+			{
+				$filterQry = $filterQry." and year=".$this->input->post('yearfilter');
+			}
+			if($this->input->post('sectionfilter')<>99)
+			{
+				$filterQry = $filterQry." and section='".$this->input->post('sectionfilter')."'";
+			}
+			if($this->input->post('subjectfilter')<>99)
+			{
+				$filterQry = $filterQry." and subject_code='".$this->input->post('subjectfilter')."'";
+			}
+			*/
+			$output = $this->analysis->studentRankListReportCollege($this->session->userdata('client_id'),$examid,$filterQry);
+			
+			if($output)
+			{
+			$table_headers = "<th style=\"width:20%;\">Rank</th>
+			<th>Student ID</th><th>Student Name</th><th>Class</th>
+			<th>Percentage</th>";
+
+			$opt_data = '';
+			foreach($output as $row)
+				{
+				
+					$opt_data = $opt_data."<tr><td>".$row->rank."</td><td>".$row->student_id."</td>
+					<td>".$row->student_name."</td>
+					<td>".$row->dept_code." ".$row->year." ".$row->section."</td>
+					<td>".$row->percentage."</td>
+					</tr>";
+				
+				} 
+			
+			$rptdata = array('exam_name' => $exam_name,'table_headers' => $table_headers,'data' => $opt_data,'report_name' => 'Student Rank List Report','level' => 'College Level');
+			$this->load->view('vrptoutput',$rptdata);
+			}
+			else
+			{
+				$statusdata = array('message' => '<div class="alert alert-danger" role="alert">No data was returned. Either there is no data for the input or there are any filters applied. Please remove any unneccessary filter and try again.</div>');
+				$this->load->view('vmessage',$statusdata);
+			}
+
+		}
+		
+
+/* Dept Level Report*/
+		
+		if($levelid==2)
+		{
+			
+			if($this->input->post('deptfilter')<>99)
+			{
+				$filterQry = $filterQry." and dept_code='".$this->input->post('deptfilter')."'";
+			}
+
+			/*
+			
+			if($this->input->post('yearfilter')<>99)
+			{
+				$filterQry = $filterQry." and year=".$this->input->post('yearfilter');
+			}
+			if($this->input->post('sectionfilter')<>99)
+			{
+				$filterQry = $filterQry." and section='".$this->input->post('sectionfilter')."'";
+			}
+			if($this->input->post('subjectfilter')<>99)
+			{
+				$filterQry = $filterQry." and subject_code='".$this->input->post('subjectfilter')."'";
+			}
+			*/
+			$output = $this->analysis->studentRankListReportDept($this->session->userdata('client_id'),$examid,$filterQry);
+			
+			if($output)
+			{
+			$table_headers = "<th style=\"width:10%;\">Dept</th><th style=\"width:10%;\">Rank</th>
+			<th>Student ID</th><th>Student Name</th><th>Class</th>
+			<th>Percentage</th>";
+
+			$opt_data = '';
+			foreach($output as $row)
+				{
+				
+					$opt_data = $opt_data."<tr><td>".$row->dept_code."</td><td>".$row->rank."</td><td>".$row->student_id."</td>
+					<td>".$row->student_name."</td>
+					<td>".$row->dept_code." ".$row->year." ".$row->section."</td>
+					<td>".$row->percentage."</td>
+					</tr>";
+				
+				} 
+			
+			$rptdata = array('exam_name' => $exam_name,'table_headers' => $table_headers,'data' => $opt_data,'report_name' => 'Student Rank List Report','level' => 'Department Level');
+			$this->load->view('vrptoutput',$rptdata);
+			}
+			else
+			{
+				$statusdata = array('message' => '<div class="alert alert-danger" role="alert">No data was returned. Either there is no data for the input or there are any filters applied. Please remove any unneccessary filter and try again.</div>');
+				$this->load->view('vmessage',$statusdata);
+			}
+
+		}
+
+/* Year Level Report*/
+		
+		if($levelid==3)
+		{
+			
+			if($this->input->post('yearfilter')<>99)
+			{
+				$filterQry = $filterQry." and year=".$this->input->post('yearfilter');
+			}
+
+			/*
+
+			if($this->input->post('deptfilter')<>99)
+			{
+				$filterQry = $filterQry." and dept_code='".$this->input->post('deptfilter')."'";
+			}
+			
+			
+			if($this->input->post('sectionfilter')<>99)
+			{
+				$filterQry = $filterQry." and section='".$this->input->post('sectionfilter')."'";
+			}
+			if($this->input->post('subjectfilter')<>99)
+			{
+				$filterQry = $filterQry." and subject_code='".$this->input->post('subjectfilter')."'";
+			}
+			*/
+			$output = $this->analysis->studentRankListReportYear($this->session->userdata('client_id'),$examid,$filterQry);
+			
+			if($output)
+			{
+			$table_headers = "<th style=\"width:10%;\">Year</th><th style=\"width:10%;\">Rank</th>
+			<th>Student ID</th><th>Student Name</th><th>Class</th>
+			<th>Percentage</th>";
+
+			$opt_data = '';
+			foreach($output as $row)
+				{
+				
+					$opt_data = $opt_data."<tr><td>".$row->year."</td><td>".$row->rank."</td><td>".$row->student_id."</td>
+					<td>".$row->student_name."</td>
+					<td>".$row->dept_code." ".$row->year." ".$row->section."</td>
+					<td>".$row->percentage."</td>
+					</tr>";
+				
+				} 
+			
+			$rptdata = array('exam_name' => $exam_name,'table_headers' => $table_headers,'data' => $opt_data,'report_name' => 'Student Rank List Report','level' => 'Year Level');
+			$this->load->view('vrptoutput',$rptdata);
+			}
+			else
+			{
+				$statusdata = array('message' => '<div class="alert alert-danger" role="alert">No data was returned. Either there is no data for the input or there are any filters applied. Please remove any unneccessary filter and try again.</div>');
+				$this->load->view('vmessage',$statusdata);
+			}
+
+		}
+
+
+/* Department Year Level Report*/
+		
+		if($levelid==5)
+		{
+			
+
+			if($this->input->post('deptfilter')<>99)
+			{
+				$filterQry = $filterQry." and dept_code='".$this->input->post('deptfilter')."'";
+			}
+
+			if($this->input->post('yearfilter')<>99)
+			{
+				$filterQry = $filterQry." and year=".$this->input->post('yearfilter');
+			}
+			
+			/*
+			
+			if($this->input->post('sectionfilter')<>99)
+			{
+				$filterQry = $filterQry." and section='".$this->input->post('sectionfilter')."'";
+			}
+			if($this->input->post('subjectfilter')<>99)
+			{
+				$filterQry = $filterQry." and subject_code='".$this->input->post('subjectfilter')."'";
+			}
+			*/
+			$output = $this->analysis->studentRankListReportDeptYear($this->session->userdata('client_id'),$examid,$filterQry);
+			
+			if($output)
+			{
+			$table_headers = "<th style=\"width:10%;\">Dept</th><th style=\"width:10%;\">Year</th><th style=\"width:10%;\">Rank</th>
+			<th>Student ID</th><th>Student Name</th><th>Class</th>
+			<th>Percentage</th>";
+
+			$opt_data = '';
+			foreach($output as $row)
+				{
+				
+					$opt_data = $opt_data."<tr><td>".$row->dept_code."</td><td>".$row->year."</td><td>".$row->rank."</td>
+					<td>".$row->student_id."</td>
+					<td>".$row->student_name."</td>
+					<td>".$row->dept_code." ".$row->year." ".$row->section."</td>
+					<td>".$row->percentage."</td>
+					</tr>";
+				
+				} 
+			
+			$rptdata = array('exam_name' => $exam_name,'table_headers' => $table_headers,'data' => $opt_data,'report_name' => 'Student Rank List Report','level' => 'Department and Year Level');
+			$this->load->view('vrptoutput',$rptdata);
+			}
+			else
+			{
+				$statusdata = array('message' => '<div class="alert alert-danger" role="alert">No data was returned. Either there is no data for the input or there are any filters applied. Please remove any unneccessary filter and try again.</div>');
+				$this->load->view('vmessage',$statusdata);
+			}
+
+		}
+
+/* Class Level Report*/
+		
+		if($levelid==4)
+		{
+			
+
+			if($this->input->post('deptfilter')<>99)
+			{
+				$filterQry = $filterQry." and dept_code='".$this->input->post('deptfilter')."'";
+			}
+
+			if($this->input->post('yearfilter')<>99)
+			{
+				$filterQry = $filterQry." and year=".$this->input->post('yearfilter');
+			}
+			
+			
+			
+			if($this->input->post('sectionfilter')<>99)
+			{
+				$filterQry = $filterQry." and section='".$this->input->post('sectionfilter')."'";
+			}
+			/*
+			if($this->input->post('subjectfilter')<>99)
+			{
+				$filterQry = $filterQry." and subject_code='".$this->input->post('subjectfilter')."'";
+			}
+			*/
+			$output = $this->analysis->studentRankListReportClass($this->session->userdata('client_id'),$examid,$filterQry);
+			
+			if($output)
+			{
+			$table_headers = "<th style=\"width:15%;\">Class</th><th style=\"width:10%;\">Rank</th>
+			<th>Student ID</th><th>Student Name</th>
+			<th>Percentage</th>";
+
+			$opt_data = '';
+			foreach($output as $row)
+				{
+				
+					$opt_data = $opt_data."<tr><td>".$row->dept_code." ".$row->year." ".$row->section."</td>
+					<td>".$row->rank."</td>
+					<td>".$row->student_id."</td>
+					<td>".$row->student_name."</td>
+					<td>".$row->percentage."</td>
+					</tr>";
+				
+				} 
+			
+			$rptdata = array('exam_name' => $exam_name,'table_headers' => $table_headers,'data' => $opt_data,'report_name' => 'Student Rank List Report','level' => 'Class Level');
+			$this->load->view('vrptoutput',$rptdata);
+			}
+			else
+			{
+				$statusdata = array('message' => '<div class="alert alert-danger" role="alert">No data was returned. Either there is no data for the input or there are any filters applied. Please remove any unneccessary filter and try again.</div>');
+				$this->load->view('vmessage',$statusdata);
+			}
+
+		}
+
+	
+	}
+
+
+/*--------------------------------- SUBJECT RANK LIST REPORT ---------------------------------*/
+
+	private function subjectRankListReport($examid,$levelid,$client_name)
+
+	{
+
+		$result = $this->user->getExamName($examid);
+		foreach($result as $row)
+		{
+			$exam_name= $row->exam_name;
+		} 
+		
+		$filterQry = "where 1=1";
+
+		/* College Level Report*/
+		
+		if($levelid==1)
+		{
+			
+			/*
+			if($this->input->post('deptfilter')<>99)
+			{
+				$filterQry = $filterQry." and dept_code='".$this->input->post('deptfilter')."'";
+			}
+			if($this->input->post('yearfilter')<>99)
+			{
+				$filterQry = $filterQry." and year=".$this->input->post('yearfilter');
+			}
+			if($this->input->post('sectionfilter')<>99)
+			{
+				$filterQry = $filterQry." and section='".$this->input->post('sectionfilter')."'";
+			}
+			if($this->input->post('subjectfilter')<>99)
+			{
+				$filterQry = $filterQry." and subject_code='".$this->input->post('subjectfilter')."'";
+			}
+			*/
+			$output = $this->analysis->subjectRankListReportCollege($this->session->userdata('client_id'),$examid,$filterQry);
+			
+			if($output)
+			{
+			$table_headers = "<th style=\"width:10%;\">Rank</th>
+			<th>Subject Code</th><th>Subject Name</th><th>Staff Name</th><th>Class</th>
+			<th>Pass Percentage</th>";
+
+			$opt_data = '';
+			foreach($output as $row)
+				{
+				
+					$opt_data = $opt_data."<tr><td>".$row->rank."</td><td>".$row->subject_code."</td>
+					<td>".$row->subject_name."</td><td>".$row->staff_name."</td>
+					<td>".$row->dept_code." ".$row->year." ".$row->section."</td>
+					<td>".$row->percentage."</td>
+					</tr>";
+				
+				} 
+			
+			$rptdata = array('exam_name' => $exam_name,'table_headers' => $table_headers,'data' => $opt_data,'report_name' => 'Subject Rank List Report','level' => 'College Level');
+			$this->load->view('vrptoutput',$rptdata);
+			}
+			else
+			{
+				$statusdata = array('message' => '<div class="alert alert-danger" role="alert">No data was returned. Either there is no data for the input or there are any filters applied. Please remove any unneccessary filter and try again.</div>');
+				$this->load->view('vmessage',$statusdata);
+			}
+
+		}
+		
+
+/* Dept Level Report*/
+		
+		if($levelid==2)
+		{
+			
+			if($this->input->post('deptfilter')<>99)
+			{
+				$filterQry = $filterQry." and dept_code='".$this->input->post('deptfilter')."'";
+			}
+
+			/*
+			
+			if($this->input->post('yearfilter')<>99)
+			{
+				$filterQry = $filterQry." and year=".$this->input->post('yearfilter');
+			}
+			if($this->input->post('sectionfilter')<>99)
+			{
+				$filterQry = $filterQry." and section='".$this->input->post('sectionfilter')."'";
+			}
+			if($this->input->post('subjectfilter')<>99)
+			{
+				$filterQry = $filterQry." and subject_code='".$this->input->post('subjectfilter')."'";
+			}
+			*/
+			$output = $this->analysis->subjectRankListReportDept($this->session->userdata('client_id'),$examid,$filterQry);
+			
+			if($output)
+			{
+			$table_headers = "<th style=\"width:10%;\">Dept</th><th style=\"width:10%;\">Rank</th>
+			<th>Subject Code</th><th>Subject Name</th><th>Staff Name</th><th>Class</th>
+			<th>Pass Percentage</th>";
+
+			$opt_data = '';
+			foreach($output as $row)
+				{
+				
+					$opt_data = $opt_data."<tr><td>".$row->dept_code."</td><td>".$row->rank."</td><td>".$row->subject_code."</td>
+					<td>".$row->subject_name."</td><td>".$row->staff_name."</td>
+					<td>".$row->dept_code." ".$row->year." ".$row->section."</td>
+					<td>".$row->percentage."</td>
+					</tr>";
+				
+				} 
+			
+			$rptdata = array('exam_name' => $exam_name,'table_headers' => $table_headers,'data' => $opt_data,'report_name' => 'Subject Rank List Report','level' => 'Department Level');
+			$this->load->view('vrptoutput',$rptdata);
+			}
+			else
+			{
+				$statusdata = array('message' => '<div class="alert alert-danger" role="alert">No data was returned. Either there is no data for the input or there are any filters applied. Please remove any unneccessary filter and try again.</div>');
+				$this->load->view('vmessage',$statusdata);
+			}
+
+		}
+
+/* Year Level Report*/
+		
+		if($levelid==3)
+		{
+			
+			if($this->input->post('yearfilter')<>99)
+			{
+				$filterQry = $filterQry." and year=".$this->input->post('yearfilter');
+			}
+
+			/*
+
+			if($this->input->post('deptfilter')<>99)
+			{
+				$filterQry = $filterQry." and dept_code='".$this->input->post('deptfilter')."'";
+			}
+			
+			
+			if($this->input->post('sectionfilter')<>99)
+			{
+				$filterQry = $filterQry." and section='".$this->input->post('sectionfilter')."'";
+			}
+			if($this->input->post('subjectfilter')<>99)
+			{
+				$filterQry = $filterQry." and subject_code='".$this->input->post('subjectfilter')."'";
+			}
+			*/
+			$output = $this->analysis->subjectRankListReportYear($this->session->userdata('client_id'),$examid,$filterQry);
+			
+			if($output)
+			{
+			$table_headers = "<th style=\"width:10%;\">Year</th><th style=\"width:10%;\">Rank</th>
+			<th>Subject Code</th><th>Subject Name</th><th>Staff Name</th><th>Class</th>
+			<th>Pass Percentage</th>";
+
+			$opt_data = '';
+			foreach($output as $row)
+				{
+				
+					$opt_data = $opt_data."<tr><td>".$row->year."</td><td>".$row->rank."</td><td>".$row->subject_code."</td>
+					<td>".$row->subject_name."</td><td>".$row->staff_name."</td>
+					<td>".$row->dept_code." ".$row->year." ".$row->section."</td>
+					<td>".$row->percentage."</td>
+					</tr>";
+				
+				} 
+			
+			$rptdata = array('exam_name' => $exam_name,'table_headers' => $table_headers,'data' => $opt_data,'report_name' => 'Subject Rank List Report','level' => 'Year Level');
+			$this->load->view('vrptoutput',$rptdata);
+			}
+			else
+			{
+				$statusdata = array('message' => '<div class="alert alert-danger" role="alert">No data was returned. Either there is no data for the input or there are any filters applied. Please remove any unneccessary filter and try again.</div>');
+				$this->load->view('vmessage',$statusdata);
+			}
+
+		}
+
+
+/* Department Year Level Report*/
+		
+		if($levelid==5)
+		{
+			
+
+			if($this->input->post('deptfilter')<>99)
+			{
+				$filterQry = $filterQry." and dept_code='".$this->input->post('deptfilter')."'";
+			}
+
+			if($this->input->post('yearfilter')<>99)
+			{
+				$filterQry = $filterQry." and year=".$this->input->post('yearfilter');
+			}
+			
+			/*
+			
+			if($this->input->post('sectionfilter')<>99)
+			{
+				$filterQry = $filterQry." and section='".$this->input->post('sectionfilter')."'";
+			}
+			if($this->input->post('subjectfilter')<>99)
+			{
+				$filterQry = $filterQry." and subject_code='".$this->input->post('subjectfilter')."'";
+			}
+			*/
+			$output = $this->analysis->subjectRankListReportDeptYear($this->session->userdata('client_id'),$examid,$filterQry);
+			
+			if($output)
+			{
+			$table_headers = "<th style=\"width:10%;\">Dept</th>
+			<th style=\"width:10%;\">Year</th><th style=\"width:10%;\">Rank</th>
+			<th>Subject Code</th><th>Subject Name</th><th>Staff Name</th><th>Class</th>
+			<th>Pass Percentage</th>";
+
+			$opt_data = '';
+			foreach($output as $row)
+				{
+				
+					$opt_data = $opt_data."<tr><td>".$row->dept_code."</td><td>".$row->year."</td>
+					<td>".$row->rank."</td><td>".$row->subject_code."</td>
+					<td>".$row->subject_name."</td><td>".$row->staff_name."</td>
+					<td>".$row->dept_code." ".$row->year." ".$row->section."</td>
+					<td>".$row->percentage."</td>
+					</tr>";
+				
+				} 
+			
+			$rptdata = array('exam_name' => $exam_name,'table_headers' => $table_headers,'data' => $opt_data,'report_name' => 'Subject Rank List Report','level' => 'Department and Year Level');
+			$this->load->view('vrptoutput',$rptdata);
+			}
+			else
+			{
+				$statusdata = array('message' => '<div class="alert alert-danger" role="alert">No data was returned. Either there is no data for the input or there are any filters applied. Please remove any unneccessary filter and try again.</div>');
+				$this->load->view('vmessage',$statusdata);
+			}
+
+		}
+
+/* Class Level Report*/
+		
+		if($levelid==4)
+		{
+			
+
+			if($this->input->post('deptfilter')<>99)
+			{
+				$filterQry = $filterQry." and dept_code='".$this->input->post('deptfilter')."'";
+			}
+
+			if($this->input->post('yearfilter')<>99)
+			{
+				$filterQry = $filterQry." and year=".$this->input->post('yearfilter');
+			}
+			
+			
+			
+			if($this->input->post('sectionfilter')<>99)
+			{
+				$filterQry = $filterQry." and section='".$this->input->post('sectionfilter')."'";
+			}
+			/*
+			if($this->input->post('subjectfilter')<>99)
+			{
+				$filterQry = $filterQry." and subject_code='".$this->input->post('subjectfilter')."'";
+			}
+			*/
+			$output = $this->analysis->subjectRankListReportClass($this->session->userdata('client_id'),$examid,$filterQry);
+			
+			if($output)
+			{
+			$table_headers = "<th style=\"width:15%;\">Class</th>
+			<th style=\"width:10%;\">Rank</th>
+			<th>Subject Code</th><th>Subject Name</th><th>Staff Name</th>
+			<th>Pass Percentage</th>";
+
+			$opt_data = '';
+			foreach($output as $row)
+				{
+				
+					$opt_data = $opt_data."<tr><td>".$row->dept_code." ".$row->year." ".$row->section."</td>
+					<td>".$row->rank."</td><td>".$row->subject_code."</td>
+					<td>".$row->subject_name."</td><td>".$row->staff_name."</td>
+					<td>".$row->percentage."</td>
+					</tr>";
+				
+				} 
+			
+			$rptdata = array('exam_name' => $exam_name,'table_headers' => $table_headers,'data' => $opt_data,'report_name' => 'Subject Rank List Report','level' => 'Class Level');
+			$this->load->view('vrptoutput',$rptdata);
+			}
+			else
+			{
+				$statusdata = array('message' => '<div class="alert alert-danger" role="alert">No data was returned. Either there is no data for the input or there are any filters applied. Please remove any unneccessary filter and try again.</div>');
+				$this->load->view('vmessage',$statusdata);
+			}
+
+		}
+
+	
+	}
+
+
+
+/*--------------------------------- STUDENT MARK LIST REPORT ---------------------------------*/
+
+	private function studentMarkListReport($examid,$levelid,$client_name)
+
+	{
+
+		$result = $this->user->getExamName($examid);
+		foreach($result as $row)
+		{
+			$exam_name= $row->exam_name;
+		} 
+		
+		$filterQry = "where 1=1";
+
+		if($this->input->post('deptfilter')<>99)
+		{
+			$filterQry = $filterQry." and dept_code='".$this->input->post('deptfilter')."'";
+		}
+
+		if($this->input->post('yearfilter')<>99)
+		{
+			$filterQry = $filterQry." and year=".$this->input->post('yearfilter');
+		}
+		
+		
+		if($this->input->post('sectionfilter')<>99)
+		{
+			$filterQry = $filterQry." and section='".$this->input->post('sectionfilter')."'";
+		}
+
+		if($this->input->post('subjectfilter')<>99)
+		{
+			$filterQry = $filterQry." and subject_code='".$this->input->post('subjectfilter')."'";
+		}
+
+		if($this->input->post('studentfilter')<>99)
+		{
+			$filterQry = $filterQry." and student_id='".$this->input->post('studentfilter')."'";
+		}
+
+		if($this->input->post('resultfilter')<>99)
+		{
+			$filterQry = $filterQry." and result='".$this->input->post('resultfilter')."'";
+		}
+
+			$output = $this->analysis->studentMarkListReport($this->session->userdata('client_id'),$examid,$filterQry);
+			
+			if($output)
+			{
+			$table_headers = "<th style=\"width:10%;\">S.No</th><th style=\"width:10%;\">Class</th>
+			<th style=\"width:10%;\">Student ID</th>
+			<th style=\"width:15%;\">Student Name</th><th style=\"width:10%;\">Subject Code</th>
+			<th style=\"width:15%;\">Subject Name</th><th style=\"width:10%;\">Total Marks</th>
+			<th style=\"width:10%;\">Marks Obtained</th><th style=\"width:15%;\">Result</th>";
+
+			$opt_data = '';
+			$sno = 0;
+			foreach($output as $row)
+				{
+					$sno++;
+					if($row->result==1)
+					{
+					$opt_data = $opt_data."<tr><td>".$sno."</td><td>".$row->dept_code." ".$row->year." ".$row->section."</td>
+					<td>".$row->student_id."</td><td>".$row->student_name."</td>
+					<td>".$row->subject_code."</td><td>".$row->subject_name."</td>
+					<td>".$row->total_marks."</td><td>".$row->marks_obtained."</td><td style='background:green;color:white;'>Pass</td>
+					</tr>";
+					}
+					else
+					{
+					$opt_data = $opt_data."<tr><td>".$sno."</td><td>".$row->dept_code." ".$row->year." ".$row->section."</td>
+					<td>".$row->student_id."</td><td>".$row->student_name."</td>
+					<td>".$row->subject_code."</td><td>".$row->subject_name."</td>
+					<td>".$row->total_marks."</td><td>".$row->marks_obtained."</td><td style='background:#DC143C;color:white;'>Failed</td>
+					</tr>";
+					}
+				
+				} 
+			
+			$rptdata = array('exam_name' => $exam_name,'table_headers' => $table_headers,'data' => $opt_data,'report_name' => 'Student Mark List Report','level' => 'N/A');
+			$this->load->view('vrptoutput',$rptdata);
+			}
+			else
+			{
+				$statusdata = array('message' => '<div class="alert alert-danger" role="alert">No data was returned. Either there is no data for the input or there are any filters applied. Please remove any unneccessary filter and try again.</div>');
+				$this->load->view('vmessage',$statusdata);
+			}
+
+		}
+
 
 	
 }

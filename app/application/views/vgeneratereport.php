@@ -169,6 +169,15 @@ generated for the results of students of all departments.</div>
 <option selected value="99">All</option>
 </select>
 
+<br><br>
+<label>Result Filter</label>
+<br><br>
+<select class="exam_select" name="resultfilter">
+<option selected value="99">All</option>
+<option value="1">Pass Only</option>
+<option value="0">Fail Only</option>
+</select>
+
 <br><br><br>
 <div class="alert alert-danger" role="alert">Warning : Filters can be used to 
 restrict the results based on the filters applied. Please use wherever necessary.</div>

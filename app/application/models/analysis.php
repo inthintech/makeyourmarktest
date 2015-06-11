@@ -376,7 +376,7 @@ on a.student_id=b.student_id)
 rset,
 (SELECT @curRow := 0, @oldPercent := 0) r
 order by percentage desc
-)SCR ".$filterQry);
+)SCR ".$filterQry." order by rank");
 
    if($query -> num_rows() >= 1)
    {
@@ -417,7 +417,7 @@ where lgcl_del_f='N' and exam_id=".$this->db->escape($exam_id)." and client_id="
 on a.student_id=b.student_id)rset,
 (SELECT @curRow := 0, @oldPercent := 0, @client_id := 0, @dept := '', @year := 0, @section='') r
 order by dept_code,percentage desc
-)SCR ".$filterQry." order by dept_code");
+)SCR ".$filterQry." order by dept_code,rank");
 
    if($query -> num_rows() >= 1)
    {
@@ -457,7 +457,7 @@ where lgcl_del_f='N' and exam_id=".$this->db->escape($exam_id)." and client_id="
 on a.student_id=b.student_id)rset,
 (SELECT @curRow := 0, @oldPercent := 0, @client_id := 0, @dept := '', @year := 0, @section :='') r
 order by year,percentage desc
-)SCR ".$filterQry." order by year");
+)SCR ".$filterQry." order by year,rank");
 
    if($query -> num_rows() >= 1)
    {
@@ -497,7 +497,7 @@ where lgcl_del_f='N' and exam_id=".$this->db->escape($exam_id)." and client_id="
 on a.student_id=b.student_id)rset,
 (SELECT @curRow := 0, @oldPercent := 0, @client_id := 0, @dept := '', @year := 0, @section :='') r
 order by dept_code,year,percentage desc
-)SCR ".$filterQry." order by dept_code,year");
+)SCR ".$filterQry." order by dept_code,year,rank");
 
    if($query -> num_rows() >= 1)
    {
@@ -537,7 +537,7 @@ where lgcl_del_f='N' and exam_id=".$this->db->escape($exam_id)." and client_id="
 on a.student_id=b.student_id)rset,
 (SELECT @curRow := 0, @oldPercent := 0, @client_id := 0, @dept := '', @year := 0, @section :='') r
 order by dept_code,year,percentage desc
-)SCR ".$filterQry." order by dept_code,year,section");
+)SCR ".$filterQry." order by dept_code,year,section,rank");
 
    if($query -> num_rows() >= 1)
    {
@@ -554,7 +554,7 @@ function subjectRankListReportCollege($client_id,$exam_id,$filterQry)
 
 {
 
-  $query = $this->db->query("select client_id,dept_code,year,section,subject_code,subject_name,staff_id,staff_name from
+  $query = $this->db->query("select client_id,dept_code,year,section,subject_code,subject_name,staff_id,staff_name,percentage,rank from
 (select rset.*,
 ( 
 CASE 
@@ -580,7 +580,7 @@ on a.subject_code=b.subject_code)
 rset,
 (SELECT @curRow := 0, @oldPercent := 0) r
 order by percentage desc
-)SCR ".$filterQry);
+)SCR ".$filterQry." order by rank");
 
    if($query -> num_rows() >= 1)
    {
@@ -598,7 +598,7 @@ function subjectRankListReportDept($client_id,$exam_id,$filterQry)
 
 {
 
-  $query = $this->db->query("select client_id,dept_code,year,section,subject_code,subject_name,staff_id,staff_name from
+  $query = $this->db->query("select client_id,dept_code,year,section,subject_code,subject_name,staff_id,staff_name,percentage,rank from
 (select rset.*,
 ( 
 CASE 
@@ -623,7 +623,7 @@ and client_id=".$this->db->escape($client_id)." group by client_id,dept_code,yea
 on a.subject_code=b.subject_code)rset,
 (SELECT @curRow := 0, @oldPercent := 0, @client_id := 0, @dept := '', @year := 0, @section='') r
 order by dept_code,percentage desc
-)SCR ".$filterQry." order by dept_code");
+)SCR ".$filterQry." order by dept_code,rank");
 
    if($query -> num_rows() >= 1)
    {
@@ -640,7 +640,7 @@ function subjectRankListReportYear($client_id,$exam_id,$filterQry)
 
 {
 
-  $query = $this->db->query("select client_id,dept_code,year,section,subject_code,subject_name,staff_id,staff_name from
+  $query = $this->db->query("select client_id,dept_code,year,section,subject_code,subject_name,staff_id,staff_name,percentage,rank from
 (select rset.*,
 ( 
 CASE 
@@ -665,7 +665,7 @@ and client_id=".$this->db->escape($client_id)." group by client_id,dept_code,yea
 on a.subject_code=b.subject_code)rset,
 (SELECT @curRow := 0, @oldPercent := 0, @client_id := 0, @dept := '', @year := 0, @section :='') r
 order by year,percentage desc
-)SCR ".$filterQry." order by year");
+)SCR ".$filterQry." order by year,rank");
 
    if($query -> num_rows() >= 1)
    {
@@ -682,7 +682,7 @@ function subjectRankListReportDeptYear($client_id,$exam_id,$filterQry)
 
 {
 
-  $query = $this->db->query("select client_id,dept_code,year,section,subject_code,subject_name,staff_id,staff_name from
+  $query = $this->db->query("select client_id,dept_code,year,section,subject_code,subject_name,staff_id,staff_name,percentage,rank from
 (select rset.*,
 ( 
 CASE 
@@ -707,7 +707,7 @@ and client_id=".$this->db->escape($client_id)." group by client_id,dept_code,yea
 on a.subject_code=b.subject_code)rset,
 (SELECT @curRow := 0, @oldPercent := 0, @client_id := 0, @dept := '', @year := 0, @section :='') r
 order by dept_code,year,percentage desc
-)SCR ".$filterQry." order by dept_code,year");
+)SCR ".$filterQry." order by dept_code,year,rank");
 
    if($query -> num_rows() >= 1)
    {
@@ -724,7 +724,7 @@ function subjectRankListReportClass($client_id,$exam_id,$filterQry)
 
 {
 
-  $query = $this->db->query("select client_id,dept_code,year,section,subject_code,subject_name,staff_id,staff_name from
+  $query = $this->db->query("select client_id,dept_code,year,section,subject_code,subject_name,staff_id,staff_name,percentage,rank from
 (select rset.*,
 ( 
 CASE 
@@ -749,7 +749,31 @@ and client_id=".$this->db->escape($client_id)." group by client_id,dept_code,yea
 on a.subject_code=b.subject_code)rset,
 (SELECT @curRow := 0, @oldPercent := 0, @client_id := 0, @dept := '', @year := 0, @section :='') r
 order by dept_code,year,percentage desc
-)SCR ".$filterQry." order by dept_code,year,section");
+)SCR ".$filterQry." order by dept_code,year,section,rank");
+
+   if($query -> num_rows() >= 1)
+   {
+     return $query->result();
+   }
+   else
+   {
+     return false;
+   }
+
+}
+
+function studentMarkListReport($client_id,$exam_id,$filterQry)
+
+{
+
+  $query = $this->db->query("select * from 
+    (select client_id,dept_code,year,section,subject_code,subject_name,student_id,student_name,total_marks,marks_obtained,
+case when marks_obtained>=pass_mark then '1' else '0' end result 
+from results
+where lgcl_del_f='N' and exam_id=".$this->db->escape($exam_id)." 
+and client_id=".$this->db->escape($client_id)."
+)SCR ".$filterQry."
+order by dept_code,year,section,student_id,subject_code");
 
    if($query -> num_rows() >= 1)
    {
