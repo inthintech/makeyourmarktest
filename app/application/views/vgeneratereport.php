@@ -27,7 +27,6 @@
 <option selected value="1">Pass Percentage</option>
 <option value="2">Topper</option>
 <option value="3">Student Rank List</option>
-<option value="4">Total Marks</option>
 <option value="5">Subject Rank List</option>
 <option value="6">Student Mark List</option>
 </select>
