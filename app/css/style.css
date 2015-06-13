@@ -218,5 +218,5 @@ select[disabled] {
 }
 input[disabled] {
     background: #F4F4F4;
-    
+    color:white;
 }
