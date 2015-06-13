@@ -21,7 +21,7 @@
 <p class="report_header">Report Selector</p>
 
 <br><br>
-<label>Select report</label>
+<label>Select Report</label>
 <br><br>
 <select id="reportID" class="exam_select" name="reportid" onchange="myFunction()">
 <option selected value="1">Pass Percentage</option>
@@ -38,21 +38,42 @@ function myFunction() {
 	{
 		case '1':
 		document.getElementById("info").innerHTML = "The Pass Percentage report displays the percentage of students who have passed in all subjects.";
+		document.getElementById("levelID").disabled = false;
+		document.getElementById("subjectfilter").disabled = true;
+		document.getElementById("studentfilter").disabled = true;
+		document.getElementById("resultfilter").disabled = true;
 		break;
+		
 		case '2':
 		document.getElementById("info").innerHTML = "The Topper report displays the students who have passed in all subjects and have the highest total percentage score.";
+		document.getElementById("levelID").disabled = false;
+		document.getElementById("subjectfilter").disabled = true;
+		document.getElementById("studentfilter").disabled = true;
+		document.getElementById("resultfilter").disabled = true;
 		break;
+		
 		case '3':
 		document.getElementById("info").innerHTML = "The Student Rank List report displays the list of students and their total percentage ranked by the highest score.";
+		document.getElementById("levelID").disabled = false;
+		document.getElementById("subjectfilter").disabled = true;
+		document.getElementById("studentfilter").disabled = false;
+		document.getElementById("resultfilter").disabled = true;
 		break;
-		case '4':
-		document.getElementById("info").innerHTML = "The Total Marks report displays the total marks of students in all subjects considering both pass and fail category.";
-		break;
+		
 		case '5':
 		document.getElementById("info").innerHTML = "The Subject Rank List report displays the list of subjects and their pass percentage ranked by the highest percentage.";
+		document.getElementById("levelID").disabled = false;
+		document.getElementById("subjectfilter").disabled = false;
+		document.getElementById("studentfilter").disabled = true;
+		document.getElementById("resultfilter").disabled = true;
 		break;
+		
 		case '6':
 		document.getElementById("info").innerHTML = "The Student Mark List report displays the list of students and their marks in individual subjects. It is independant of levels.";
+		document.getElementById("levelID").disabled = true;
+		document.getElementById("subjectfilter").disabled = false;
+		document.getElementById("studentfilter").disabled = false;
+		document.getElementById("resultfilter").disabled = false;
 		break;
 	}
 	
@@ -68,7 +89,7 @@ who have passed in all subjects. </div>
 <p class="report_header">Level Selector</p>
 
 <br><br>
-<label>Select level</label>
+<label>Select Level</label>
 <br><br>
 <select id="levelID" class="exam_select" name="levelid" onchange="myFunctionlevel()">
 <option selected value="1">College Level</option>
@@ -89,18 +110,46 @@ function myFunctionlevel() {
 	{
 		case '1':
 		document.getElementById("level").innerHTML = "College level report will be generated for the results of students of all departments.";
+		document.getElementById("deptfilter").disabled = true;
+		document.getElementById("yearfilter").disabled = true;
+		document.getElementById("sectionfilter").disabled = true;
+		
 		break;
 		case '2':
 		document.getElementById("level").innerHTML = "Department level report will be generated for the results of students of each department in college.";
+		document.getElementById("deptfilter").disabled = false;
+		document.getElementById("yearfilter").disabled = true;
+		document.getElementById("sectionfilter").disabled = true;
+		document.getElementById("subjectfilter").disabled = true;
+		document.getElementById("studentfilter").disabled = true;
+		document.getElementById("resultfilter").disabled = true;
 		break;
 		case '3':
 		document.getElementById("level").innerHTML = "Year level report will be generated for the results of students of each year in college.";
+		document.getElementById("deptfilter").disabled = true;
+		document.getElementById("yearfilter").disabled = false;
+		document.getElementById("sectionfilter").disabled = true;
+		document.getElementById("subjectfilter").disabled = true;
+		document.getElementById("studentfilter").disabled = true;
+		document.getElementById("resultfilter").disabled = true;
 		break;
 		case '4':
 		document.getElementById("level").innerHTML = "Class level report will be generated for the results of students of each class in college.";
+		document.getElementById("deptfilter").disabled = false;
+		document.getElementById("yearfilter").disabled = false;
+		document.getElementById("sectionfilter").disabled = false;
+		document.getElementById("subjectfilter").disabled = true;
+		document.getElementById("studentfilter").disabled = true;
+		document.getElementById("resultfilter").disabled = true;
 		break;
 		case '5':
 		document.getElementById("level").innerHTML = "Department and Year level report will be generated for the results of students of each department and year in college.";
+		document.getElementById("deptfilter").disabled = false;
+		document.getElementById("yearfilter").disabled = false;
+		document.getElementById("sectionfilter").disabled = true;
+		document.getElementById("subjectfilter").disabled = true;
+		document.getElementById("studentfilter").disabled = true;
+		document.getElementById("resultfilter").disabled = true;
 		break;
 		/*
 		case '5':
@@ -128,7 +177,7 @@ generated for the results of students of all departments.</div>
 <br><br>
 <label>Dept Filter</label>
 <br><br>
-<select class="exam_select" name="deptfilter">
+<select disabled id="deptfilter" class="exam_select" name="deptfilter">
 <option selected value="99">All</option>
 <option value="CSE">CSE</option>
 <option value="EEE">EEE</option>
@@ -138,7 +187,7 @@ generated for the results of students of all departments.</div>
 <br><br>
 <label>Year Filter</label>
 <br><br>
-<select class="exam_select" name="yearfilter">
+<select disabled id="yearfilter" class="exam_select" name="yearfilter">
 <option selected value="99">All</option>
 <option value="1">1</option>
 <option value="2">2</option>
@@ -149,7 +198,7 @@ generated for the results of students of all departments.</div>
 <br><br>
 <label>Section Filter</label>
 <br><br>
-<select class="exam_select" name="sectionfilter">
+<select disabled id="sectionfilter" class="exam_select" name="sectionfilter">
 <option selected value="99">All</option>
 <option value="A">A</option>
 <option value="B">B</option>
@@ -158,7 +207,7 @@ generated for the results of students of all departments.</div>
 <br><br>
 <label>Subject Filter</label>
 <br><br>
-<select class="exam_select" name="subjectfilter">
+<select disabled id="subjectfilter" class="exam_select" name="subjectfilter">
 <option selected value="99">All</option>
 <?php echo $subjectlist ?>
 </select>
@@ -166,7 +215,7 @@ generated for the results of students of all departments.</div>
 <br><br>
 <label>Student Filter</label>
 <br><br>
-<select class="exam_select" name="studentfilter">
+<select disabled id="studentfilter" class="exam_select" name="studentfilter">
 <option selected value="99">All</option>
 <?php echo $studentlist ?>
 </select>
@@ -174,7 +223,7 @@ generated for the results of students of all departments.</div>
 <br><br>
 <label>Result Filter</label>
 <br><br>
-<select class="exam_select" name="resultfilter">
+<select disabled id="resultfilter" class="exam_select" name="resultfilter">
 <option selected value="99">All</option>
 <option value="1">Pass Only</option>
 <option value="0">Fail Only</option>
