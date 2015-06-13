@@ -8,6 +8,7 @@
 <!-- Bootstrap -->
 <link href="<?php echo base_url(); ?>css/bootstrap.min.css" rel="stylesheet">
 <link href="<?php echo base_url(); ?>css/style.css" rel="stylesheet">
+<script src="<?php echo base_url();?>js/Chart.js"></script>
 <style = "text/css">
 @font-face {
         font-family: "Play";

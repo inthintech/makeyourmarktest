@@ -117,6 +117,8 @@ class Reports extends CI_Controller {
 		$this->load->view('footer');
 	}
 
+
+
 	private function passPercentageReport($examid,$levelid,$client_name)
 
 	{
@@ -161,15 +163,57 @@ class Reports extends CI_Controller {
 			<th>No of Students Passed</th><th>Overall Pass Percentage</th>";
 
 			$opt_data = '';
+			$total_student_count = 0;
+			$total_pass_count = 0;
+			$total_fail_count = 0;
 			foreach($output as $row)
 				{
 				
 					$opt_data = $opt_data."<tr><td>".$client_name."</td><td>".$row->student_cnt."</td>
 					<td>".$row->student_pass_cnt."</td><td>".$row->pass_percentage."</td></tr>";
-				
+					$total_student_count = $row->student_cnt;
+					$total_pass_count = $row->student_pass_cnt;
+					$total_fail_count = $total_student_count - $total_pass_count;
 				} 
+
+			$chart = '<div id="canvas-holder" style="text-align:center;margin-top:3%;"><canvas id="chart-area" width="300" height="300"/></div>';
+			$chart = $chart.'<script>
+
+		var Data = [
+				{
+					value: '.$total_fail_count.',
+					color:"#8B0000",
+					highlight: "#FF5A5E",
+					label: "Failed"
+				},
+				{
+					value: '.$total_pass_count.',
+					color: "#006400",
+					highlight: "#6E8B3D",
+					label: "Passed"
+				}
+			];
+
+			window.onload = function(){
+				var ctx = document.getElementById("chart-area").getContext("2d");
+				window.myChart = new Chart(ctx).Pie(Data);
+			};
+			</script>';
+
+			$chart = $chart.'<div class="chart_legend">
+			<ul class="chart_legend_list">
+			<li>
+			<div style="background:#006400;"></div>
+			<span style="margin-left:5%;">Students Passed</span>
+			</li>
+			<li>
+			<div style="background:#8B0000;"></div>
+			<span style="margin-left:5%;">Students Failed</span>
+			</li>
+			</ul>
+			</div>';
 			
-			$rptdata = array('exam_name' => $exam_name,'table_headers' => $table_headers,'data' => $opt_data,'report_name' => 'Pass Percentage Report','level' => 'College Level');
+			$rptdata = array('exam_name' => $exam_name,'table_headers' => $table_headers,'data' => $opt_data,'report_name' => 'Pass Percentage Report','level' => 'College Level','chart' => $chart);
 			$this->load->view('vrptoutput',$rptdata);
 			}
 			else
@@ -213,15 +257,85 @@ class Reports extends CI_Controller {
 			<th>No of Students Passed</th><th>Overall Pass Percentage</th>";
 
 			$opt_data = '';
+			$labels = '';
+			$total_cnt_data = '';
+			$pass_cnt_data = '';
+			$cnt = 0;
 			foreach($output as $row)
 				{
 				
 					$opt_data = $opt_data."<tr><td>".$row->dept_code."</td><td>".$row->student_cnt."</td>
 					<td>".$row->student_pass_cnt."</td><td>".$row->pass_percentage."</td></tr>";
-				
+					if($cnt==0)
+					{
+						$labels = '"'.$row->dept_code.'"';
+						$total_cnt_data = $row->student_cnt;
+						$pass_cnt_data = $row->student_pass_cnt;
+
+					}
+					else
+					{
+						$labels = $labels.',"'.$row->dept_code.'"';
+						$total_cnt_data = $total_cnt_data.','.$row->student_cnt;
+						$pass_cnt_data = $pass_cnt_data.','.$row->student_pass_cnt;
+
+					}
+					$cnt=1;
+					
 				} 
+
+			$chart = '<div id="canvas-holder" style="text-align:center;margin-top:3%;"><canvas id="chart-area" width="450" height="300"/></div>';
+			$chart = $chart.'<script>
+		var Data = {
+		labels : ['.$labels.'],
+		datasets : [
+			{
+				fillColor : "#EEC900",
+				strokeColor : "rgba(220,220,220,0.8)",
+				highlightFill: "rgba(220,220,220,0.75)",
+				highlightStroke: "rgba(220,220,220,1)",
+				data : ['.$total_cnt_data.']
+			},
+			{
+				fillColor : "#006400",
+				strokeColor : "rgba(151,187,205,0.8)",
+				highlightFill : "rgba(151,187,205,0.75)",
+				highlightStroke : "rgba(151,187,205,1)",
+				data : ['.$pass_cnt_data.']
+			}
+			]
+			}
+
+			window.onload = function(){
+			var ctx = document.getElementById("chart-area").getContext("2d");
+			var myChart = new Chart(ctx).Bar(Data, {
+				scaleShowHorizontalLines: false,
+				scaleShowVerticalLines: false,
+				scaleFontColor: "#000"
+				    
+
+			});
 			
-			$rptdata = array('exam_name' => $exam_name,'table_headers' => $table_headers,'data' => $opt_data,'report_name' => 'Pass Percentage Report','level' => 'Dept Level');
+			}
+
+			</script>';
+
+			$chart = $chart.'<div class="chart_legend">
+			<ul class="chart_legend_list">
+			<li>X axis : Department</li>
+			<li>Y axis : Students</li>
+			<li>
+			<div style="background:#EEC900;"></div>
+			<span style="margin-left:5%;">Students Attempted</span>
+			</li>
+			<li>
+			<div style="background:#006400;"></div>
+			<span style="margin-left:5%;">Students Passed</span>
+			</li>
+			</ul>
+			</div>';
+			
+			$rptdata = array('exam_name' => $exam_name,'table_headers' => $table_headers,'data' => $opt_data,'report_name' => 'Pass Percentage Report','level' => 'Dept Level','chart' => $chart);
 			$this->load->view('vrptoutput',$rptdata);
 			}
 			else
@@ -269,15 +383,87 @@ class Reports extends CI_Controller {
 			<th>No of Students Passed</th><th>Overall Pass Percentage</th>";
 
 			$opt_data = '';
+			$labels = '';
+			$total_cnt_data = '';
+			$pass_cnt_data = '';
+			$cnt = 0;
+
 			foreach($output as $row)
 				{
 				
 					$opt_data = $opt_data."<tr><td>".$row->year."</td><td>".$row->student_cnt."</td>
 					<td>".$row->student_pass_cnt."</td><td>".$row->pass_percentage."</td></tr>";
+
+					if($cnt==0)
+					{
+						$labels = '"'.$row->year.'"';
+						$total_cnt_data = $row->student_cnt;
+						$pass_cnt_data = $row->student_pass_cnt;
+
+					}
+					else
+					{
+						$labels = $labels.',"'.$row->year.'"';
+						$total_cnt_data = $total_cnt_data.','.$row->student_cnt;
+						$pass_cnt_data = $pass_cnt_data.','.$row->student_pass_cnt;
+
+					}
+					$cnt=1;
 				
 				} 
+
+			$chart = '<div id="canvas-holder" style="text-align:center;margin-top:3%;"><canvas id="chart-area" width="450" height="300"/></div>';
+			$chart = $chart.'<script>
+		var Data = {
+		labels : ['.$labels.'],
+		datasets : [
+			{
+				fillColor : "#EEC900",
+				strokeColor : "rgba(220,220,220,0.8)",
+				highlightFill: "rgba(220,220,220,0.75)",
+				highlightStroke: "rgba(220,220,220,1)",
+				data : ['.$total_cnt_data.']
+			},
+			{
+				fillColor : "#006400",
+				strokeColor : "rgba(151,187,205,0.8)",
+				highlightFill : "rgba(151,187,205,0.75)",
+				highlightStroke : "rgba(151,187,205,1)",
+				data : ['.$pass_cnt_data.']
+			}
+			]
+			}
+
+			window.onload = function(){
+			var ctx = document.getElementById("chart-area").getContext("2d");
+			var myChart = new Chart(ctx).Bar(Data, {
+				scaleShowHorizontalLines: false,
+				scaleShowVerticalLines: false,
+				scaleFontColor: "#000"
+				    
+
+			});
 			
-			$rptdata = array('exam_name' => $exam_name,'table_headers' => $table_headers,'data' => $opt_data,'report_name' => 'Pass Percentage Report','level' => 'Year Level');
+			}
+
+			</script>';
+
+			$chart = $chart.'<div class="chart_legend">
+			<ul class="chart_legend_list">
+			<li>X axis : Year</li>
+			<li>Y axis : Students</li>
+			<li>
+			<div style="background:#EEC900;"></div>
+			<span style="margin-left:5%;">Students Attempted</span>
+			</li>
+			<li>
+			<div style="background:#006400;"></div>
+			<span style="margin-left:5%;">Students Passed</span>
+			</li>
+			</ul>
+			</div>';
+			
+			$rptdata = array('exam_name' => $exam_name,'table_headers' => $table_headers,'data' => $opt_data,'report_name' => 'Pass Percentage Report','level' => 'Year Level','chart' => $chart);
 			$this->load->view('vrptoutput',$rptdata);
 			}
 			else
@@ -326,15 +512,87 @@ class Reports extends CI_Controller {
 			<th>No of Students Passed</th><th>Overall Pass Percentage</th>";
 
 			$opt_data = '';
+			$labels = '';
+			$total_cnt_data = '';
+			$pass_cnt_data = '';
+			$cnt = 0;
+
 			foreach($output as $row)
 				{
 				
 					$opt_data = $opt_data."<tr><td>".$row->dept_code."</td><td>".$row->year."</td><td>".$row->student_cnt."</td>
 					<td>".$row->student_pass_cnt."</td><td>".$row->pass_percentage."</td></tr>";
+
+					if($cnt==0)
+					{
+						$labels = '"'.$row->dept_code.' '.$row->year.'"';
+						$total_cnt_data = $row->student_cnt;
+						$pass_cnt_data = $row->student_pass_cnt;
+
+					}
+					else
+					{
+						$labels = $labels.',"'.$row->dept_code.' '.$row->year.'"';
+						$total_cnt_data = $total_cnt_data.','.$row->student_cnt;
+						$pass_cnt_data = $pass_cnt_data.','.$row->student_pass_cnt;
+
+					}
+					$cnt=1;
 				
 				} 
+
+			$chart = '<div id="canvas-holder" style="text-align:center;margin-top:3%;"><canvas id="chart-area" width="450" height="300"/></div>';
+			$chart = $chart.'<script>
+		var Data = {
+		labels : ['.$labels.'],
+		datasets : [
+			{
+				fillColor : "#EEC900",
+				strokeColor : "rgba(220,220,220,0.8)",
+				highlightFill: "rgba(220,220,220,0.75)",
+				highlightStroke: "rgba(220,220,220,1)",
+				data : ['.$total_cnt_data.']
+			},
+			{
+				fillColor : "#006400",
+				strokeColor : "rgba(151,187,205,0.8)",
+				highlightFill : "rgba(151,187,205,0.75)",
+				highlightStroke : "rgba(151,187,205,1)",
+				data : ['.$pass_cnt_data.']
+			}
+			]
+			}
+
+			window.onload = function(){
+			var ctx = document.getElementById("chart-area").getContext("2d");
+			var myChart = new Chart(ctx).Bar(Data, {
+				scaleShowHorizontalLines: false,
+				scaleShowVerticalLines: false,
+				scaleFontColor: "#000"
+				    
+
+			});
 			
-			$rptdata = array('exam_name' => $exam_name,'table_headers' => $table_headers,'data' => $opt_data,'report_name' => 'Pass Percentage Report','level' => 'Department and Year Level');
+			}
+
+			</script>';
+
+			$chart = $chart.'<div class="chart_legend">
+			<ul class="chart_legend_list">
+			<li>X axis : Dept and Year</li>
+			<li>Y axis : Students</li>
+			<li>
+			<div style="background:#EEC900;"></div>
+			<span style="margin-left:5%;">Students Attempted</span>
+			</li>
+			<li>
+			<div style="background:#006400;"></div>
+			<span style="margin-left:5%;">Students Passed</span>
+			</li>
+			</ul>
+			</div>';
+			
+			$rptdata = array('exam_name' => $exam_name,'table_headers' => $table_headers,'data' => $opt_data,'report_name' => 'Pass Percentage Report','level' => 'Department and Year Level','chart' => $chart);
 			$this->load->view('vrptoutput',$rptdata);
 			}
 			else
@@ -388,15 +646,87 @@ class Reports extends CI_Controller {
 			<th>No of Students Passed</th><th>Overall Pass Percentage</th>";
 
 			$opt_data = '';
+			$labels = '';
+			$total_cnt_data = '';
+			$pass_cnt_data = '';
+			$cnt = 0;
+
 			foreach($output as $row)
 				{
 				
 					$opt_data = $opt_data."<tr><td>".$row->dept_code."</td><td>".$row->year."</td><td>".$row->section."</td><td>".$row->student_cnt."</td>
 					<td>".$row->student_pass_cnt."</td><td>".$row->pass_percentage."</td></tr>";
+
+				if($cnt==0)
+					{
+						$labels = '"'.$row->dept_code.' '.$row->year.' '.$row->section.'"';
+						$total_cnt_data = $row->student_cnt;
+						$pass_cnt_data = $row->student_pass_cnt;
+
+					}
+					else
+					{
+						$labels = $labels.',"'.$row->dept_code.' '.$row->year.' '.$row->section.'"';
+						$total_cnt_data = $total_cnt_data.','.$row->student_cnt;
+						$pass_cnt_data = $pass_cnt_data.','.$row->student_pass_cnt;
+
+					}
+					$cnt=1;
 				
 				} 
+
+			$chart = '<div id="canvas-holder" style="text-align:center;margin-top:3%;"><canvas id="chart-area" width="450" height="300"/></div>';
+			$chart = $chart.'<script>
+		var Data = {
+		labels : ['.$labels.'],
+		datasets : [
+			{
+				fillColor : "#EEC900",
+				strokeColor : "rgba(220,220,220,0.8)",
+				highlightFill: "rgba(220,220,220,0.75)",
+				highlightStroke: "rgba(220,220,220,1)",
+				data : ['.$total_cnt_data.']
+			},
+			{
+				fillColor : "#006400",
+				strokeColor : "rgba(151,187,205,0.8)",
+				highlightFill : "rgba(151,187,205,0.75)",
+				highlightStroke : "rgba(151,187,205,1)",
+				data : ['.$pass_cnt_data.']
+			}
+			]
+			}
+
+			window.onload = function(){
+			var ctx = document.getElementById("chart-area").getContext("2d");
+			var myChart = new Chart(ctx).Bar(Data, {
+				scaleShowHorizontalLines: false,
+				scaleShowVerticalLines: false,
+				scaleFontColor: "#000"
+				    
+
+			});
 			
-			$rptdata = array('exam_name' => $exam_name,'table_headers' => $table_headers,'data' => $opt_data,'report_name' => 'Pass Percentage Report','level' => 'Class Level');
+			}
+
+			</script>';
+
+			$chart = $chart.'<div class="chart_legend">
+			<ul class="chart_legend_list">
+			<li>X axis : Dept and Year</li>
+			<li>Y axis : Students</li>
+			<li>
+			<div style="background:#EEC900;"></div>
+			<span style="margin-left:5%;">Students Attempted</span>
+			</li>
+			<li>
+			<div style="background:#006400;"></div>
+			<span style="margin-left:5%;">Students Passed</span>
+			</li>
+			</ul>
+			</div>';
+			
+			$rptdata = array('exam_name' => $exam_name,'table_headers' => $table_headers,'data' => $opt_data,'report_name' => 'Pass Percentage Report','level' => 'Class Level','chart' => $chart);
 			$this->load->view('vrptoutput',$rptdata);
 			}
 			else
@@ -455,6 +785,19 @@ class Reports extends CI_Controller {
 			<th>Percentage</th>";
 
 			$opt_data = '';
+			$opt_data = '';
+			$chart_data = '';
+			$set1 = 0;
+			$set2 = 0;
+			$set3 = 0;
+			$set4 = 0;
+			$set5 = 0;
+			$set6 = 0;
+			$set7 = 0;
+			$set8 = 0;
+			$set9 = 0;
+			$set10 = 0;
+
 			foreach($output as $row)
 				{
 				
@@ -463,10 +806,94 @@ class Reports extends CI_Controller {
 					<td>".$row->dept_code." ".$row->year." ".$row->section."</td>
 					<td>".$row->percentage."</td>
 					</tr>";
+
+					if($row->percentage>=0&&$row->percentage<=10)
+					{
+						$set1++;
+
+					}
+					if($row->percentage>=11&&$row->percentage<=20)
+					{
+						$set2++;
+					}
+					if($row->percentage>=21&&$row->percentage<=30)
+					{
+						$set3++;
+					}
+					if($row->percentage>=31&&$row->percentage<=40)
+					{
+						$set4++;
+					}
+					if($row->percentage>=41&&$row->percentage<=50)
+					{
+						$set5++;
+					}
+					if($row->percentage>=51&&$row->percentage<=60)
+					{
+						$set6++;
+					}
+					if($row->percentage>=61&&$row->percentage<=70)
+					{
+						$set7++;
+					}
+					if($row->percentage>=71&&$row->percentage<=80)
+					{
+						$set8++;
+					}
+					if($row->percentage>=81&&$row->percentage<=90)
+					{
+						$set9++;
+					}
+					if($row->percentage>=91&&$row->percentage<=100)
+					{
+						$set10++;
+					}
+					
 				
 				} 
+
+			$chart_data = $set1.','.$set2.','.$set3.','.$set4.','.$set5.','.$set6.','.$set7.','.$set8.','.$set9.','.$set10;
+			$chart = '<div id="canvas-holder" style="text-align:center;margin-top:3%;"><canvas id="chart-area" width="450" height="300"/></div>';
+			$chart = $chart.'<script>
+		var Data = {
+		labels : ["0-10","11-20","21-30","31-40","41-50","51-60","61-70","71-80","81-90","91-100"],
+		datasets : [
+			{
+				fillColor : "#EEC900",
+				strokeColor : "rgba(151,187,205,0.8)",
+				highlightFill : "rgba(151,187,205,0.75)",
+				highlightStroke : "rgba(151,187,205,1)",
+				data : ['.$chart_data.']
+			}
+			]
+			}
+
+			window.onload = function(){
+			var ctx = document.getElementById("chart-area").getContext("2d");
+			var myChart = new Chart(ctx).Bar(Data, {
+				scaleShowHorizontalLines: false,
+				scaleShowVerticalLines: false,
+				scaleFontColor: "#000"
+				    
+
+			});
 			
-			$rptdata = array('exam_name' => $exam_name,'table_headers' => $table_headers,'data' => $opt_data,'report_name' => 'Topper Report','level' => 'College Level');
+			}
+
+			</script>';
+
+			$chart = $chart.'<div class="chart_legend">
+			<ul class="chart_legend_list">
+			<li>X axis : Percentage</li>
+			<li>Y axis : Students</li>
+			<li>
+			<div style="background:#EEC900;"></div>
+			<span style="margin-left:5%;">No of Students</span>
+			</li>
+			</ul>
+			</div>';
+
+			$rptdata = array('exam_name' => $exam_name,'table_headers' => $table_headers,'data' => $opt_data,'report_name' => 'Topper Report','level' => 'College Level','chart' => $chart);
 			$this->load->view('vrptoutput',$rptdata);
 			}
 			else

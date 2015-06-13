@@ -17,6 +17,8 @@ Level :
 </div>
 <div class="panel-body">
 
+<?php echo $chart ?>
+
 <table class="table-bordered report_table" style="width:95%">	
 <tr>
 <?php echo $table_headers ?>
