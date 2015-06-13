@@ -40,24 +40,32 @@ function myFunction() {
 		document.getElementById("info").innerHTML = "The Pass Percentage report displays the percentage of students who have passed in all subjects.";
 		document.getElementById("levelID").disabled = false;
 		document.getElementById("subjectfilter").disabled = true;
+		document.getElementById("subjectfilter").value = '';
 		document.getElementById("studentfilter").disabled = true;
+		document.getElementById("studentfilter").value = '';
 		document.getElementById("resultfilter").disabled = true;
+		document.getElementById("resultfilter").value = 99;
 		break;
 		
 		case '2':
 		document.getElementById("info").innerHTML = "The Topper report displays the students who have passed in all subjects and have the highest total percentage score.";
 		document.getElementById("levelID").disabled = false;
 		document.getElementById("subjectfilter").disabled = true;
+		document.getElementById("subjectfilter").value = '';
 		document.getElementById("studentfilter").disabled = true;
+		document.getElementById("studentfilter").value = '';
 		document.getElementById("resultfilter").disabled = true;
+		document.getElementById("resultfilter").value = 99;
 		break;
 		
 		case '3':
 		document.getElementById("info").innerHTML = "The Student Rank List report displays the list of students and their total percentage ranked by the highest score.";
 		document.getElementById("levelID").disabled = false;
 		document.getElementById("subjectfilter").disabled = true;
+		document.getElementById("subjectfilter").value = '';
 		document.getElementById("studentfilter").disabled = false;
 		document.getElementById("resultfilter").disabled = true;
+		document.getElementById("resultfilter").value = 99;
 		break;
 		
 		case '5':
@@ -65,7 +73,9 @@ function myFunction() {
 		document.getElementById("levelID").disabled = false;
 		document.getElementById("subjectfilter").disabled = false;
 		document.getElementById("studentfilter").disabled = true;
+		document.getElementById("studentfilter").value = '';
 		document.getElementById("resultfilter").disabled = true;
+		document.getElementById("resultfilter").value = 99;
 		break;
 		
 		case '6':
@@ -111,22 +121,29 @@ function myFunctionlevel() {
 		case '1':
 		document.getElementById("level").innerHTML = "College level report will be generated for the results of students of all departments.";
 		document.getElementById("deptfilter").disabled = true;
+		document.getElementById("deptfilter").value = 99;
 		document.getElementById("yearfilter").disabled = true;
+		document.getElementById("yearfilter").value = 99;
 		document.getElementById("sectionfilter").disabled = true;
+		document.getElementById("sectionfilter").value = 99;
 		break;
 		
 		case '2':
 		document.getElementById("level").innerHTML = "Department level report will be generated for the results of students of each department in college.";
 		document.getElementById("deptfilter").disabled = false;
 		document.getElementById("yearfilter").disabled = true;
+		document.getElementById("yearfilter").value = 99;
 		document.getElementById("sectionfilter").disabled = true;
+		document.getElementById("sectionfilter").value = 99;
 		break;
 		
 		case '3':
 		document.getElementById("level").innerHTML = "Year level report will be generated for the results of students of each year in college.";
 		document.getElementById("deptfilter").disabled = true;
+		document.getElementById("deptfilter").value = 99;
 		document.getElementById("yearfilter").disabled = false;
 		document.getElementById("sectionfilter").disabled = true;
+		document.getElementById("sectionfilter").value = 99;
 		break;
 		
 		case '4':
@@ -141,13 +158,13 @@ function myFunctionlevel() {
 		document.getElementById("deptfilter").disabled = false;
 		document.getElementById("yearfilter").disabled = false;
 		document.getElementById("sectionfilter").disabled = true;
+		document.getElementById("sectionfilter").value = 99;
 		break;
 		
 	}
 	
 }
 </script>
-
 
 
 <br><br><br>
