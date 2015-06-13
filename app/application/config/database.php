@@ -49,9 +49,9 @@ $active_group = 'default';
 $active_record = TRUE;
 
 $db['default']['hostname'] = 'localhost';
-$db['default']['username'] = 'mymtest';
-$db['default']['password'] = 'test123';
-$db['default']['database'] = 'mym_test';
+$db['default']['username'] = 'mymuser';
+$db['default']['password'] = 'MymDbPass@123';
+$db['default']['database'] = 'makeyourmark';
 $db['default']['dbdriver'] = 'mysql';
 $db['default']['dbprefix'] = '';
 $db['default']['pconnect'] = TRUE;
