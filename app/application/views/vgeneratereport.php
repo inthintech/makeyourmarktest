@@ -113,52 +113,36 @@ function myFunctionlevel() {
 		document.getElementById("deptfilter").disabled = true;
 		document.getElementById("yearfilter").disabled = true;
 		document.getElementById("sectionfilter").disabled = true;
-		
 		break;
+		
 		case '2':
 		document.getElementById("level").innerHTML = "Department level report will be generated for the results of students of each department in college.";
 		document.getElementById("deptfilter").disabled = false;
 		document.getElementById("yearfilter").disabled = true;
 		document.getElementById("sectionfilter").disabled = true;
-		document.getElementById("subjectfilter").disabled = true;
-		document.getElementById("studentfilter").disabled = true;
-		document.getElementById("resultfilter").disabled = true;
 		break;
+		
 		case '3':
 		document.getElementById("level").innerHTML = "Year level report will be generated for the results of students of each year in college.";
 		document.getElementById("deptfilter").disabled = true;
 		document.getElementById("yearfilter").disabled = false;
 		document.getElementById("sectionfilter").disabled = true;
-		document.getElementById("subjectfilter").disabled = true;
-		document.getElementById("studentfilter").disabled = true;
-		document.getElementById("resultfilter").disabled = true;
 		break;
+		
 		case '4':
 		document.getElementById("level").innerHTML = "Class level report will be generated for the results of students of each class in college.";
 		document.getElementById("deptfilter").disabled = false;
 		document.getElementById("yearfilter").disabled = false;
 		document.getElementById("sectionfilter").disabled = false;
-		document.getElementById("subjectfilter").disabled = true;
-		document.getElementById("studentfilter").disabled = true;
-		document.getElementById("resultfilter").disabled = true;
 		break;
+		
 		case '5':
 		document.getElementById("level").innerHTML = "Department and Year level report will be generated for the results of students of each department and year in college.";
 		document.getElementById("deptfilter").disabled = false;
 		document.getElementById("yearfilter").disabled = false;
 		document.getElementById("sectionfilter").disabled = true;
-		document.getElementById("subjectfilter").disabled = true;
-		document.getElementById("studentfilter").disabled = true;
-		document.getElementById("resultfilter").disabled = true;
 		break;
-		/*
-		case '5':
-		document.getElementById("level").innerHTML = "Subject level report will be generated for the results of students in each subject of department.";
-		break;
-		case '6':
-		document.getElementById("level").innerHTML = "Student level report will be generated for the result of each students in college.";
-		break;
-		*/
+		
 	}
 	
 }
@@ -172,7 +156,7 @@ generated for the results of students of all departments.</div>
 
 
 <br><br>
-<p class="report_header">Filter Selector</p>
+<p class="report_header">Filter Selector (Enables based on report type)</p>
 
 <br><br>
 <label>Dept Filter</label>
@@ -205,20 +189,15 @@ generated for the results of students of all departments.</div>
 </select>
 
 <br><br>
-<label>Subject Filter</label>
+<label>Subject Filter (Please type full or partial Subject Name as entered in system)</label>
 <br><br>
-<select disabled id="subjectfilter" class="exam_select" name="subjectfilter">
-<option selected value="99">All</option>
-<?php echo $subjectlist ?>
-</select>
+<input type="text" disabled id="subjectfilter" class="exam_select" name="subjectfilter" size="50"/>
+
 
 <br><br>
-<label>Student Filter</label>
+<label>Student Filter (Please type full or partial Student Name as entered in system)</label>
 <br><br>
-<select disabled id="studentfilter" class="exam_select" name="studentfilter">
-<option selected value="99">All</option>
-<?php echo $studentlist ?>
-</select>
+<input type="text" disabled id="studentfilter" class="exam_select" name="studentfilter" size="50"/>
 
 <br><br>
 <label>Result Filter</label>

@@ -15,6 +15,20 @@ class Reports extends CI_Controller {
         }
     }
 
+    private function alphanumericVal($inp)
+	{
+		
+		if(preg_match('/^[a-zA-Z0-9 ]+$/', $inp))
+		//check if only alphanumeric,numbers and spaces are present	
+		{
+			return TRUE;
+		}
+		else
+		{		
+     		return FALSE;
+		}		
+	}
+
 /*----------------------------------------------  Default  ----------------------------------------------*/
 
 	public function index()
@@ -44,23 +58,7 @@ class Reports extends CI_Controller {
 	   			$examlist = "<option selected value=".$row->exam_id.">".$row->exam_name."</option>".$examlist;
 	  			} 
 
-	  			$studentlist ='';
-	  			//get student list
-	  			$result = $this->user->getStudentsList($this->session->userdata('client_id'));
-	  			foreach($result as $row)
-	 			{
-	   			$studentlist = "<option value=".$row->student_id.">".$row->student_name." (".$row->student_id.")</option>".$studentlist;
-	  			} 
-
-	  			$subjectlist ='';
-	  			//get subject list
-	  			$result = $this->user->getSubjectsList($this->session->userdata('client_id'));
-	  			foreach($result as $row)
-	 			{
-	   			$subjectlist = "<option value=".$row->subject_code.">".$row->subject_name." (".$row->subject_code.")</option>".$subjectlist;
-	  			}
-
-	  			$examdata = array('examlist' => $examlist,'studentlist' => $studentlist,'subjectlist' => $subjectlist);
+	  			$examdata = array('examlist' => $examlist);
 	  			$headerdata = array('usertype' => $this->session->userdata('user_type'), 'client_name' => $client_name ,'title' => 'Generate Report','container_height' => 280 );
 				$this->load->view('header',$headerdata);
 				$this->load->view('vgeneratereport',$examdata);
@@ -69,7 +67,7 @@ class Reports extends CI_Controller {
 			{
 				$headerdata = array('usertype' => $this->session->userdata('user_type'), 'client_name' => $client_name ,'title' => 'Generate Report','container_height' => 130 );
 				$this->load->view('header',$headerdata);
-				$statusdata = array('message' => '<style>.containerdiv {height:70%;}</style><div style="margin-top:5%;" class="alert alert-danger" role="alert">Error : There are no exams with results uploaded.</div>');
+				$statusdata = array('message' => '<div style="margin-top:5%;" class="alert alert-danger" role="alert">Error : There are no exams with results uploaded.</div>');
 				$this->load->view('vmessage',$statusdata);
 			}
 		$this->load->view('footer');		
@@ -1538,11 +1536,15 @@ class Reports extends CI_Controller {
 		if($levelid==1)
 		{
 			
-			/*
-			if($this->input->post('deptfilter')<>99)
+			
+			if($this->input->post('studentfilter'))
 			{
-				$filterQry = $filterQry." and dept_code='".$this->input->post('deptfilter')."'";
+				if($this->alphanumericVal($this->input->post('studentfilter')))
+				{
+					$filterQry = $filterQry." and student_name like '%".$this->input->post('studentfilter')."%'";
+				}
 			}
+			/*
 			if($this->input->post('yearfilter')<>99)
 			{
 				$filterQry = $filterQry." and year=".$this->input->post('yearfilter');
@@ -1690,6 +1692,14 @@ class Reports extends CI_Controller {
 			if($this->input->post('deptfilter')<>99)
 			{
 				$filterQry = $filterQry." and dept_code='".$this->input->post('deptfilter')."'";
+			}
+
+			if($this->input->post('studentfilter'))
+			{
+				if($this->alphanumericVal($this->input->post('studentfilter')))
+				{
+					$filterQry = $filterQry." and student_name like '%".$this->input->post('studentfilter')."%'";
+				}
 			}
 
 			/*
@@ -1840,6 +1850,14 @@ class Reports extends CI_Controller {
 			if($this->input->post('yearfilter')<>99)
 			{
 				$filterQry = $filterQry." and year=".$this->input->post('yearfilter');
+			}
+
+			if($this->input->post('studentfilter'))
+			{
+				if($this->alphanumericVal($this->input->post('studentfilter')))
+				{
+					$filterQry = $filterQry." and student_name like '%".$this->input->post('studentfilter')."%'";
+				}
 			}
 
 			/*
@@ -2003,6 +2021,13 @@ class Reports extends CI_Controller {
 				$filterQry = $filterQry." and year=".$this->input->post('yearfilter');
 			}
 			
+			if($this->input->post('studentfilter'))
+			{
+				if($this->alphanumericVal($this->input->post('studentfilter')))
+				{
+					$filterQry = $filterQry." and student_name like '%".$this->input->post('studentfilter')."%'";
+				}
+			}
 			/*
 			
 			if($this->input->post('sectionfilter')<>99)
@@ -2163,6 +2188,15 @@ class Reports extends CI_Controller {
 			{
 				$filterQry = $filterQry." and section='".$this->input->post('sectionfilter')."'";
 			}
+
+			if($this->input->post('studentfilter'))
+			{
+				if($this->alphanumericVal($this->input->post('studentfilter')))
+				{
+					$filterQry = $filterQry." and student_name like '%".$this->input->post('studentfilter')."%'";
+				}
+			}
+
 			/*
 			if($this->input->post('subjectfilter')<>99)
 			{
@@ -2318,6 +2352,14 @@ class Reports extends CI_Controller {
 		
 		if($levelid==1)
 		{
+
+			if($this->input->post('subjectfilter'))
+			{
+				if($this->alphanumericVal($this->input->post('subjectfilter')))
+				{
+					$filterQry = $filterQry." and subject_name like '%".$this->input->post('subjectfilter')."%'";
+				}
+			}
 			
 			/*
 			if($this->input->post('deptfilter')<>99)
@@ -2475,6 +2517,14 @@ class Reports extends CI_Controller {
 				$filterQry = $filterQry." and dept_code='".$this->input->post('deptfilter')."'";
 			}
 
+			if($this->input->post('subjectfilter'))
+			{
+				if($this->alphanumericVal($this->input->post('subjectfilter')))
+				{
+					$filterQry = $filterQry." and subject_name like '%".$this->input->post('subjectfilter')."%'";
+				}
+			}
+
 			/*
 			
 			if($this->input->post('yearfilter')<>99)
@@ -2624,6 +2674,14 @@ class Reports extends CI_Controller {
 			if($this->input->post('yearfilter')<>99)
 			{
 				$filterQry = $filterQry." and year=".$this->input->post('yearfilter');
+			}
+
+			if($this->input->post('subjectfilter'))
+			{
+				if($this->alphanumericVal($this->input->post('subjectfilter')))
+				{
+					$filterQry = $filterQry." and subject_name like '%".$this->input->post('subjectfilter')."%'";
+				}
 			}
 
 			/*
@@ -2783,6 +2841,14 @@ class Reports extends CI_Controller {
 			if($this->input->post('yearfilter')<>99)
 			{
 				$filterQry = $filterQry." and year=".$this->input->post('yearfilter');
+			}
+
+			if($this->input->post('subjectfilter'))
+			{
+				if($this->alphanumericVal($this->input->post('subjectfilter')))
+				{
+					$filterQry = $filterQry." and subject_name like '%".$this->input->post('subjectfilter')."%'";
+				}
 			}
 			
 			/*
@@ -2946,12 +3012,15 @@ class Reports extends CI_Controller {
 			{
 				$filterQry = $filterQry." and section='".$this->input->post('sectionfilter')."'";
 			}
-			/*
-			if($this->input->post('subjectfilter')<>99)
+
+			if($this->input->post('subjectfilter'))
 			{
-				$filterQry = $filterQry." and subject_code='".$this->input->post('subjectfilter')."'";
+				if($this->alphanumericVal($this->input->post('subjectfilter')))
+				{
+					$filterQry = $filterQry." and subject_name like '%".$this->input->post('subjectfilter')."%'";
+				}
 			}
-			*/
+			
 			$output = $this->analysis->subjectRankListReportClass($this->session->userdata('client_id'),$examid,$filterQry);
 			
 			if($output)
@@ -3115,15 +3184,21 @@ class Reports extends CI_Controller {
 			$filterQry = $filterQry." and section='".$this->input->post('sectionfilter')."'";
 		}
 
-		if($this->input->post('subjectfilter')<>99)
-		{
-			$filterQry = $filterQry." and subject_code='".$this->input->post('subjectfilter')."'";
-		}
+		if($this->input->post('studentfilter'))
+			{
+				if($this->alphanumericVal($this->input->post('studentfilter')))
+				{
+					$filterQry = $filterQry." and student_name like '%".$this->input->post('studentfilter')."%'";
+				}
+			}
 
-		if($this->input->post('studentfilter')<>99)
-		{
-			$filterQry = $filterQry." and student_id='".$this->input->post('studentfilter')."'";
-		}
+		if($this->input->post('subjectfilter'))
+			{
+				if($this->alphanumericVal($this->input->post('subjectfilter')))
+				{
+					$filterQry = $filterQry." and subject_name like '%".$this->input->post('subjectfilter')."%'";
+				}
+			}
 
 		if($this->input->post('resultfilter')<>99)
 		{
@@ -3269,7 +3344,7 @@ class Reports extends CI_Controller {
 
 		}
 
-
+	
 	
 }
 /* End of file welcome.php */

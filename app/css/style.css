@@ -216,3 +216,7 @@ select[disabled] {
     color: #DCDAD1;
     
 }
+input[disabled] {
+    background: #F4F4F4;
+    
+}
