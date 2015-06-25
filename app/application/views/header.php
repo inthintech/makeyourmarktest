@@ -21,6 +21,7 @@ html,body
       /*background: #EED5B7;*/
       background: #84A749;
       
+      
       height: 100%; 
       width: 100%; 
 }
@@ -175,6 +176,7 @@ padding-top: 1.5%;
 color :#DEDEDE;
 font-size: 0.9em;
 }
+
 </style>
 </head>
 <body>
@@ -192,7 +194,7 @@ font-size: 0.9em;
 <div class="leftnav">
 <ul> 
 
-<li class="menuitem"><span>Exams</span></li>
+<li class="menuitem"><span>Administration</span></li>
 <li><span><a href="<?php echo site_url('exams'); ?>">Home</a></span></li>
 <?php
 if($usertype==1)

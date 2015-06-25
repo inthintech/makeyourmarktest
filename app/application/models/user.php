@@ -7,7 +7,8 @@ Class User extends CI_Model
  {
    
     $query = $this->db->query("select clients.client_id,clients.is_active,users.user_id,users.user_type from users join clients 
-    on users.client_id=clients.client_id where users.lgcl_del_f='N' and username=".$this->db->escape($username)." and passwd=".$this->db->escape($password));
+    on users.client_id=clients.client_id where users.lgcl_del_f='N'
+    and username=".$this->db->escape($username)." and passwd=".$this->db->escape($password));
 
    if($query -> num_rows() == 1)
    {
