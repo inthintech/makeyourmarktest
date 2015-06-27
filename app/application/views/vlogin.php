@@ -164,14 +164,16 @@ float: left;
 <script src="<?php echo base_url();?>js/bootstrap.min.js"></script>
 <script src="<?php echo base_url();?>js/modernizr.js" type="text/javascript"></script>
 <script type="text/javascript">
-{
+
 if (Modernizr.canvas) {
   // let's draw some shapes!
 } else {
   // no native canvas support available :(
-  $( ".logindiv" ).empty();
+  $(".logindiv").empty();
+  $(".logindiv").html('<p style="font-size:1.2em;padding:5%;">You are using an un-supported browser.<br><br>Please use a browser with HTML 5 support.<br><br><a href="http://www.w3schools.com/html/html5_canvas.asp">Click here</a> for list of browsers with HTML 5 support.</p>');
+
 }        
-}
+
 </script>
 </body>
 </html>
