@@ -202,29 +202,29 @@ font-size:1em;
 <ul> 
 
 <li class="menuitem"><span>Administration</span></li>
-<li><span><span class="glyphicon glyphicon-user icon-size"></span><a href="<?php echo site_url('adminstatic'); ?>">Home</a></span></li>
+<li><span><span class="glyphicon glyphicon-home icon-size"></span><a href="<?php echo site_url('adminstatic'); ?>">Home</a></span></li>
 <?php
 if($usertype==1)
 {
-echo '<li><span><span class="glyphicon glyphicon-user icon-size"></span><a href="'.site_url('adminaction/addexam').'">New Exam</a></span></li>';
-echo '<li><span><span class="glyphicon glyphicon-user icon-size"></span><a href="'.site_url('adminstatic/examstatus').'">Exam Status</a></span></li>';
+echo '<li><span><span class="glyphicon glyphicon-plus icon-size"></span><a href="'.site_url('adminaction/addexam').'">New Exam</a></span></li>';
+echo '<li><span><span class="glyphicon glyphicon-check icon-size"></span><a href="'.site_url('adminstatic/examstatus').'">Exam Status</a></span></li>';
 }
 ?>
-<li><span><span class="glyphicon glyphicon-user icon-size"></span><a href="<?php echo site_url('adminstatic/createcsv'); ?>">How to Create CSV File</a></span></li>
-<li><span><span class="glyphicon glyphicon-user icon-size"></span><a href="<?php echo site_url('upload/result'); ?>">Upload Results</a></span></li>
-<li><span><span class="glyphicon glyphicon-user icon-size"></span><a href="<?php echo site_url('verify/exam'); ?>">Verify Results</a></span></li>
+<li><span><span class="glyphicon glyphicon-pencil icon-size"></span><a href="<?php echo site_url('adminstatic/createcsv'); ?>">How to Create CSV File</a></span></li>
+<li><span><span class="glyphicon glyphicon-file icon-size"></span><a href="<?php echo site_url('upload/result'); ?>">Upload Results</a></span></li>
+<li><span><span class="glyphicon glyphicon-search icon-size"></span><a href="<?php echo site_url('verify/exam'); ?>">Verify Results</a></span></li>
 <?php
 if($usertype==1)
 {
 echo '<li><span><span class="glyphicon glyphicon-user icon-size"></span><a href="'.site_url('adminaction/adduser').'">Add User</a></span></li>';
-echo '<li><span><span class="glyphicon glyphicon-user icon-size"></span><a href="'.site_url('adminaction/deleteuser').'">Delete User</a></span></li>';
+echo '<li><span><span class="glyphicon glyphicon-trash icon-size"></span><a href="'.site_url('adminaction/deleteuser').'">Delete User</a></span></li>';
 }
 ?>
-<li><span><span class="glyphicon glyphicon-user icon-size"></span><a href="<?php echo site_url('adminaction/changepassword'); ?>">Change Password</a></span></li>
+<li><span><span class="glyphicon glyphicon-cog icon-size"></span><a href="<?php echo site_url('adminaction/changepassword'); ?>">Change Password</a></span></li>
 
-<li><span><span class="glyphicon glyphicon-user icon-size"></span><a href="<?php echo site_url('adminstatic/help'); ?>">Feedback / Help</a></span></li>
+<li><span><span class="glyphicon glyphicon-globe icon-size"></span><a href="<?php echo site_url('adminstatic/help'); ?>">Feedback / Help</a></span></li>
 <li class="menuitem"><span>Reports</span></li>
-<li><span><span class="glyphicon glyphicon-user icon-size"></span><a href="<?php echo site_url('reports/generate'); ?>">Generate Report</a></span></li>
+<li><span><span class="glyphicon glyphicon-stats icon-size"></span><a href="<?php echo site_url('reports/generate'); ?>">Generate Report</a></span></li>
 </ul>
 </div>
 <div class="rightcontainer">
