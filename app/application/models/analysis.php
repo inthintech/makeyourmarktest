@@ -8,12 +8,12 @@ function passPercentageReportCollege($client_id,$exam_id,$filterQry)
 {
 
 	$query = $this->db->query("select * from
-	(select a.student_cnt,b.student_pass_cnt,
-    ROUND((b.student_pass_cnt/a.student_cnt)*100) pass_percentage from 
+	(select a.student_cnt,ifnull(b.student_pass_cnt,0) student_pass_cnt,
+    ROUND((ifnull(b.student_pass_cnt,0)/a.student_cnt)*100) pass_percentage from 
     (select client_id,count(distinct student_id) student_cnt from results
     where lgcl_del_f='N' and client_id=".$this->db->escape($client_id)." and exam_id=".$this->db->escape($exam_id)." group by client_id)a
     
-    join
+    left join
     (select client_id,count(distinct student_id) student_pass_cnt from results
     where marks_obtained>=pass_mark and lgcl_del_f='N' 
     and client_id=".$this->db->escape($client_id)." and exam_id=".$this->db->escape($exam_id)." group by client_id)b
@@ -37,11 +37,11 @@ function passPercentageReportDept($client_id,$exam_id,$filterQry)
 {
 
 	$query = $this->db->query("select * from
-	(select a.dept_code,a.student_cnt,b.student_pass_cnt,
-    ROUND((b.student_pass_cnt/a.student_cnt)*100) pass_percentage from 
+	(select a.dept_code,a.student_cnt,ifnull(b.student_pass_cnt,0) student_pass_cnt,
+    ROUND((ifnull(b.student_pass_cnt,0)/a.student_cnt)*100) pass_percentage from 
     (select dept_code,count(distinct student_id) student_cnt from results
     where lgcl_del_f='N' and client_id=".$this->db->escape($client_id)." and exam_id=".$this->db->escape($exam_id)." group by dept_code)a
-    join
+    left join
     (select dept_code,count(distinct student_id) student_pass_cnt from results
     where marks_obtained>=pass_mark and lgcl_del_f='N' 
     and client_id=".$this->db->escape($client_id)." and exam_id=".$this->db->escape($exam_id)." group by dept_code)b
@@ -64,11 +64,11 @@ function passPercentageReportYear($client_id,$exam_id,$filterQry)
 {
 
   $query = $this->db->query("select * from
-  (select a.year,a.student_cnt,b.student_pass_cnt,
-    ROUND((b.student_pass_cnt/a.student_cnt)*100) pass_percentage from 
+  (select a.year,a.student_cnt,ifnull(b.student_pass_cnt,0) student_pass_cnt,
+    ROUND((ifnull(b.student_pass_cnt,0)/a.student_cnt)*100) pass_percentage from 
     (select year,count(distinct student_id) student_cnt from results
     where lgcl_del_f='N' and client_id=".$this->db->escape($client_id)." and exam_id=".$this->db->escape($exam_id)." group by year)a
-    join
+    left join
     (select year,count(distinct student_id) student_pass_cnt from results
     where marks_obtained>=pass_mark and lgcl_del_f='N' 
     and client_id=".$this->db->escape($client_id)." and exam_id=".$this->db->escape($exam_id)." group by year)b
@@ -91,11 +91,11 @@ function passPercentageReportDeptYear($client_id,$exam_id,$filterQry)
 {
 
   $query = $this->db->query("select * from
-  (select a.dept_code,a.year,a.student_cnt,b.student_pass_cnt,
-    ROUND((b.student_pass_cnt/a.student_cnt)*100) pass_percentage from 
+  (select a.dept_code,a.year,a.student_cnt,ifnull(b.student_pass_cnt,0) student_pass_cnt,
+    ROUND((ifnull(b.student_pass_cnt,0)/a.student_cnt)*100) pass_percentage from 
     (select dept_code,year,count(distinct student_id) student_cnt from results
     where lgcl_del_f='N' and client_id=".$this->db->escape($client_id)." and exam_id=".$this->db->escape($exam_id)." group by dept_code,year)a
-    join
+    left join
     (select dept_code,year,count(distinct student_id) student_pass_cnt from results
     where marks_obtained>=pass_mark and lgcl_del_f='N' 
     and client_id=".$this->db->escape($client_id)." and exam_id=".$this->db->escape($exam_id)." group by dept_code,year)b
@@ -118,15 +118,15 @@ function passPercentageReportClass($client_id,$exam_id,$filterQry)
 {
 
   $query = $this->db->query("select * from
-  (select a.dept_code,a.year,a.section,a.student_cnt,b.student_pass_cnt,
-    ROUND((b.student_pass_cnt/a.student_cnt)*100) pass_percentage from 
+  (select a.dept_code,a.year,a.section,a.student_cnt,ifnull(b.student_pass_cnt,0) student_pass_cnt,
+    ROUND((ifnull(b.student_pass_cnt,0)/a.student_cnt)*100) pass_percentage from 
     (select dept_code,year,section,count(distinct student_id) student_cnt from results
     where lgcl_del_f='N' and client_id=".$this->db->escape($client_id)." and exam_id=".$this->db->escape($exam_id)." group by dept_code,year,section)a
-    join
+    left join
     (select dept_code,year,section,count(distinct student_id) student_pass_cnt from results
     where marks_obtained>=pass_mark and lgcl_del_f='N' 
     and client_id=".$this->db->escape($client_id)." and exam_id=".$this->db->escape($exam_id)." group by dept_code,year,section)b
-    on a.dept_code=b.dept_code and a.year=b.year)
+    on a.dept_code=b.dept_code and a.year=b.year and a.section=b.section)
   SCR ".$filterQry." order by dept_code,year,section");
 
    if($query -> num_rows() >= 1)

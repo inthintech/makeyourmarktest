@@ -288,7 +288,8 @@ function newResult($client_id,$exam_id,$target_path,$staffname,$staffid,$subname
       IGNORE 1 LINES
       (student_id,student_name,marks_obtained)
       
-      set 
+      set
+      
       pass_mark='.$this->db->escape($minmark).',
       total_marks='.$this->db->escape($maxmark).',
       staff_id='.$this->db->escape($staffid).',
@@ -303,10 +304,23 @@ function newResult($client_id,$exam_id,$target_path,$staffname,$staffid,$subname
       crte_ts=CURRENT_TIMESTAMP,
       updt_ts=CURRENT_TIMESTAMP,
       batch_id='.$this->db->escape($batchid).',
-      lgcl_del_f="N"'
-      
-      );
+      student_id=REPLACE(student_id, \' \', \'\'),
+      student_name=TRIM(student_name),
+      marks_obtained=TRIM(marks_obtained),
+      student_id= CASE WHEN CHAR_LENGTH(student_id)<>0 then student_id else NULL END,
+      student_name= CASE WHEN CHAR_LENGTH(student_name)<>0 then student_name else NULL END,
+      marks_obtained= CASE WHEN CHAR_LENGTH(marks_obtained)<>0 then marks_obtained else NULL END,
+      lgcl_del_f = CASE
+      when student_id is NULL then "Y"
+      when student_name is NULL then "Y"
+      when marks_obtained is NULL then "Y"
+      when CAST(marks_obtained AS UNSIGNED)=0 then "Y"
+      when marks_obtained>total_marks then "Y"
+      ELSE "N"
+      END
 
+      ');
+      
       $query = $this->db->query("select count(*) cnt from results where batch_id=".$batchid);
       
       foreach($query->result() as $row)
@@ -353,7 +367,7 @@ function getResultDetails($client_id,$exam_id,$batch_id)
 
   {
 
-    $query = $this->db->query("select student_id,student_name,total_marks,pass_mark,marks_obtained
+    $query = $this->db->query("select student_id,student_name,total_marks,pass_mark,marks_obtained,lgcl_del_f
     from results
     where client_id=".$this->db->escape($client_id)." and exam_id=".$this->db->escape($exam_id)." and batch_id=".$this->db->escape($batch_id));
 
@@ -376,22 +390,29 @@ function removeResults($client_id,$exam_id,$batch_id)
 
     $query = $this->db->query("update results set lgcl_del_f='Y'
     where client_id=".$this->db->escape($client_id)." and exam_id=".$this->db->escape($exam_id)." and batch_id=".$this->db->escape($batch_id));
-
-   $query = $this->db->query("select count(*) cnt from results
-    where lgcl_del_f='N' and client_id=".$this->db->escape($client_id)." and exam_id=".$this->db->escape($exam_id));
-
-   foreach($query->result() as $row)
-        {
-          $count= $row->cnt;
-        } 
-
-    if($count==0)
+    
+    if($query)
     {
-      $query = $this->db->query("update exams set status=0
-      where exam_id=".$this->db->escape($exam_id));
 
+       $query = $this->db->query("select count(*) cnt from results
+       where lgcl_del_f='N' and client_id=".$this->db->escape($client_id)." and exam_id=".$this->db->escape($exam_id));
+
+       foreach($query->result() as $row)
+       {
+          $count= $row->cnt;
+       } 
+
+       if($count==0)
+       {
+         $query = $this->db->query("update exams set status=0
+         where exam_id=".$this->db->escape($exam_id));
+       }
+       return TRUE;
     }
-
+    else
+    {
+      return FALSE;
+    }
 
   }
 

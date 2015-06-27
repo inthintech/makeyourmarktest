@@ -18,8 +18,7 @@
     }
 html,body
 {
-      /*background: #B0E0E6;*/
-      /*background: #EED5B7;*/
+
       background: #84A749;
 
       height: 100%; 
@@ -188,27 +187,4 @@ font-size: 0.9em;
 <h4 class="clientname"><?php echo $client_name ?></h4>
 </div>
 <div class="containerdiv">
-<!--
-<div class="leftnav">
-<ul> 
-<li class="menuitem"><span>Exams</span></li>
-<li><span><a href="<?php echo site_url('exams'); ?>">Home</a></span></li>
-<li><span><a href="<?php echo site_url('exams/addexam'); ?>">New Exam</a></span></li>
-<li><span><a href="<?php echo site_url('exams/status'); ?>">Exam Status</a></span></li>
-<li><span><a href="<?php echo site_url('exams/upload'); ?>">Upload Results</a></span></li>
-<li><span><a href="<?php echo site_url('exams/verify'); ?>">Verify Results</a></span></li>
-<li><span><a href="<?php echo site_url('exams'); ?>">Change Password</a></span></li>
-<li><span><a href="<?php echo site_url('exams'); ?>">How to Create CSV File</a></span></li>
-<li><span><a href="<?php echo site_url('exams'); ?>">Feedback / Help</a></span></li>
-<li class="menuitem"><span>Reports</span></li>
-<li><span><a href="<?php echo site_url('exams'); ?>">College Level</a></span></li>
-<li><span><a href="<?php echo site_url('exams'); ?>">Department Level</a></span></li>
-<li><span><a href="<?php echo site_url('exams'); ?>">Year Level</a></span></li>
-<li><span><a href="<?php echo site_url('exams'); ?>">Class Level</a></span></li>
-<li><span><a href="<?php echo site_url('exams'); ?>">Student Level</a></span></li>
-<li><span><a href="<?php echo site_url('exams'); ?>">Staff Level</a></span></li>
-
-</ul>
-</div>
--->
 <div class="rightcontainer">

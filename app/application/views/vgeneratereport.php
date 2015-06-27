@@ -6,7 +6,7 @@
 
 <form class="upload_form" target="_blank" action="<?php echo site_url('reports/output');?>" method="POST" enctype="multipart/form-data">
 
-<fieldset>
+
 
 <p class="report_header">Exam Selector</p>
 
@@ -70,7 +70,7 @@ if(x==1&&y==1)
 		document.getElementById("levelID").disabled = false;
 		document.getElementById("deptfilter").disabled = false;
 		document.getElementById("yearfilter").disabled = false;
-		document.getElementById("sectionfilter").disabled = true;
+		document.getElementById("sectionfilter").disabled = false;
 		document.getElementById("subjectfilter").disabled = true;
 		document.getElementById("studentfilter").disabled = true;
 		document.getElementById("resultfilter").disabled = true;	
@@ -401,7 +401,7 @@ generated for the results of students of all departments.</div>
 restrict the results based on the filters applied. Please use wherever necessary.</div>
 
 
-</fieldset>  
+
 <br><br>
 <button type="submit" name="submit" class="btn btn-primary">Submit</button><br><br>
 

@@ -212,7 +212,7 @@ echo '<li><span><span class="glyphicon glyphicon-user icon-size"></span><a href=
 ?>
 <li><span><span class="glyphicon glyphicon-user icon-size"></span><a href="<?php echo site_url('adminstatic/createcsv'); ?>">How to Create CSV File</a></span></li>
 <li><span><span class="glyphicon glyphicon-user icon-size"></span><a href="<?php echo site_url('upload/result'); ?>">Upload Results</a></span></li>
-<li><span><span class="glyphicon glyphicon-user icon-size"></span><a href="<?php echo site_url('exams/verify'); ?>">Verify Results</a></span></li>
+<li><span><span class="glyphicon glyphicon-user icon-size"></span><a href="<?php echo site_url('verify/exam'); ?>">Verify Results</a></span></li>
 <?php
 if($usertype==1)
 {
