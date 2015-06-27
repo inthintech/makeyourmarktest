@@ -207,11 +207,11 @@ font-size:1em;
 if($usertype==1)
 {
 echo '<li><span><span class="glyphicon glyphicon-plus icon-size"></span><a href="'.site_url('adminaction/addexam').'">New Exam</a></span></li>';
-echo '<li><span><span class="glyphicon glyphicon-check icon-size"></span><a href="'.site_url('adminstatic/examstatus').'">Exam Status</a></span></li>';
+echo '<li><span><span class="glyphicon glyphicon-th-list icon-size"></span><a href="'.site_url('adminstatic/examstatus').'">Exam Status</a></span></li>';
 }
 ?>
-<li><span><span class="glyphicon glyphicon-pencil icon-size"></span><a href="<?php echo site_url('adminstatic/createcsv'); ?>">How to Create CSV File</a></span></li>
-<li><span><span class="glyphicon glyphicon-file icon-size"></span><a href="<?php echo site_url('upload/result'); ?>">Upload Results</a></span></li>
+<li><span><span class="glyphicon glyphicon-file icon-size"></span><a href="<?php echo site_url('adminstatic/createcsv'); ?>">How to Create CSV File</a></span></li>
+<li><span><span class="glyphicon glyphicon-upload icon-size"></span><a href="<?php echo site_url('upload/result'); ?>">Upload Results</a></span></li>
 <li><span><span class="glyphicon glyphicon-search icon-size"></span><a href="<?php echo site_url('verify/exam'); ?>">Verify Results</a></span></li>
 <?php
 if($usertype==1)
