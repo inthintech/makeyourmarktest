@@ -7,6 +7,8 @@
 <title><?php echo $title ?></title>
 <!-- Bootstrap -->
 <link href="<?php echo base_url(); ?>css/bootstrap.min.css" rel="stylesheet">
+<!-- jQuery (necessary for Bootstraps JavaScript plugins) -->
+<script src="<?php echo base_url();?>js/jquery-1.11.3.min.js"></script>
 <link href="<?php echo base_url(); ?>css/style.css" rel="stylesheet">
 <script src="<?php echo base_url();?>js/Chart.js"></script>
 <style = "text/css">
