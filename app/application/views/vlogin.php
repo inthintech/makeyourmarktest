@@ -163,5 +163,21 @@ float: left;
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="<?php echo base_url();?>js/bootstrap.min.js"></script>
 </script>
+<script>
+
+var elem = document.createElement( "canvas" );
+ 
+if ( elem.getContext && elem.getContext( "2d" ) ) {
+    
+} else {
+    $(".logindiv").empty();
+    $(".logindiv").html('<p style="font-size:1.2em;padding:5%;">You are using an unsupported browser.<br><br>Please use a HTML5 supported browser.<br><br><a href="http://www.w3schools.com/html/html5_canvas.asp">Click here</a> for list of HTML5 supported browsers.</p>');
+
+    
+}  
+
+</script>
+
+
 </body>
 </html>
