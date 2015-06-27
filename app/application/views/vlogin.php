@@ -132,6 +132,7 @@ float: left;
 }
 
 </style>
+
 </head>
 <body>
 <div class="topbar">
@@ -161,5 +162,16 @@ float: left;
 <script src="<?php echo base_url();?>js/jquery-1.11.3.min.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="<?php echo base_url();?>js/bootstrap.min.js"></script>
+<script src="modernizr.js" type="text/javascript"></script>
+<script type="text/javascript">
+{
+if (Modernizr.canvas) {
+  // let's draw some shapes!
+} else {
+  // no native canvas support available :(
+  $( ".logindiv" ).empty();
+}        
+}
+</script>
 </body>
 </html>
