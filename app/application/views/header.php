@@ -7,7 +7,11 @@
 <title><?php echo $title ?></title>
 <!-- Bootstrap -->
 <link href="<?php echo base_url(); ?>css/bootstrap.min.css" rel="stylesheet">
+<link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
 <link href="<?php echo base_url(); ?>css/style.css" rel="stylesheet">
+<!-- jQuery (necessary for Bootstraps JavaScript plugins) -->
+<script src="<?php echo base_url();?>js/jquery-1.11.3.min.js"></script>
+
 <style = "text/css">
 @font-face {
         font-family: "Play";
@@ -152,7 +156,7 @@ margin-left: 8%;
 }
 .leftnav ul li span a
 {
-margin-left: 12%;
+margin-left: 5%;
 color: black;
 
 }
@@ -176,7 +180,10 @@ padding-top: 1.5%;
 color :#DEDEDE;
 font-size: 0.9em;
 }
-
+.icon-size
+{
+font-size:1em;
+}
 </style>
 </head>
 <body>
@@ -195,29 +202,29 @@ font-size: 0.9em;
 <ul> 
 
 <li class="menuitem"><span>Administration</span></li>
-<li><span><a href="<?php echo site_url('exams'); ?>">Home</a></span></li>
+<li><span><span class="glyphicon glyphicon-user icon-size"></span><a href="<?php echo site_url('adminstatic'); ?>">Home</a></span></li>
 <?php
 if($usertype==1)
 {
-echo '<li><span><a href="'.site_url('exams/addexam').'">New Exam</a></span></li>';
-echo '<li><span><a href="'.site_url('exams/status').'">Exam Status</a></span></li>';
+echo '<li><span><span class="glyphicon glyphicon-user icon-size"></span><a href="'.site_url('adminaction/addexam').'">New Exam</a></span></li>';
+echo '<li><span><span class="glyphicon glyphicon-user icon-size"></span><a href="'.site_url('adminstatic/examstatus').'">Exam Status</a></span></li>';
 }
 ?>
-<li><span><a href="<?php echo site_url('exams/createcsv'); ?>">How to Create CSV File</a></span></li>
-<li><span><a href="<?php echo site_url('exams/upload'); ?>">Upload Results</a></span></li>
-<li><span><a href="<?php echo site_url('exams/verify'); ?>">Verify Results</a></span></li>
+<li><span><span class="glyphicon glyphicon-user icon-size"></span><a href="<?php echo site_url('adminstatic/createcsv'); ?>">How to Create CSV File</a></span></li>
+<li><span><span class="glyphicon glyphicon-user icon-size"></span><a href="<?php echo site_url('upload/result'); ?>">Upload Results</a></span></li>
+<li><span><span class="glyphicon glyphicon-user icon-size"></span><a href="<?php echo site_url('exams/verify'); ?>">Verify Results</a></span></li>
 <?php
 if($usertype==1)
 {
-echo '<li><span><a href="'.site_url('exams/adduser').'">Add User</a></span></li>';
-echo '<li><span><a href="'.site_url('exams/deleteuser').'">Delete User</a></span></li>';
+echo '<li><span><span class="glyphicon glyphicon-user icon-size"></span><a href="'.site_url('adminaction/adduser').'">Add User</a></span></li>';
+echo '<li><span><span class="glyphicon glyphicon-user icon-size"></span><a href="'.site_url('adminaction/deleteuser').'">Delete User</a></span></li>';
 }
 ?>
-<li><span><a href="<?php echo site_url('exams/changepassword'); ?>">Change Password</a></span></li>
+<li><span><span class="glyphicon glyphicon-user icon-size"></span><a href="<?php echo site_url('adminaction/changepassword'); ?>">Change Password</a></span></li>
 
-<li><span><a href="<?php echo site_url('exams/help'); ?>">Feedback / Help</a></span></li>
+<li><span><span class="glyphicon glyphicon-user icon-size"></span><a href="<?php echo site_url('adminstatic/help'); ?>">Feedback / Help</a></span></li>
 <li class="menuitem"><span>Reports</span></li>
-<li><span><a href="<?php echo site_url('reports/generate'); ?>">Generate Report</a></span></li>
+<li><span><span class="glyphicon glyphicon-user icon-size"></span><a href="<?php echo site_url('reports/generate'); ?>">Generate Report</a></span></li>
 </ul>
 </div>
 <div class="rightcontainer">

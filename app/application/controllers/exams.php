@@ -421,10 +421,10 @@ class Exams extends CI_Controller {
 		$headerdata = array('usertype' => $this->session->userdata('user_type'), 'client_name' => $client_name ,'title' => 'Check or Delete Results','container_height' => 130 );
 		$this->load->view('header',$headerdata);
 		$result = $this->user->getResultInfo($this->session->userdata('client_id'),$this->input->post('examid'));
-
+		$html = '';
 		if($result)
 			{
-				$html = '';
+				
 				$sno = 0;
 				foreach($result as $row)
 					{

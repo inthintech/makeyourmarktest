@@ -1,12 +1,11 @@
 
-<div class="subcontainer" style="width:90%;position:relative;top:2%;">
+<div class="subcontainer" style="width:90%;top:2%;">
 <div class="panel panel-default">
 <div class="panel-heading">Upload Results for the Exam</div>
 <div class="panel-body">
 
-<form class="upload_form" action="<?php echo site_url('exams/uploadstatus');?>" method="POST" enctype="multipart/form-data">
+<form class="upload_form" action="<?php echo site_url($formaction);?>" method="POST" enctype="multipart/form-data">
 
-<fieldset>
 
 <p class="upload_header">Staff information</p>
 
@@ -101,7 +100,7 @@
 <br><br>
 <input type="file" name="fileToUpload" id="fileToUpload">
 
-</fieldset>  
+
 <br><br>
 <button type="submit" name="submit" class="btn btn-primary">Submit</button><br><br>
 <?php echo validation_errors(); ?>

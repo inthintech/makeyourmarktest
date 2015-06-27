@@ -24,7 +24,7 @@ function getClientName($client_id)
  {
    
     $query = $this->db->query("select client_name from clients where client_id=".$this->db->escape($client_id));
-
+    
    if($query -> num_rows() == 1)
    {
      return $query->result();
@@ -33,6 +33,7 @@ function getClientName($client_id)
    {
      return false;
    }
+   
  }
 
  function getExamName($examid)
@@ -274,18 +275,19 @@ function newResult($client_id,$exam_id,$target_path,$staffname,$staffid,$subname
   {
 
       $query = $this->db->query("select IFNULL(max(batch_id),0)+1 batch_id from results");
+      
       foreach($query->result() as $row)
         {
           $batchid= $row->batch_id;
-        } 
-
-
+        }
+        
       $query = $this->db->query('LOAD DATA LOCAL INFILE "'.$target_path.'"
       INTO TABLE results
       FIELDS TERMINATED BY "," ENCLOSED BY "\""
-      LINES TERMINATED BY "\r\n"               
+      LINES TERMINATED BY "\n"               
       IGNORE 1 LINES
       (student_id,student_name,marks_obtained)
+      
       set 
       pass_mark='.$this->db->escape($minmark).',
       total_marks='.$this->db->escape($maxmark).',
@@ -301,12 +303,19 @@ function newResult($client_id,$exam_id,$target_path,$staffname,$staffid,$subname
       crte_ts=CURRENT_TIMESTAMP,
       updt_ts=CURRENT_TIMESTAMP,
       batch_id='.$this->db->escape($batchid).',
-      lgcl_del_f="N"');
+      lgcl_del_f="N"'
+      
+      );
 
-     if($query)
+      $query = $this->db->query("select count(*) cnt from results where batch_id=".$batchid);
+      
+      foreach($query->result() as $row)
+        {
+          $cnt= $row->cnt;
+        }
+      
+     if($cnt>0)
      {
-       
-       unlink($target_path);
        $query = $this->db->query("update exams set status=1 where exam_id=".$this->db->escape($exam_id)); 
        return true;
      }

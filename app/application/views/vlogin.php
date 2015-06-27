@@ -30,7 +30,7 @@ background: #333333;
 .logindiv
 {
 width: 35%;
-height: 55%;
+
 background: #fff;
 margin-left: auto;
 margin-right: auto;
@@ -51,7 +51,7 @@ font-size: 1.8em;
 .lform 
 {
 margin-top: 8%;
-
+padding-bottom: 10%;
 }
 
 .lform fieldset

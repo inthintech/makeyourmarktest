@@ -16,7 +16,7 @@ class Login extends CI_Controller {
 		
 		if($this->session->userdata('client_id'))
 			{
-				redirect('exams');
+				redirect('adminstatic');
 			}
 		else
 			{
@@ -51,7 +51,7 @@ class Login extends CI_Controller {
    else
    {
      //Go to private area
-     redirect('exams');
+     redirect('adminstatic');
    }
 
  	}

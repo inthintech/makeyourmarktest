@@ -4,9 +4,9 @@
 <div class="panel-heading">Add a New User</div>
 <div class="panel-body">
 
-<form class="exam_form" action="<?php echo site_url('exams/adduserstatus');?>" method="POST" enctype="multipart/form-data">
+<form class="exam_form" action="<?php echo site_url($formaction);?>" method="POST" enctype="multipart/form-data">
 
-<fieldset>
+
 
 <label>Enter the User Name</label>
 <br>
@@ -18,7 +18,7 @@
 <br>
 <input type="password" name="pass" value="<?php echo set_value('pass'); ?>" size="250" class="form-control">
 
-</fieldset>  
+ 
 <br><br>
 <button type="submit" name="submit" class="btn btn-primary">Submit</button><br><br>
 <?php echo validation_errors(); ?>
