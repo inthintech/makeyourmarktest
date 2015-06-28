@@ -26,7 +26,8 @@ h6 {
 }
 
 .nav_bg {
-	background : #EE6363;
+	background : #4B0082;
+    
 }
 
 .lead {
@@ -185,5 +186,5 @@ p.copyright {
 }
 
 .linkcolor {
-	color : black !important;
+	color : #F4F4F4 !important;
 }
