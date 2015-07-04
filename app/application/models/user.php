@@ -339,6 +339,39 @@ function newResult($client_id,$exam_id,$target_path,$staffname,$staffid,$subname
      }
 
   }
+  
+  
+  function newBatch($client_id,$exam_id,$staffname,$staffid,$subname,$subcode,$maxmark,$minmark,$deptcode,$year,$section)
+
+  {
+
+      $query = $this->db->query("select IFNULL(max(batch_id),0)+1 batch_id from class");
+      
+      foreach($query->result() as $row)
+        {
+          $batchid= $row->batch_id;
+        }
+        
+      $query = $this->db->query("insert into class(batch_id,exam_id,client_id,dept_code,year,section,subject_code,subject_name,
+                                staff_id,staff_name,total_marks,pass_mark,crte_ts,updt_ts,
+                                is_ready) values(".$batchid.",".$this->db->escape($exam_id).",".$this->db->escape($client_id).","
+                                .$this->db->escape($deptcode).",".$this->db->escape($year).","
+                                .$this->db->escape($section).",".$this->db->escape($subcode).","
+                                .$this->db->escape($subname).",".$this->db->escape($staffid).","
+                                .$this->db->escape($staffname).",".$this->db->escape($maxmark).","
+                                .$this->db->escape($minmark).",CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,'N')");
+                               
+      if($query)
+      {
+        return $batchid;
+      }
+      
+      else
+      {
+       return false;
+      }
+
+  }
 
 function getResultInfo($client_id,$exam_id)
 
