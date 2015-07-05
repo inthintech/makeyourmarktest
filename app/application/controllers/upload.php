@@ -3,6 +3,7 @@
 class Upload extends CI_Controller {
 
 	private $containerHeight;
+	private $targetPathValue;
 	
 	public function __construct()
     {
@@ -14,6 +15,7 @@ class Upload extends CI_Controller {
         }
 		$this->load->model('user','',TRUE);
 		$this->containerHeight = 130;
+		$this->targetPathValue = '';
     }
 	
 	public function headerSetup($title,$height)
@@ -267,12 +269,12 @@ class Upload extends CI_Controller {
 		if(!isset($_POST['submit']))
 		{
 			//PREVENT DIRECT ACCESS OF STEP2
-			/*
+			
 			if(!$this->session->flashdata('fdata'))
 			{
 				redirect('upload/step1');
 			}
-			*/
+			
 			
 			$this->load->helper(array('form'));
 			$data = array('formaction' => 'upload/step2/'.$batch ,'batch' => $batch);
@@ -293,19 +295,10 @@ class Upload extends CI_Controller {
 			}
 			else
 			{
-				/*
-				$target_path = "files/";
-				$target_path = $target_path . basename( $_FILES['fileToUpload']['name']);
-				
-				$result = $this->user->newResult($this->session->userdata('client_id'),
-				$this->input->post('examid'),$target_path,$this->input->post('staffname'),$this->input->post('staffid'),
-				$this->input->post('subname'),$this->input->post('subcode'),$this->input->post('maxmark'),
-				$this->input->post('minmark'),$this->input->post('dept_code'),$this->input->post('year'),
-				$this->input->post('section')
-				);
-				
-				unlink($target_path);
-				
+						
+				$result = $this->user->newMarks($this->input->post('batchIdvalue'),$this->targetPathValue);
+				//unlink($this->targetPathValue);
+							
 				if($result)
 				{
 					
@@ -317,11 +310,7 @@ class Upload extends CI_Controller {
 					$data = array('message' => '<div class="alert alert-danger" role="alert">Error : Connection failed. Please try again.</div>
 					<script>$(".containerdiv").height(\''.$this->containerHeight.'%\');</script>');
 				}
-				$this->load->view('vmessage',$data);
-				*/
-				
-				
-				$data = array('message' => '<div class="alert alert-success" role="alert">Success : Results have been uploaded.</div>');
+				unlink($this->targetPathValue);
 				$this->load->view('vmessage',$data);
 				
 			}
@@ -454,6 +443,110 @@ class Upload extends CI_Controller {
      		return FALSE;
 			} 
 		
+		// Check if file selected is csv
+
+			$examFileType = pathinfo($target_path,PATHINFO_EXTENSION);
+			if($examFileType != "csv") 
+			{
+			$this->form_validation->set_message('csvFileValidation', 'File Uploaded is not a CSV file');
+     		return FALSE;
+			}
+		
+		// Check if file selected has data 
+
+			if (filesize($target_path) == 0)
+			{
+			$this->form_validation->set_message('csvFileValidation', 'File Uploaded is empty');
+     		return FALSE;
+			}
+		
+		// Check maximum file size 
+
+			if (filesize($target_path) > (2*1048576))
+			{
+			$this->form_validation->set_message('csvFileValidation', 'File Uploaded is too big. Allowed is upto 2 MB.');
+     		return FALSE;
+			}
+			
+			$file = fopen($target_path, "r");
+			$numcols = 0;
+			$numrows = 1;
+		
+		// Column and File Validation
+
+			while ($line = fgetcsv($file))
+			{
+			  // count the number of columns
+			  $numcols = count(array_filter(($line),'strlen'));
+
+			  // Bail out of the loop if columns are incorrect
+			  if ($numcols != 3) 
+			  {
+					$this->form_validation->set_message('csvFileValidation', 'Uploaded file has less/more columns or Missing Values at Row '.$numrows.'.');
+					return FALSE;
+			  }
+			  
+			  
+			  if($numrows>=2)
+			  {
+					//Data validation of student_id column
+					if(preg_match('/^[a-zA-Z0-9]+$/', $line[0]))
+					{
+						
+					}
+					else
+					{
+						$this->form_validation->set_message('csvFileValidation', 'Student_Id column has invalid data in uploaded file at Row '.$numrows.' Column 1.');
+						return FALSE;
+					}
+					
+					//Data validation of student_name column
+					if(preg_match('/^[a-zA-Z ]+$/', $line[1]))
+					{
+						
+					}
+					else
+					{
+						$this->form_validation->set_message('csvFileValidation', 'Student_name column has invalid data in uploaded file at Row '.$numrows.' Column 2.');
+						return FALSE;
+					}
+					
+					//Data validation of marks_obtained column
+					if(preg_match('/^[0-9]+$/', $line[2]))
+					{
+						
+					}
+					else
+					{
+						$this->form_validation->set_message('csvFileValidation', 'Marks_Obtained column has invalid data in uploaded file at Row '.$numrows.' Column 3.');
+						return FALSE;
+					}
+			  }
+			  
+			  $numrows++;
+
+			}
+			
+		// Check no of rows
+
+			
+			if ($numrows <= 1) 
+			{
+			  $this->form_validation->set_message('csvFileValidation', 'Uploaded file has only one or no rows');
+			  return FALSE;
+			}
+			
+		// Check max no of rows
+
+			
+			if ($numrows > 101) 
+			{
+			  $this->form_validation->set_message('csvFileValidation', 'Maximum row limit exceeded. You can only upload for a max of 100 students.');
+			  return FALSE;
+			}
+
+		
+		$this->targetPathValue = $target_path;
 		return TRUE;
 		
 	}

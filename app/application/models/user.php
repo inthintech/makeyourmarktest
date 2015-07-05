@@ -373,6 +373,41 @@ function newResult($client_id,$exam_id,$target_path,$staffname,$staffid,$subname
 
   }
 
+ function newMarks($batchid,$target_path)
+
+  {
+       
+      $query = $this->db->query('LOAD DATA LOCAL INFILE "'.$target_path.'"
+      INTO TABLE marks
+      FIELDS TERMINATED BY "," ENCLOSED BY "\""
+      LINES TERMINATED BY "\n"               
+      IGNORE 1 LINES
+      (student_id,student_name,marks_obtained)   
+      set
+      batch_id='.$this->db->escape($batchid).',
+      crte_ts=CURRENT_TIMESTAMP,
+      updt_ts=CURRENT_TIMESTAMP,
+      lgcl_del_f=\'N\'');
+      
+      if($query)
+      {
+        $querysub = $this->db->query("update class set is_ready='Y' where batch_id=".$batchid);
+        if($querysub)
+        {
+         return TRUE;
+        }
+        else
+        {
+         return FALSE;
+        }
+      }
+      else
+      {
+        return FALSE;
+      }
+
+  }
+  
 function getResultInfo($client_id,$exam_id)
 
   {
