@@ -140,7 +140,9 @@ from clientpackage where client_id=".$this->db->escape($client_id));
             } 
 
   $query = $this->db->query("select exam_id,exam_name from exams 
-    where status=1 and client_id=".$this->db->escape($client_id)." order by crte_ts desc LIMIT ".$no);
+    where
+    exam_id in (select distinct exam_id from class c where c.client_id=".$this->db->escape($client_id)." and c.is_ready='Y' and c.lgcl_del_f='N')
+    and client_id=".$this->db->escape($client_id)." order by crte_ts desc LIMIT ".$no);
 
    if($query -> num_rows() >= 1)
    {
@@ -255,7 +257,9 @@ from clientpackage where client_id=".$this->db->escape($client_id));
             } 
 
   $query = $this->db->query("select exam_name,DATE_FORMAT(crte_ts,'%b %D %Y')cdate,
-    case when status=1 then 'Results Available' else 'Results Not Uploaded' end status_msg,status from exams 
+    case
+    when (select count(*) from class c where c.exam_id=exam_id and c.is_ready='Y' and c.lgcl_del_f='N')>=1
+    then 'Results Available' else 'Results Not Uploaded' end status_msg,status from exams 
     where client_id=".$this->db->escape($client_id)." order by crte_ts desc LIMIT ".$no);
 
    if($query -> num_rows() >= 1)
@@ -354,12 +358,12 @@ function newResult($client_id,$exam_id,$target_path,$staffname,$staffid,$subname
         
       $query = $this->db->query("insert into class(batch_id,exam_id,client_id,dept_code,year,section,subject_code,subject_name,
                                 staff_id,staff_name,total_marks,pass_mark,crte_ts,updt_ts,
-                                is_ready) values(".$batchid.",".$this->db->escape($exam_id).",".$this->db->escape($client_id).","
+                                is_ready,lgcl_del_f) values(".$batchid.",".$this->db->escape($exam_id).",".$this->db->escape($client_id).","
                                 .$this->db->escape($deptcode).",".$this->db->escape($year).","
                                 .$this->db->escape($section).",".$this->db->escape($subcode).","
                                 .$this->db->escape($subname).",".$this->db->escape($staffid).","
                                 .$this->db->escape($staffname).",".$this->db->escape($maxmark).","
-                                .$this->db->escape($minmark).",CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,'N')");
+                                .$this->db->escape($minmark).",CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,'N','N')");
                                
       if($query)
       {
@@ -413,9 +417,8 @@ function getResultInfo($client_id,$exam_id)
   {
 
     $query = $this->db->query("select exam_id,batch_id,dept_code,year,section,staff_id,staff_name,subject_name
-    from results
-    where lgcl_del_f='N' and client_id=".$this->db->escape($client_id)." and exam_id=".$this->db->escape($exam_id)."
-    group by exam_id,batch_id,dept_code,year,section,staff_id,staff_name,subject_name
+    from class
+    where is_ready='Y' and lgcl_del_f='N' and client_id=".$this->db->escape($client_id)." and exam_id=".$this->db->escape($exam_id)."
     order by dept_code,year,section,subject_name");
 
     if($query -> num_rows() >= 1)
@@ -435,9 +438,9 @@ function getResultDetails($client_id,$exam_id,$batch_id)
 
   {
 
-    $query = $this->db->query("select student_id,student_name,total_marks,pass_mark,marks_obtained,lgcl_del_f
-    from results
-    where client_id=".$this->db->escape($client_id)." and exam_id=".$this->db->escape($exam_id)." and batch_id=".$this->db->escape($batch_id));
+    $query = $this->db->query("select student_id,student_name,total_marks,pass_mark,marks_obtained
+    from marks m join class c on m.batch_id=c.batch_id
+    where c.client_id=".$this->db->escape($client_id)." and c.exam_id=".$this->db->escape($exam_id)." and c.batch_id=".$this->db->escape($batch_id));
 
     if($query -> num_rows() >= 1)
    {
@@ -456,12 +459,12 @@ function removeResults($client_id,$exam_id,$batch_id)
 
   {
 
-    $query = $this->db->query("update results set lgcl_del_f='Y'
+    $query = $this->db->query("update class set lgcl_del_f='Y'
     where client_id=".$this->db->escape($client_id)." and exam_id=".$this->db->escape($exam_id)." and batch_id=".$this->db->escape($batch_id));
     
     if($query)
     {
-
+       /*
        $query = $this->db->query("select count(*) cnt from results
        where lgcl_del_f='N' and client_id=".$this->db->escape($client_id)." and exam_id=".$this->db->escape($exam_id));
 
@@ -474,7 +477,7 @@ function removeResults($client_id,$exam_id,$batch_id)
        {
          $query = $this->db->query("update exams set status=0
          where exam_id=".$this->db->escape($exam_id));
-       }
+       }*/
        return TRUE;
     }
     else

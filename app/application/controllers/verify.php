@@ -132,20 +132,9 @@ class Verify extends CI_Controller {
 			foreach($result as $row)
 			{
 				$sno++;
-				if($row->lgcl_del_f=='N')
-				{
-					$html= $html."<tr><td>".$sno."</td><td>".$row->student_id."</td><td>".$row->student_name."</td>
-					<td>".$row->total_marks."</td><td>".$row->pass_mark."</td><td>".$row->marks_obtained."</td>
-					<td>Yes</td>";
-				}
-				else
-				{
-					$html= $html."<tr><td>".$sno."</td><td style='background: #DCDCDC;'>".$row->student_id."</td>
-					<td style='background: #DCDCDC;'>".$row->student_name."</td>
-					<td>".$row->total_marks."</td><td>".$row->pass_mark."</td>
-					<td style='background: #DCDCDC;'>".$row->marks_obtained."</td>
-					<td style='background: #CD5555;'>No</td>";
-				}
+				$html= $html."<tr><td>".$sno."</td><td>".$row->student_id."</td><td>".$row->student_name."</td>
+				<td>".$row->total_marks."</td><td>".$row->pass_mark."</td><td>".$row->marks_obtained."</td>";
+				
 			} 
 		}
 		$data = array('resultsInfo' => $html);
