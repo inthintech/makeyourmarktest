@@ -48,6 +48,21 @@ class Upload extends CI_Controller {
 		}		
 	}
 	
+	public function alphanumericNoSpcVal($inp,$name)
+	{
+		
+		if(preg_match('/^[a-zA-Z0-9]+$/', $inp))
+		//check if only alphanumeric,numbers and spaces are present	
+		{
+			return TRUE;
+		}
+		else
+		{		
+			$this->form_validation->set_message('alphanumericNoSpcVal', 'Please enter only alphabets and numbers for '.$name.' field');
+     		return FALSE;
+		}		
+	}
+	
 	public function numericVal($inp,$name)
 	{
 		
@@ -203,14 +218,14 @@ class Upload extends CI_Controller {
 		{
 			$this->load->library('form_validation');
 			$this->form_validation->set_rules('staffname', 'Staff Name', 'trim|required|xss_clean|max_length[250]|callback_alphanumericVal[Staff Name]');
-			$this->form_validation->set_rules('staffid', 'Staff Id', 'trim|required|xss_clean|max_length[250]|callback_alphanumericVal[Staff Id]');
+			$this->form_validation->set_rules('staffid', 'Staff Id', 'trim|required|xss_clean|max_length[250]|callback_alphanumericNoSpcVal[Staff Id]');
 			$this->form_validation->set_rules('subname', 'Subject Name', 'trim|required|xss_clean|max_length[250]|callback_alphanumericVal[Subject Name]');
 			$this->form_validation->set_rules('subcode', 'Subject Code', 'trim|required|xss_clean|max_length[250]|callback_alphanumericVal[Subject Code]');
 			$this->form_validation->set_rules('maxmark', 'Maximum Mark', 'trim|required|xss_clean|max_length[250]|callback_numericVal[Maximum Mark]');
 			$this->form_validation->set_rules('minmark', 'Minimum Mark', 'trim|required|xss_clean|max_length[250]|callback_numericVal[Minimum Mark]');
 			/*$this->form_validation->set_rules('fileToUpload', 'File', 'callback_fileValidation');*/
 	
-			$this->form_validation->set_error_delimiters('<p class="errorMsg">', '</p>');
+			$this->form_validation->set_error_delimiters('<br><p class="uploadErrMsg">* ', '</p>');
 			if($this->form_validation->run() == FALSE)
 			{
 				$this->load->helper(array('form'));

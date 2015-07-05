@@ -10,12 +10,12 @@ function passPercentageReportCollege($client_id,$exam_id,$filterQry)
 	$query = $this->db->query("select * from
 	(select a.student_cnt,ifnull(b.student_pass_cnt,0) student_pass_cnt,
     ROUND((ifnull(b.student_pass_cnt,0)/a.student_cnt)*100) pass_percentage from 
-    (select client_id,count(distinct student_id) student_cnt from class cs join marks ms on cs.batch_id=ms.batch_id 
-    where is_ready='Y' and lgcl_del_f='N'  and client_id=".$this->db->escape($client_id)." and exam_id=".$this->db->escape($exam_id)." group by client_id)a
+    (select client_id,count(distinct student_id) student_cnt from results
+    where lgcl_del_f='N' and client_id=".$this->db->escape($client_id)." and exam_id=".$this->db->escape($exam_id)." group by client_id)a
     
     left join
-    (select client_id,count(distinct student_id) student_pass_cnt from class cs join marks ms on cs.batch_id=ms.batch_id 
-    where marks_obtained>=pass_mark and is_ready='Y' and lgcl_del_f='N'  
+    (select client_id,count(distinct student_id) student_pass_cnt from results
+    where marks_obtained>=pass_mark and lgcl_del_f='N' 
     and client_id=".$this->db->escape($client_id)." and exam_id=".$this->db->escape($exam_id)." group by client_id)b
     on a.client_id=b.client_id)
 	SCR ".$filterQry);
@@ -39,11 +39,11 @@ function passPercentageReportDept($client_id,$exam_id,$filterQry)
 	$query = $this->db->query("select * from
 	(select a.dept_code,a.student_cnt,ifnull(b.student_pass_cnt,0) student_pass_cnt,
     ROUND((ifnull(b.student_pass_cnt,0)/a.student_cnt)*100) pass_percentage from 
-    (select dept_code,count(distinct student_id) student_cnt from class cs join marks ms on cs.batch_id=ms.batch_id 
-    where is_ready='Y' and lgcl_del_f='N'  and client_id=".$this->db->escape($client_id)." and exam_id=".$this->db->escape($exam_id)." group by dept_code)a
+    (select dept_code,count(distinct student_id) student_cnt from results
+    where lgcl_del_f='N' and client_id=".$this->db->escape($client_id)." and exam_id=".$this->db->escape($exam_id)." group by dept_code)a
     left join
-    (select dept_code,count(distinct student_id) student_pass_cnt from class cs join marks ms on cs.batch_id=ms.batch_id 
-    where marks_obtained>=pass_mark and is_ready='Y' and lgcl_del_f='N'  
+    (select dept_code,count(distinct student_id) student_pass_cnt from results
+    where marks_obtained>=pass_mark and lgcl_del_f='N' 
     and client_id=".$this->db->escape($client_id)." and exam_id=".$this->db->escape($exam_id)." group by dept_code)b
     on a.dept_code=b.dept_code)
 	SCR ".$filterQry." order by dept_code");
@@ -66,11 +66,11 @@ function passPercentageReportYear($client_id,$exam_id,$filterQry)
   $query = $this->db->query("select * from
   (select a.year,a.student_cnt,ifnull(b.student_pass_cnt,0) student_pass_cnt,
     ROUND((ifnull(b.student_pass_cnt,0)/a.student_cnt)*100) pass_percentage from 
-    (select year,count(distinct student_id) student_cnt from class cs join marks ms on cs.batch_id=ms.batch_id 
-    where is_ready='Y' and lgcl_del_f='N'  and client_id=".$this->db->escape($client_id)." and exam_id=".$this->db->escape($exam_id)." group by year)a
+    (select year,count(distinct student_id) student_cnt from results
+    where lgcl_del_f='N' and client_id=".$this->db->escape($client_id)." and exam_id=".$this->db->escape($exam_id)." group by year)a
     left join
-    (select year,count(distinct student_id) student_pass_cnt from class cs join marks ms on cs.batch_id=ms.batch_id 
-    where marks_obtained>=pass_mark and is_ready='Y' and lgcl_del_f='N'  
+    (select year,count(distinct student_id) student_pass_cnt from results
+    where marks_obtained>=pass_mark and lgcl_del_f='N' 
     and client_id=".$this->db->escape($client_id)." and exam_id=".$this->db->escape($exam_id)." group by year)b
     on a.year=b.year)
   SCR ".$filterQry." order by year");
@@ -93,11 +93,11 @@ function passPercentageReportDeptYear($client_id,$exam_id,$filterQry)
   $query = $this->db->query("select * from
   (select a.dept_code,a.year,a.student_cnt,ifnull(b.student_pass_cnt,0) student_pass_cnt,
     ROUND((ifnull(b.student_pass_cnt,0)/a.student_cnt)*100) pass_percentage from 
-    (select dept_code,year,count(distinct student_id) student_cnt from class cs join marks ms on cs.batch_id=ms.batch_id 
-    where is_ready='Y' and lgcl_del_f='N'  and client_id=".$this->db->escape($client_id)." and exam_id=".$this->db->escape($exam_id)." group by dept_code,year)a
+    (select dept_code,year,count(distinct student_id) student_cnt from results
+    where lgcl_del_f='N' and client_id=".$this->db->escape($client_id)." and exam_id=".$this->db->escape($exam_id)." group by dept_code,year)a
     left join
-    (select dept_code,year,count(distinct student_id) student_pass_cnt from class cs join marks ms on cs.batch_id=ms.batch_id 
-    where marks_obtained>=pass_mark and is_ready='Y' and lgcl_del_f='N'  
+    (select dept_code,year,count(distinct student_id) student_pass_cnt from results
+    where marks_obtained>=pass_mark and lgcl_del_f='N' 
     and client_id=".$this->db->escape($client_id)." and exam_id=".$this->db->escape($exam_id)." group by dept_code,year)b
     on a.dept_code=b.dept_code and a.year=b.year)
   SCR ".$filterQry." order by dept_code,year");
@@ -120,11 +120,11 @@ function passPercentageReportClass($client_id,$exam_id,$filterQry)
   $query = $this->db->query("select * from
   (select a.dept_code,a.year,a.section,a.student_cnt,ifnull(b.student_pass_cnt,0) student_pass_cnt,
     ROUND((ifnull(b.student_pass_cnt,0)/a.student_cnt)*100) pass_percentage from 
-    (select dept_code,year,section,count(distinct student_id) student_cnt from class cs join marks ms on cs.batch_id=ms.batch_id 
-    where is_ready='Y' and lgcl_del_f='N'  and client_id=".$this->db->escape($client_id)." and exam_id=".$this->db->escape($exam_id)." group by dept_code,year,section)a
+    (select dept_code,year,section,count(distinct student_id) student_cnt from results
+    where lgcl_del_f='N' and client_id=".$this->db->escape($client_id)." and exam_id=".$this->db->escape($exam_id)." group by dept_code,year,section)a
     left join
-    (select dept_code,year,section,count(distinct student_id) student_pass_cnt from class cs join marks ms on cs.batch_id=ms.batch_id 
-    where marks_obtained>=pass_mark and is_ready='Y' and lgcl_del_f='N'  
+    (select dept_code,year,section,count(distinct student_id) student_pass_cnt from results
+    where marks_obtained>=pass_mark and lgcl_del_f='N' 
     and client_id=".$this->db->escape($client_id)." and exam_id=".$this->db->escape($exam_id)." group by dept_code,year,section)b
     on a.dept_code=b.dept_code and a.year=b.year and a.section=b.section)
   SCR ".$filterQry." order by dept_code,year,section");
@@ -158,13 +158,13 @@ from
 (select b.*,a.percentage
 from
 (select student_id,AVG(marks_obtained) percentage
-from class cs join marks ms on cs.batch_id=ms.batch_id 
-where is_ready='Y' and lgcl_del_f='N'  and exam_id=".$this->db->escape($exam_id)." and client_id=".$this->db->escape($client_id)." and marks_obtained>=pass_mark
+from results
+where lgcl_del_f='N' and exam_id=".$this->db->escape($exam_id)." and client_id=".$this->db->escape($client_id)." and marks_obtained>=pass_mark
 group by student_id)a
 join
 (select distinct client_id,dept_code,year,section,student_id,student_name
-from class cs join marks ms on cs.batch_id=ms.batch_id 
-where is_ready='Y' and lgcl_del_f='N'  and exam_id=".$this->db->escape($exam_id)." and client_id=".$this->db->escape($client_id)." and marks_obtained>=pass_mark)b
+from results
+where lgcl_del_f='N' and exam_id=".$this->db->escape($exam_id)." and client_id=".$this->db->escape($client_id)." and marks_obtained>=pass_mark)b
 on a.student_id=b.student_id)
 rset,
 (SELECT @curRow := 0, @oldPercent := 0) r
@@ -200,13 +200,13 @@ from
 (select b.*,a.percentage
 from
 (select student_id,AVG(marks_obtained) percentage
-from class cs join marks ms on cs.batch_id=ms.batch_id 
-where is_ready='Y' and lgcl_del_f='N'  and exam_id=".$this->db->escape($exam_id)." and client_id=".$this->db->escape($client_id)." and marks_obtained>=pass_mark
+from results
+where lgcl_del_f='N' and exam_id=".$this->db->escape($exam_id)." and client_id=".$this->db->escape($client_id)." and marks_obtained>=pass_mark
 group by student_id)a
 join
 (select distinct client_id,dept_code,year,section,student_id,student_name
-from class cs join marks ms on cs.batch_id=ms.batch_id 
-where is_ready='Y' and lgcl_del_f='N'  and exam_id=".$this->db->escape($exam_id)." and client_id=".$this->db->escape($client_id)." and marks_obtained>=pass_mark)b
+from results
+where lgcl_del_f='N' and exam_id=".$this->db->escape($exam_id)." and client_id=".$this->db->escape($client_id)." and marks_obtained>=pass_mark)b
 on a.student_id=b.student_id)rset,
 (SELECT @curRow := 0, @oldPercent := 0, @client_id := 0, @dept := '', @year := 0, @section='') r
 order by dept_code,percentage desc
@@ -241,13 +241,13 @@ from
 (select b.*,a.percentage
 from
 (select student_id,AVG(marks_obtained) percentage
-from class cs join marks ms on cs.batch_id=ms.batch_id 
-where is_ready='Y' and lgcl_del_f='N'  and exam_id=".$this->db->escape($exam_id)." and client_id=".$this->db->escape($client_id)." and marks_obtained>=pass_mark
+from results
+where lgcl_del_f='N' and exam_id=".$this->db->escape($exam_id)." and client_id=".$this->db->escape($client_id)." and marks_obtained>=pass_mark
 group by student_id)a
 join
 (select distinct client_id,dept_code,year,section,student_id,student_name
-from class cs join marks ms on cs.batch_id=ms.batch_id 
-where is_ready='Y' and lgcl_del_f='N'  and exam_id=".$this->db->escape($exam_id)." and client_id=".$this->db->escape($client_id)." and marks_obtained>=pass_mark)b
+from results
+where lgcl_del_f='N' and exam_id=".$this->db->escape($exam_id)." and client_id=".$this->db->escape($client_id)." and marks_obtained>=pass_mark)b
 on a.student_id=b.student_id)rset,
 (SELECT @curRow := 0, @oldPercent := 0, @client_id := 0, @dept := '', @year := 0, @section :='') r
 order by year,percentage desc
@@ -282,13 +282,13 @@ from
 (select b.*,a.percentage
 from
 (select student_id,AVG(marks_obtained) percentage
-from class cs join marks ms on cs.batch_id=ms.batch_id 
-where is_ready='Y' and lgcl_del_f='N'  and exam_id=".$this->db->escape($exam_id)." and client_id=".$this->db->escape($client_id)." and marks_obtained>=pass_mark
+from results
+where lgcl_del_f='N' and exam_id=".$this->db->escape($exam_id)." and client_id=".$this->db->escape($client_id)." and marks_obtained>=pass_mark
 group by student_id)a
 join
 (select distinct client_id,dept_code,year,section,student_id,student_name
-from class cs join marks ms on cs.batch_id=ms.batch_id 
-where is_ready='Y' and lgcl_del_f='N'  and exam_id=".$this->db->escape($exam_id)." and client_id=".$this->db->escape($client_id)." and marks_obtained>=pass_mark)b
+from results
+where lgcl_del_f='N' and exam_id=".$this->db->escape($exam_id)." and client_id=".$this->db->escape($client_id)." and marks_obtained>=pass_mark)b
 on a.student_id=b.student_id)rset,
 (SELECT @curRow := 0, @oldPercent := 0, @client_id := 0, @dept := '', @year := 0, @section :='') r
 order by dept_code,year,percentage desc
@@ -323,13 +323,13 @@ from
 (select b.*,a.percentage
 from
 (select student_id,AVG(marks_obtained) percentage
-from class cs join marks ms on cs.batch_id=ms.batch_id 
-where is_ready='Y' and lgcl_del_f='N'  and exam_id=".$this->db->escape($exam_id)." and client_id=".$this->db->escape($client_id)." and marks_obtained>=pass_mark
+from results
+where lgcl_del_f='N' and exam_id=".$this->db->escape($exam_id)." and client_id=".$this->db->escape($client_id)." and marks_obtained>=pass_mark
 group by student_id)a
 join
 (select distinct client_id,dept_code,year,section,student_id,student_name
-from class cs join marks ms on cs.batch_id=ms.batch_id 
-where is_ready='Y' and lgcl_del_f='N'  and exam_id=".$this->db->escape($exam_id)." and client_id=".$this->db->escape($client_id)." and marks_obtained>=pass_mark)b
+from results
+where lgcl_del_f='N' and exam_id=".$this->db->escape($exam_id)." and client_id=".$this->db->escape($client_id)." and marks_obtained>=pass_mark)b
 on a.student_id=b.student_id)rset,
 (SELECT @curRow := 0, @oldPercent := 0, @client_id := 0, @dept := '', @year := 0, @section :='') r
 order by dept_code,year,percentage desc
@@ -366,12 +366,12 @@ from
 (select b.*,a.percentage
 from
 (select student_id,AVG(marks_obtained) percentage
-from class cs join marks ms on cs.batch_id=ms.batch_id 
-where is_ready='Y' and lgcl_del_f='N'  and exam_id=".$this->db->escape($exam_id)." and client_id=".$this->db->escape($client_id)." group by student_id)a
+from results
+where lgcl_del_f='N' and exam_id=".$this->db->escape($exam_id)." and client_id=".$this->db->escape($client_id)." group by student_id)a
 join
 (select distinct client_id,dept_code,year,section,student_id,student_name
-from class cs join marks ms on cs.batch_id=ms.batch_id 
-where is_ready='Y' and lgcl_del_f='N'  and exam_id=".$this->db->escape($exam_id)." and client_id=".$this->db->escape($client_id).")b
+from results
+where lgcl_del_f='N' and exam_id=".$this->db->escape($exam_id)." and client_id=".$this->db->escape($client_id).")b
 on a.student_id=b.student_id)
 rset,
 (SELECT @curRow := 0, @oldPercent := 0) r
@@ -408,12 +408,12 @@ from
 (select b.*,a.percentage
 from
 (select student_id,AVG(marks_obtained) percentage
-from class cs join marks ms on cs.batch_id=ms.batch_id 
-where is_ready='Y' and lgcl_del_f='N'  and exam_id=".$this->db->escape($exam_id)." and client_id=".$this->db->escape($client_id)." group by student_id)a
+from results
+where lgcl_del_f='N' and exam_id=".$this->db->escape($exam_id)." and client_id=".$this->db->escape($client_id)." group by student_id)a
 join
 (select distinct client_id,dept_code,year,section,student_id,student_name
-from class cs join marks ms on cs.batch_id=ms.batch_id 
-where is_ready='Y' and lgcl_del_f='N'  and exam_id=".$this->db->escape($exam_id)." and client_id=".$this->db->escape($client_id).")b
+from results
+where lgcl_del_f='N' and exam_id=".$this->db->escape($exam_id)." and client_id=".$this->db->escape($client_id).")b
 on a.student_id=b.student_id)rset,
 (SELECT @curRow := 0, @oldPercent := 0, @client_id := 0, @dept := '', @year := 0, @section='') r
 order by dept_code,percentage desc
@@ -448,12 +448,12 @@ from
 (select b.*,a.percentage
 from
 (select student_id,AVG(marks_obtained) percentage
-from class cs join marks ms on cs.batch_id=ms.batch_id 
-where is_ready='Y' and lgcl_del_f='N'  and exam_id=".$this->db->escape($exam_id)." and client_id=".$this->db->escape($client_id)." group by student_id)a
+from results
+where lgcl_del_f='N' and exam_id=".$this->db->escape($exam_id)." and client_id=".$this->db->escape($client_id)." group by student_id)a
 join
 (select distinct client_id,dept_code,year,section,student_id,student_name
-from class cs join marks ms on cs.batch_id=ms.batch_id 
-where is_ready='Y' and lgcl_del_f='N'  and exam_id=".$this->db->escape($exam_id)." and client_id=".$this->db->escape($client_id).")b
+from results
+where lgcl_del_f='N' and exam_id=".$this->db->escape($exam_id)." and client_id=".$this->db->escape($client_id).")b
 on a.student_id=b.student_id)rset,
 (SELECT @curRow := 0, @oldPercent := 0, @client_id := 0, @dept := '', @year := 0, @section :='') r
 order by year,percentage desc
@@ -488,12 +488,12 @@ from
 (select b.*,a.percentage
 from
 (select student_id,AVG(marks_obtained) percentage
-from class cs join marks ms on cs.batch_id=ms.batch_id 
-where is_ready='Y' and lgcl_del_f='N'  and exam_id=".$this->db->escape($exam_id)." and client_id=".$this->db->escape($client_id)." group by student_id)a
+from results
+where lgcl_del_f='N' and exam_id=".$this->db->escape($exam_id)." and client_id=".$this->db->escape($client_id)." group by student_id)a
 join
 (select distinct client_id,dept_code,year,section,student_id,student_name
-from class cs join marks ms on cs.batch_id=ms.batch_id 
-where is_ready='Y' and lgcl_del_f='N'  and exam_id=".$this->db->escape($exam_id)." and client_id=".$this->db->escape($client_id).")b
+from results
+where lgcl_del_f='N' and exam_id=".$this->db->escape($exam_id)." and client_id=".$this->db->escape($client_id).")b
 on a.student_id=b.student_id)rset,
 (SELECT @curRow := 0, @oldPercent := 0, @client_id := 0, @dept := '', @year := 0, @section :='') r
 order by dept_code,year,percentage desc
@@ -528,12 +528,12 @@ from
 (select b.*,a.percentage
 from
 (select student_id,AVG(marks_obtained) percentage
-from class cs join marks ms on cs.batch_id=ms.batch_id 
-where is_ready='Y' and lgcl_del_f='N'  and exam_id=".$this->db->escape($exam_id)." and client_id=".$this->db->escape($client_id)." group by student_id)a
+from results
+where lgcl_del_f='N' and exam_id=".$this->db->escape($exam_id)." and client_id=".$this->db->escape($client_id)." group by student_id)a
 join
 (select distinct client_id,dept_code,year,section,student_id,student_name
-from class cs join marks ms on cs.batch_id=ms.batch_id 
-where is_ready='Y' and lgcl_del_f='N'  and exam_id=".$this->db->escape($exam_id)." and client_id=".$this->db->escape($client_id).")b
+from results
+where lgcl_del_f='N' and exam_id=".$this->db->escape($exam_id)." and client_id=".$this->db->escape($client_id).")b
 on a.student_id=b.student_id)rset,
 (SELECT @curRow := 0, @oldPercent := 0, @client_id := 0, @dept := '', @year := 0, @section :='') r
 order by dept_code,year,percentage desc
@@ -568,13 +568,13 @@ from
 (select b.*,ROUND((b.student_pass_cnt/a.student_cnt)*100) percentage
 from
 (select subject_code,subject_name,count(distinct student_id) student_cnt
-from class cs join marks ms on cs.batch_id=ms.batch_id 
-where is_ready='Y' and lgcl_del_f='N'  and exam_id=".$this->db->escape($exam_id)." 
+from results
+where lgcl_del_f='N' and exam_id=".$this->db->escape($exam_id)." 
 and client_id=".$this->db->escape($client_id)." group by subject_code,subject_name)a
 join
 (select client_id,dept_code,year,section,subject_code,subject_name,staff_id,staff_name,count(distinct student_id) student_pass_cnt
-from class cs join marks ms on cs.batch_id=ms.batch_id 
-where is_ready='Y' and lgcl_del_f='N'  and marks_obtained>pass_mark and exam_id=".$this->db->escape($exam_id)." 
+from results
+where lgcl_del_f='N' and marks_obtained>pass_mark and exam_id=".$this->db->escape($exam_id)." 
 and client_id=".$this->db->escape($client_id)." group by client_id,dept_code,year,section,subject_code,subject_name,staff_id,staff_name)b
 on a.subject_code=b.subject_code)
 rset,
@@ -612,13 +612,13 @@ from
 (select b.*,ROUND((b.student_pass_cnt/a.student_cnt)*100) percentage
 from
 (select subject_code,subject_name,count(distinct student_id) student_cnt
-from class cs join marks ms on cs.batch_id=ms.batch_id 
-where is_ready='Y' and lgcl_del_f='N'  and exam_id=".$this->db->escape($exam_id)." 
+from results
+where lgcl_del_f='N' and exam_id=".$this->db->escape($exam_id)." 
 and client_id=".$this->db->escape($client_id)." group by subject_code,subject_name)a
 join
 (select client_id,dept_code,year,section,subject_code,subject_name,staff_id,staff_name,count(distinct student_id) student_pass_cnt
-from class cs join marks ms on cs.batch_id=ms.batch_id 
-where is_ready='Y' and lgcl_del_f='N'  and marks_obtained>pass_mark and exam_id=".$this->db->escape($exam_id)." 
+from results
+where lgcl_del_f='N' and marks_obtained>pass_mark and exam_id=".$this->db->escape($exam_id)." 
 and client_id=".$this->db->escape($client_id)." group by client_id,dept_code,year,section,subject_code,subject_name,staff_id,staff_name)b
 on a.subject_code=b.subject_code)rset,
 (SELECT @curRow := 0, @oldPercent := 0, @client_id := 0, @dept := '', @year := 0, @section='') r
@@ -654,13 +654,13 @@ from
 (select b.*,ROUND((b.student_pass_cnt/a.student_cnt)*100) percentage
 from
 (select subject_code,subject_name,count(distinct student_id) student_cnt
-from class cs join marks ms on cs.batch_id=ms.batch_id 
-where is_ready='Y' and lgcl_del_f='N'  and exam_id=".$this->db->escape($exam_id)." 
+from results
+where lgcl_del_f='N' and exam_id=".$this->db->escape($exam_id)." 
 and client_id=".$this->db->escape($client_id)." group by subject_code,subject_name)a
 join
 (select client_id,dept_code,year,section,subject_code,subject_name,staff_id,staff_name,count(distinct student_id) student_pass_cnt
-from class cs join marks ms on cs.batch_id=ms.batch_id 
-where is_ready='Y' and lgcl_del_f='N'  and marks_obtained>pass_mark and exam_id=".$this->db->escape($exam_id)." 
+from results
+where lgcl_del_f='N' and marks_obtained>pass_mark and exam_id=".$this->db->escape($exam_id)." 
 and client_id=".$this->db->escape($client_id)." group by client_id,dept_code,year,section,subject_code,subject_name,staff_id,staff_name)b
 on a.subject_code=b.subject_code)rset,
 (SELECT @curRow := 0, @oldPercent := 0, @client_id := 0, @dept := '', @year := 0, @section :='') r
@@ -696,13 +696,13 @@ from
 (select b.*,ROUND((b.student_pass_cnt/a.student_cnt)*100) percentage
 from
 (select subject_code,subject_name,count(distinct student_id) student_cnt
-from class cs join marks ms on cs.batch_id=ms.batch_id 
-where is_ready='Y' and lgcl_del_f='N'  and exam_id=".$this->db->escape($exam_id)." 
+from results
+where lgcl_del_f='N' and exam_id=".$this->db->escape($exam_id)." 
 and client_id=".$this->db->escape($client_id)." group by subject_code,subject_name)a
 join
 (select client_id,dept_code,year,section,subject_code,subject_name,staff_id,staff_name,count(distinct student_id) student_pass_cnt
-from class cs join marks ms on cs.batch_id=ms.batch_id 
-where is_ready='Y' and lgcl_del_f='N'  and marks_obtained>pass_mark and exam_id=".$this->db->escape($exam_id)." 
+from results
+where lgcl_del_f='N' and marks_obtained>pass_mark and exam_id=".$this->db->escape($exam_id)." 
 and client_id=".$this->db->escape($client_id)." group by client_id,dept_code,year,section,subject_code,subject_name,staff_id,staff_name)b
 on a.subject_code=b.subject_code)rset,
 (SELECT @curRow := 0, @oldPercent := 0, @client_id := 0, @dept := '', @year := 0, @section :='') r
@@ -738,13 +738,13 @@ from
 (select b.*,ROUND((b.student_pass_cnt/a.student_cnt)*100) percentage
 from
 (select subject_code,subject_name,count(distinct student_id) student_cnt
-from class cs join marks ms on cs.batch_id=ms.batch_id 
-where is_ready='Y' and lgcl_del_f='N'  and exam_id=".$this->db->escape($exam_id)." 
+from results
+where lgcl_del_f='N' and exam_id=".$this->db->escape($exam_id)." 
 and client_id=".$this->db->escape($client_id)." group by subject_code,subject_name)a
 join
 (select client_id,dept_code,year,section,subject_code,subject_name,staff_id,staff_name,count(distinct student_id) student_pass_cnt
-from class cs join marks ms on cs.batch_id=ms.batch_id 
-where is_ready='Y' and lgcl_del_f='N'  and marks_obtained>pass_mark and exam_id=".$this->db->escape($exam_id)." 
+from results
+where lgcl_del_f='N' and marks_obtained>pass_mark and exam_id=".$this->db->escape($exam_id)." 
 and client_id=".$this->db->escape($client_id)." group by client_id,dept_code,year,section,subject_code,subject_name,staff_id,staff_name)b
 on a.subject_code=b.subject_code)rset,
 (SELECT @curRow := 0, @oldPercent := 0, @client_id := 0, @dept := '', @year := 0, @section :='') r
@@ -769,8 +769,8 @@ function studentMarkListReport($client_id,$exam_id,$filterQry)
   $query = $this->db->query("select * from 
     (select client_id,dept_code,year,section,subject_code,subject_name,student_id,student_name,total_marks,marks_obtained,
 case when marks_obtained>=pass_mark then '1' else '0' end result 
-from class cs join marks ms on cs.batch_id=ms.batch_id 
-where is_ready='Y' and lgcl_del_f='N'  and exam_id=".$this->db->escape($exam_id)." 
+from results
+where lgcl_del_f='N' and exam_id=".$this->db->escape($exam_id)." 
 and client_id=".$this->db->escape($client_id)."
 )SCR ".$filterQry."
 order by dept_code,year,section,student_id,subject_code");

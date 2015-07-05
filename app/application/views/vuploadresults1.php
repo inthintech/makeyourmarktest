@@ -20,11 +20,13 @@
 <label>Enter the Staff Name</label>
 <br>
 <input type="text" name="staffname" value="<?php echo set_value('staffname'); ?>" size="250" class="form-control">
+<?php echo form_error('staffname'); ?>
 
 <br><br>
 <label>Enter the Staff Employee Id</label>
 <br>
 <input type="text" name="staffid" value="<?php echo set_value('staffid'); ?>" size="250" class="form-control">
+<?php echo form_error('staffid'); ?>
 
 <br><br>
 <p class="upload_header">Subject information</p>
@@ -33,22 +35,25 @@
 <label>Enter the Subject Name</label>
 <br>
 <input type="text" name="subname" value="<?php echo set_value('subname'); ?>" size="250" class="form-control">
+<?php echo form_error('subname'); ?>
 
 <br><br>
 <label>Enter the Subject Code</label>
 <br>
 <input type="text" name="subcode" value="<?php echo set_value('subcode'); ?>" size="250" class="form-control">
+<?php echo form_error('subcode'); ?>
 
 <br><br>
 <label>Enter the Maximum Mark for the Subject in the Exam (50,100 etc.)</label>
 <br>
 <input type="text" name="maxmark" value="<?php echo set_value('maxmark'); ?>" size="250" class="form-control">
+<?php echo form_error('maxmark'); ?>
 
 <br><br>
 <label>Enter the Minimum Mark required to Pass this Subject (35,40 etc.)</label>
 <br>
 <input type="text" name="minmark" value="<?php echo set_value('minmark'); ?>" size="250" class="form-control">
-
+<?php echo form_error('minmark'); ?>
 
 <br><br>
 <p class="upload_header">Class information</p>
@@ -108,7 +113,7 @@
 
 <br><br>
 <button type="submit" name="submit" class="btn btn-primary">Submit</button><br><br>
-<?php echo validation_errors(); ?>
+
 </form>
 
 </div>
