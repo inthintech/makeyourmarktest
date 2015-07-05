@@ -390,8 +390,7 @@ function newResult($client_id,$exam_id,$target_path,$staffname,$staffid,$subname
       set
       batch_id='.$this->db->escape($batchid).',
       crte_ts=CURRENT_TIMESTAMP,
-      updt_ts=CURRENT_TIMESTAMP,
-      lgcl_del_f=\'N\'');
+      updt_ts=CURRENT_TIMESTAMP');
       
       if($query)
       {
