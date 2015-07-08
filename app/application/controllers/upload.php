@@ -554,7 +554,7 @@ class Upload extends CI_Controller {
 		// Check max no of rows
 
 			
-			if ($numrows > 101) 
+			if ($numrows > 102) 
 			{
 			  $this->form_validation->set_message('csvFileValidation', 'Maximum row limit exceeded. You can only upload for a max of 100 students.');
 			  return FALSE;
