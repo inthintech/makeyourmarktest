@@ -1,6 +1,6 @@
 
-<div class="subcontainer" style="width:95%;position:relative;top:3%;">
-<div class="panel panel-default">
+<div class="subcontainer" style="width:80%;top:4%;">
+<div class="panel panel-primary">
 <div class="panel-heading">How to Create CSV File</div>
 <div class="panel-body">
 

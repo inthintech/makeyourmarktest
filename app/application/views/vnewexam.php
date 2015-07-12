@@ -1,6 +1,6 @@
-<div class="subcontainer" style="width:90%;">
-<div class="panel panel-default">
-<div class="panel-heading">Add a New Exam Entry</div>
+<div class="subcontainer" style="width:70%;top:8%;">
+<div class="panel panel-primary">
+<div class="panel-heading centerHead">Add a New Exam Entry</div>
 <div class="panel-body">
 
 <form class="exam_form" action="<?php echo site_url($formaction);?>" method="POST" enctype="multipart/form-data">
@@ -10,7 +10,7 @@
 <input type="text" name="ename" value="<?php echo set_value('ename'); ?>" size="250" class="form-control">
  
 <br><br>
-<button type="submit" name="submit" class="btn btn-primary">Submit</button>
+<button type="submit" name="submit" class="btn btn-danger">Submit</button>
 <?php echo validation_errors(); ?>
 </form>
 

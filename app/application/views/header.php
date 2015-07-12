@@ -86,19 +86,25 @@ height: 12%;
 border-bottom: 3px solid #D6D6D6;
 background: white;
 }
+.nameHeader
+{
+        margin: 0;
+        padding-top: 2%;
+}
 .clientname
 {
-text-align: right;
-padding-right: 17%;
-margin: 0;
-padding-top: 2%;
+margin-left:50%;
 font-family: 'Play', sans-serif;
+}
+.loginname
+{
 
-
+margin-left:10%;
+font-family: 'Play', sans-serif;
 }
 .containerdiv
 {
-width: 75%;
+width: 100%;
 height: <?php echo $container_height ?>%;
 
 background: #fff;
@@ -106,42 +112,50 @@ margin-left: auto;
 margin-right: auto;
 border-left: 3px solid #D6D6D6;
 border-right: 3px solid #D6D6D6;
+
 }
 .leftnav
 {
 height: 100%;
-width: 25%;
+width: 23%;
 border-right : 3px solid #D6D6D6;
 float : left;
+background: #7D9EC0;
+overflow-y:scroll;
 }
 
 .rightcontainer
 {
-width: 67%;
+width: 77%;
 height: 100%;
-/*background: green;*/
-margin-left: 30%;
+background: #B3CB65;
+/*margin-left: 30%;*/
+
+float: left;
 
 }
 
 .menuitem
 {
 
-background: #3AC0CC;
+/*background: #3AC0CC;*/
+background: #3B3B3B;
 font-size: 1em;
 font-style: italic;
-color:#333333;
+color:white;
 }
 
 .leftnav ul li
 {
-border-bottom: 1px #D6D6D6;
+/*border-bottom: 1px #D6D6D6;*/
 display: block;
 width: 100%;
 /*background: blue;*/
 padding-top: 6%;
 padding-bottom: 6%;
-border-bottom: 1px solid #D6D6D6;
+/*border-bottom: 1px solid #D6D6D6;*/
+/*border-bottom: 1px solid #696969;*/
+
 }
 .leftnav ul
 {
@@ -195,7 +209,12 @@ font-size:1em;
 </div>
 </div>
 <div class="topbar2">
-<h4 class="clientname"><?php echo $client_name ?></h4>
+<h4 class="nameHeader">
+        
+<span  class="loginname">Welcome <?php echo $user_name ?>,</span>
+<span class="clientname"><?php echo $client_name ?></span>
+
+</h4>
 </div>
 <div class="containerdiv">
 <div class="leftnav">
@@ -223,8 +242,12 @@ echo '<li><span><span class="glyphicon glyphicon-trash icon-size"></span><a href
 <li><span><span class="glyphicon glyphicon-cog icon-size"></span><a href="<?php echo site_url('adminaction/changepassword'); ?>">Change Password</a></span></li>
 
 <li><span><span class="glyphicon glyphicon-globe icon-size"></span><a href="<?php echo site_url('adminstatic/help'); ?>">Feedback / Help</a></span></li>
-<li class="menuitem"><span>Reports</span></li>
-<li><span><span class="glyphicon glyphicon-stats icon-size"></span><a href="<?php echo site_url('reports/generate'); ?>">Generate Report</a></span></li>
+<li class="menuitem"><span>Generate Reports</span></li>
+<li><span><span class="glyphicon glyphicon-stats icon-size"></span><a href="<?php echo site_url('reports/generate'); ?>">Pass Percentage</a></span></li>
+<li><span><span class="glyphicon glyphicon-stats icon-size"></span><a href="<?php echo site_url('reports/generate'); ?>">Topper</a></span></li>
+<li><span><span class="glyphicon glyphicon-stats icon-size"></span><a href="<?php echo site_url('reports/generate'); ?>">Student Rank List</a></span></li>
+<li><span><span class="glyphicon glyphicon-stats icon-size"></span><a href="<?php echo site_url('reports/generate'); ?>">Subject Rank List</a></span></li>
+<li><span><span class="glyphicon glyphicon-stats icon-size"></span><a href="<?php echo site_url('reports/generate'); ?>">Student Mark List</a></span></li>
 </ul>
 </div>
 <div class="rightcontainer">

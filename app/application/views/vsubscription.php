@@ -1,6 +1,6 @@
-<div class="subcontainer" style="width:90%;">
-<div class="panel panel-default">
-<div class="panel-heading">Subscriber Information</div>
+<div class="subcontainer" style="width:70%;top:8%;">
+<div class="panel panel-primary">
+<div class="panel-heading centerHead">Subscriber Information</div>
 <div class="panel-body">
 
 <table class="center_table" style="width:85%">

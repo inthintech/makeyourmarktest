@@ -6,7 +6,7 @@ Class User extends CI_Model
  function login($username, $password)
  {
    
-    $query = $this->db->query("select clients.client_id,clients.is_active,users.user_id,users.user_type from users join clients 
+    $query = $this->db->query("select clients.client_id,clients.is_active,users.user_id,users.username,users.user_type from users join clients 
     on users.client_id=clients.client_id where users.lgcl_del_f='N'
     and username=".$this->db->escape($username)." and passwd=".$this->db->escape($password));
 
@@ -258,8 +258,8 @@ from clientpackage where client_id=".$this->db->escape($client_id));
 
   $query = $this->db->query("select exam_name,DATE_FORMAT(crte_ts,'%b %D %Y')cdate,
     case
-    when (select count(*) from class c where c.exam_id=exam_id and c.is_ready='Y' and c.lgcl_del_f='N')>=1
-    then 'Results Available' else 'Results Not Uploaded' end status_msg,status from exams 
+    when (select count(*) from class c where c.exam_id=e.exam_id and c.is_ready='Y' and c.lgcl_del_f='N')>=1
+    then 'Results Available' else 'Results Not Uploaded' end status_msg,status from exams e
     where client_id=".$this->db->escape($client_id)." order by crte_ts desc LIMIT ".$no);
 
    if($query -> num_rows() >= 1)

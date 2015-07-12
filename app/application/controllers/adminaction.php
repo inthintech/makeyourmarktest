@@ -13,7 +13,7 @@ class Adminaction extends CI_Controller {
         	redirect('login');
         }
 		$this->load->model('user','',TRUE);
-		$this->containerHeight = 130;
+		$this->containerHeight = 100;
     }
 	
 	public function headerSetup($title,$height)
@@ -27,7 +27,8 @@ class Adminaction extends CI_Controller {
 		$headerdata = array('usertype' => $this->session->userdata('user_type'),
 		'client_name' => $client_name ,
 		'title' => $title,
-		'container_height' => $height );
+		'container_height' => $height,
+		'user_name' => $this->session->userdata('user_name'));
 		$this->load->view('header',$headerdata);
 	}
 

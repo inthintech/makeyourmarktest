@@ -75,6 +75,7 @@ class Login extends CI_Controller {
        $flag = $row->is_active;
        $usertype = $row->user_type; 
        $userid = $row->user_id;
+	   $username = $row->username;
       } 
 
       if($flag=='Y')
@@ -83,6 +84,7 @@ class Login extends CI_Controller {
         $this->session->set_userdata('client_id', $client_id);
         $this->session->set_userdata('user_type', $usertype);
         $this->session->set_userdata('user_id', $userid);
+		$this->session->set_userdata('user_name', $username);
         return TRUE;
       }
       else

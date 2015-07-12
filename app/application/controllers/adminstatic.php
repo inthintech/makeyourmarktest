@@ -13,21 +13,24 @@ class Adminstatic extends CI_Controller {
         	redirect('login');
         }
 		$this->load->model('user','',TRUE);
-		$this->containerHeight = 130;
+		$this->containerHeight = 100;
     }
 	
 	public function headerSetup($title,$height)
 	{
 		$client_name = '';
+		$user_name = '';
 		$result = $this->user->getClientName($this->session->userdata('client_id'));
 		foreach($result as $row)
 		{
 			$client_name= $row->client_name;
+			
 		}
 		$headerdata = array('usertype' => $this->session->userdata('user_type'),
 		'client_name' => $client_name ,
 		'title' => $title,
-		'container_height' => $height );
+		'container_height' => $height,
+		'user_name' => $this->session->userdata('user_name'));
 		$this->load->view('header',$headerdata);
 	}
 
@@ -55,7 +58,7 @@ class Adminstatic extends CI_Controller {
 		$this->headerSetup('Contact Support',$this->containerHeight);
 		$data = array('message' => '<p class="help">If you need any technical support or if you have any feedback about our product, please contact us at 
 		<span style="color:blue;">keyrelations@gmail.com</span> <br><br>Note : Please include your Institution name and contact number in the mail.</p>');
-		$this->load->view('vmessage',$data);
+		$this->load->view('vhelp');
 		$this->load->view('footer');
 
 	}
@@ -64,7 +67,7 @@ class Adminstatic extends CI_Controller {
 
 	{
 
-		$this->headerSetup('How to create CSV',$this->containerHeight+30);
+		$this->headerSetup('How to create CSV',$this->containerHeight+90);
 		$this->load->view('vcreatecsv');
 		$this->load->view('footer');
 
@@ -72,7 +75,7 @@ class Adminstatic extends CI_Controller {
 	
 	public function examstatus()
 	{
-		$this->headerSetup('Exam Status',$this->containerHeight);
+		$this->headerSetup('Exam Status',$this->containerHeight+30);
 		
 		
 		$result = $this->user->getExamStatus($this->session->userdata('client_id'));

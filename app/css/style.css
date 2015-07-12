@@ -1,12 +1,12 @@
 
 .subcontainer
 {
+
 margin-left:auto;
 margin-right:auto;
 position: relative;
-top:4%;
-overflow: hidden;
 }
+
 .center_table
 {
 margin-left:auto;
@@ -174,8 +174,8 @@ padding-right: 8px;
 }
 .home_header
 {
-	background: #286090;
-	color:white;
+	background: #C1C1C1;
+	color:black;
 }
 .scrollable_table
 {
@@ -248,4 +248,8 @@ input[disabled] {
 {
     margin-left: 7%;
     width : 80%;
+}
+.centerHead
+{
+    text-align: center;
 }
