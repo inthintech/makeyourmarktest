@@ -1,8 +1,8 @@
 
-<div class="subcontainer" style="width:80%;top:6%;height:80%;overflow-y: scroll;">
+<div class="subcontainer" style="width:80%;top:6%;height:80%;">
 <div class="panel panel-primary" style="height:100%;">
 <div class="panel-heading">Exam Status</div>
-<div class="panel-body">
+<div class="panel-body" style="height:80%;overflow-y: scroll;">
 
 
 <table class="data_table" style="width:75%;">	

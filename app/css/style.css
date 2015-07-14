@@ -29,8 +29,15 @@ padding-right: 8px;
 
 {
   font-weight: normal;
+  margin-left: 3%;
 }
+.exam_form input
 
+{
+  font-weight: normal;
+  margin-left: 3%;
+  width:80%;
+}
 .exam_form
 
 {
@@ -49,14 +56,20 @@ padding-right: 8px;
 }
 .uploadErrMsg
 {
-  
+  margin-left: 20%;
   color : red;
 }
 
+
 .exam_form button
 {
-  margin-left: 0%;
+  margin-left: 3%;
   width: 20%;
+}
+.exam_form select
+{
+  margin-left: 3%;
+  width: 60%;
 }
 
 .data_table, th, td {
@@ -98,20 +111,21 @@ padding-right: 8px;
 	margin-left: auto;
 	margin-right: auto;
 	background: #B0E2FF;
-	background : #6495ED;
-	color:black;
-	border-radius: 12px;
+	background : #008B8B;
+	color:white;
+	/*border-radius: 12px;*/
 	padding-top: 5px;
 	padding-bottom: 5px;
 }
 .upload_form input[type=file]
 {
-  width: 100%;
+  width: 60%;
   border :1px solid #C0C0C0;
   padding-top: 1.5%;
   padding-bottom: 1.5%;
   padding-left: 2%;
   border-radius: 4px;
+  margin-left: 15%;
 }
 .upload_form label
 
@@ -228,26 +242,33 @@ input[disabled] {
 }
 .uploadTable
 {
-    margin-left: auto;
-    margin-right: auto;
+    margin-left: 10%;
+    
     width:90%;
+    border: none;
+    
+}
+.uploadTable td, .uploadTable th {
+    border: none;
 }
 .uploadTableLabel
 {
     width: 30%;
+    text-align: right;
 }
 .uploadTable tr
 {
-    height: 100px;
+    height: 70px;
 }
 .uploadTableInput select
 {
     margin-left: 7%;
+    width:60%;
 }
 .uploadTableInput input
 {
     margin-left: 7%;
-    width : 80%;
+    width:60%;
 }
 .centerHead
 {

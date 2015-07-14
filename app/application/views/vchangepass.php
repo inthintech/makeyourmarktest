@@ -1,6 +1,6 @@
 
-<div class="subcontainer" style="width:90%;">
-<div class="panel panel-default">
+<div class="subcontainer" style="width:70%;top:8%;">
+<div class="panel panel-primary">
 <div class="panel-heading">Change Your Password</div>
 <div class="panel-body">
 
@@ -21,7 +21,7 @@
 
 
 <br><br>
-<button type="submit" name="submit" class="btn btn-primary">Submit</button><br><br>
+<button type="submit" name="submit" class="btn btn-danger">Submit</button><br><br>
 <?php echo validation_errors(); ?>
 </form>
 

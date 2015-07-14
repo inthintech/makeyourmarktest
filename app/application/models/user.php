@@ -345,7 +345,7 @@ function newResult($client_id,$exam_id,$target_path,$staffname,$staffid,$subname
   }
   
   
-  function newBatch($client_id,$exam_id,$staffname,$staffid,$subname,$subcode,$maxmark,$minmark,$deptcode,$year,$section)
+  function newBatch($client_id,$exam_id,$staffname,$staffid,$subname,$subcode,$maxmark,$minmark,$deptcode,$year,$section,$target_path)
 
   {
 
@@ -356,10 +356,10 @@ function newResult($client_id,$exam_id,$target_path,$staffname,$staffid,$subname
           $batchid= $row->batch_id;
         }
         
-      $query = $this->db->query("insert into class(batch_id,exam_id,client_id,dept_code,year,section,subject_code,subject_name,
+      $query = $this->db->query("insert into class(batch_id,exam_id,client_id,user_id,dept_code,year,section,subject_code,subject_name,
                                 staff_id,staff_name,total_marks,pass_mark,crte_ts,updt_ts,
                                 is_ready,lgcl_del_f) values(".$batchid.",".$this->db->escape($exam_id).",".$this->db->escape($client_id).","
-                                .$this->db->escape($deptcode).",".$this->db->escape($year).","
+                                .$this->session->userdata('user_id').",".$this->db->escape($deptcode).",".$this->db->escape($year).","
                                 .$this->db->escape($section).",".$this->db->escape($subcode).","
                                 .$this->db->escape($subname).",".$this->db->escape($staffid).","
                                 .$this->db->escape($staffname).",".$this->db->escape($maxmark).","
@@ -367,7 +367,15 @@ function newResult($client_id,$exam_id,$target_path,$staffname,$staffid,$subname
                                
       if($query)
       {
-        return $batchid;
+        $result = $this->newMarks($batchid,$target_path);
+        if($result)
+        {
+          return true;
+        }
+        else
+        {
+          return false;
+        }
       }
       
       else
@@ -415,9 +423,10 @@ function getResultInfo($client_id,$exam_id)
 
   {
 
-    $query = $this->db->query("select exam_id,batch_id,dept_code,year,section,staff_id,staff_name,subject_name
-    from class
+    $query = $this->db->query("select exam_id,c.batch_id,user_id,dept_code,year,section,staff_id,staff_name,subject_name,count(*) count
+    from class c join marks m on c.batch_id=m.batch_id
     where is_ready='Y' and lgcl_del_f='N' and client_id=".$this->db->escape($client_id)." and exam_id=".$this->db->escape($exam_id)."
+    group by exam_id,batch_id,user_id,dept_code,year,section,staff_id,staff_name,subject_name
     order by dept_code,year,section,subject_name");
 
     if($query -> num_rows() >= 1)

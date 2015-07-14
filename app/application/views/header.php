@@ -230,7 +230,7 @@ echo '<li><span><span class="glyphicon glyphicon-th-list icon-size"></span><a hr
 }
 ?>
 <li><span><span class="glyphicon glyphicon-file icon-size"></span><a href="<?php echo site_url('adminstatic/createcsv'); ?>">How to Create CSV File</a></span></li>
-<li><span><span class="glyphicon glyphicon-upload icon-size"></span><a href="<?php echo site_url('upload/step1'); ?>">Upload Results</a></span></li>
+<li><span><span class="glyphicon glyphicon-upload icon-size"></span><a href="<?php echo site_url('upload/form'); ?>">Upload Results</a></span></li>
 <li><span><span class="glyphicon glyphicon-search icon-size"></span><a href="<?php echo site_url('verify/exam'); ?>">Verify Results</a></span></li>
 <?php
 if($usertype==1)

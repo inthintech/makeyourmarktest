@@ -1,7 +1,7 @@
 
-<div class="subcontainer" style="width:90%;">
-<div class="panel panel-default">
-<div class="panel-heading">Add a New User</div>
+<div class="subcontainer" style="width:70%;top:8%;">
+<div class="panel panel-primary">
+<div class="panel-heading centerHead">Add a New User</div>
 <div class="panel-body">
 
 <form class="exam_form" action="<?php echo site_url($formaction);?>" method="POST" enctype="multipart/form-data">
@@ -20,7 +20,7 @@
 
  
 <br><br>
-<button type="submit" name="submit" class="btn btn-primary">Submit</button><br><br>
+<button type="submit" name="submit" class="btn btn-danger">Submit</button><br><br>
 <?php echo validation_errors(); ?>
 </form>
 

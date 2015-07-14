@@ -63,6 +63,20 @@ class Adminaction extends CI_Controller {
 		}		
 	}
 	
+	public function checkUname($inp)
+	{
+		
+		if($this->user->checkUsername($inp))
+		{
+			
+			$this->form_validation->set_message('checkUname', 'Username already exists');
+     		return FALSE;			
+		}
+		else
+		{	
+			return TRUE;	
+		}		
+	}
 	
 	public function index()
 	{
@@ -97,7 +111,7 @@ class Adminaction extends CI_Controller {
 
 				if($this->user->newExamEntry($this->session->userdata('client_id'),$this->input->post('ename')))
 				{
-					$data = array('message' => '<div class="alert alert-success" role="alert">Success : New exam record has been created.</div>');
+					$data = array('message' => '<div class="alert alert-warning" role="alert">Success : New exam record has been created.</div>');
 				}
 				else
 				{
@@ -143,7 +157,7 @@ class Adminaction extends CI_Controller {
 				if($this->user->newUserEntry($this->session->userdata('client_id'),$this->input->post('uname'),$this->input->post('pass')))
 				{
 	
-					$data = array('message' => '<div class="alert alert-success" role="alert">Success : New user has been created.</div>');
+					$data = array('message' => '<div class="alert alert-warning" role="alert">Success : New user has been created.</div>');
 				}
 				else
 				{
@@ -192,7 +206,7 @@ class Adminaction extends CI_Controller {
 			
 			if($this->user->removeUser($this->session->userdata('client_id'),$this->input->post('userid')))
 			{
-				$data = array('message' => '<div class="alert alert-success" role="alert">Success : User is deleted from system.</div>');			
+				$data = array('message' => '<div class="alert alert-warning" role="alert">Success : User is deleted from system.</div>');			
 			}
 			else
 			{
@@ -234,7 +248,7 @@ class Adminaction extends CI_Controller {
 			{
 				if($this->user->changePassword($this->session->userdata('user_id'),$this->input->post('newpass')))
 				{
-					$data = array('message' => '<div class="alert alert-success" role="alert">Success : Password is changed.</div>');
+					$data = array('message' => '<div class="alert alert-warning" role="alert">Success : Password is changed.</div>');
 					
 				}
 				else

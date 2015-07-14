@@ -13,7 +13,7 @@ class Verify extends CI_Controller {
         	redirect('login');
         }
 		$this->load->model('user','',TRUE);
-		$this->containerHeight = 130;
+		$this->containerHeight = 100;
     }
 	
 	public function headerSetup($title,$height)
@@ -27,7 +27,8 @@ class Verify extends CI_Controller {
 		$headerdata = array('usertype' => $this->session->userdata('user_type'),
 		'client_name' => $client_name ,
 		'title' => $title,
-		'container_height' => $height );
+		'container_height' => $height,
+		'user_name' => $this->session->userdata('user_name'));
 		$this->load->view('header',$headerdata);
 	}
 	
@@ -68,7 +69,7 @@ class Verify extends CI_Controller {
 			redirect('verify/exam');
 		}
 		
-		$this->headerSetup('Verify result',$this->containerHeight);
+		$this->headerSetup('Verify result',$this->containerHeight+30);
 		
 		$result = $this->user->getResultInfo($this->session->userdata('client_id'),$this->input->post('examid'));
 		$html = '';
@@ -82,20 +83,29 @@ class Verify extends CI_Controller {
 				$html= $html."<tr><td>".$sno."</td><td>".$row->dept_code." ".$row->year." ".$row->section."</td>
 				<td>".$row->staff_name."</td>
 				<td>".$row->subject_name."</td>
+				<td>".$row->count."</td>
 				<td>
 				<form target=\"_blank\" action=\"".site_url('verify/viewresults')."\" method=\"POST\">
 				<input type=\"hidden\" name=\"batchid\" value=".$row->batch_id.">
 				<input type=\"hidden\" name=\"examid\" value=".$row->exam_id.">  
-				<button type=\"submit\" name=\"submit\" class=\"btn btn-primary\">View</button>
+				<button type=\"submit\" name=\"submit\" class=\"btn btn-success\">View</button>
 				</form>
 				</td>
 				<td>
 				<form action=\"".site_url('verify/deleteresults')."\" method=\"POST\">
 				<input type=\"hidden\" name=\"batchid\" value=".$row->batch_id.">
-				<input type=\"hidden\" name=\"examid\" value=".$row->exam_id.">  
-				<button type=\"submit\" name=\"submit\" class=\"btn btn-danger\">Delete</button>
-				</form>
-				</td></tr>";
+				<input type=\"hidden\" name=\"examid\" value=".$row->exam_id.">";
+				
+				if(($row->user_id==$this->session->userdata('user_id'))||($this->session->userdata('user_type')==1))
+				{
+					$html = $html."<button type=\"submit\" name=\"submit\" class=\"btn btn-danger\">Delete</button>";
+				}
+				else
+				{
+					$html = $html."<button disabled name=\"submit\" class=\"btn btn-default\">Delete</button>";
+				}
+				
+				$html = $html."</form></td></tr>";
 			}
 			$data = array('resultsInfo' => $html);
 			$this->load->view('vverifyoption',$data);

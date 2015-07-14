@@ -65,7 +65,7 @@ class Reports extends CI_Controller {
 			}
 			else
 			{
-				$headerdata = array('usertype' => $this->session->userdata('user_type'), 'client_name' => $client_name ,'title' => 'Generate Report','container_height' => 130 );
+				$headerdata = array('usertype' => $this->session->userdata('user_type'), 'client_name' => $client_name ,'title' => 'Generate Report','container_height' => 100,'user_name' => $this->session->userdata('user_name') );
 				$this->load->view('header',$headerdata);
 				$statusdata = array('message' => '<div style="margin-top:5%;" class="alert alert-danger" role="alert">Error : There are no exams with results uploaded.</div>');
 				$this->load->view('vmessage',$statusdata);
