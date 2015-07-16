@@ -274,3 +274,15 @@ input[disabled] {
 {
     text-align: center;
 }
+.reportLabel
+{
+    margin-left: 6%;
+}
+.icon-green
+{
+    color: green;
+}
+.icon-red
+{
+    color: red;
+}

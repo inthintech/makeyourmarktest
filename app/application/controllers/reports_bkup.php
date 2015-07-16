@@ -13,24 +13,7 @@ class Reports extends CI_Controller {
         {
         	redirect('login');
         }
-		$this->containerHeight = 100;
     }
-	
-	public function headerSetup($title,$height)
-	{
-		$client_name = '';
-		$result = $this->user->getClientName($this->session->userdata('client_id'));
-		foreach($result as $row)
-		{
-			$client_name= $row->client_name;
-		}
-		$headerdata = array('usertype' => $this->session->userdata('user_type'),
-		'client_name' => $client_name ,
-		'title' => $title,
-		'container_height' => $height,
-		'user_name' => $this->session->userdata('user_name'));
-		$this->load->view('header',$headerdata);
-	}
 
     private function alphanumericVal($inp)
 	{
@@ -52,32 +35,7 @@ class Reports extends CI_Controller {
 	{
 		redirect('exams');
 	}
-	
-	public function passpercentage()
-	{
-		$this->headerSetup('Generate Report',$this->containerHeight+120);
-		$result = $this->user->getExamListWithData($this->session->userdata('client_id'));
-		if($result)
-		{
-			$examlist = '';
-			foreach($result as $row)
-			{
-			$examlist = "<option selected value=".$row->exam_id.">".$row->exam_name."</option>".$examlist;
-			} 
 
-			$data = array('examlist' => $examlist,'reportID' => '1');
-			$this->load->view('vgeneratereport',$data);
-		}
-		else
-		{
-
-			$data = array('message' => '<div style="margin-top:5%;" class="alert alert-danger" role="alert">Error : There are no exams with results uploaded.</div>
-			<script>$(".containerdiv").height(\''.$this->containerHeight.'%\');</script>');
-			$this->load->view('vmessage',$data);
-		}
-		$this->load->view('footer');	
-		
-	}
 
 	public function generate()
 	{
@@ -146,10 +104,10 @@ class Reports extends CI_Controller {
 			case 3:
 			$this->studentRankListReport($this->input->post('examid'),$this->input->post('levelid'),$client_name);
 			break;
-			case 4:
+			case 5:
 			$this->subjectRankListReport($this->input->post('examid'),$this->input->post('levelid'),$client_name);
 			break;
-			case 5:
+			case 6:
 			$this->studentMarkListReport($this->input->post('examid'),$this->input->post('levelid'),$client_name);
 			break;
 		}

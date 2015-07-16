@@ -243,11 +243,14 @@ echo '<li><span><span class="glyphicon glyphicon-trash icon-size"></span><a href
 
 <li><span><span class="glyphicon glyphicon-globe icon-size"></span><a href="<?php echo site_url('adminstatic/help'); ?>">Feedback / Help</a></span></li>
 <li class="menuitem"><span>Generate Reports</span></li>
-<li><span><span class="glyphicon glyphicon-stats icon-size"></span><a href="<?php echo site_url('reports/generate'); ?>">Pass Percentage</a></span></li>
+<li><span><span class="glyphicon glyphicon-stats icon-size"></span><a href="<?php echo site_url('reports/passpercentage'); ?>">Pass Percentage</a></span></li>
 <li><span><span class="glyphicon glyphicon-stats icon-size"></span><a href="<?php echo site_url('reports/generate'); ?>">Topper</a></span></li>
 <li><span><span class="glyphicon glyphicon-stats icon-size"></span><a href="<?php echo site_url('reports/generate'); ?>">Student Rank List</a></span></li>
 <li><span><span class="glyphicon glyphicon-stats icon-size"></span><a href="<?php echo site_url('reports/generate'); ?>">Subject Rank List</a></span></li>
 <li><span><span class="glyphicon glyphicon-stats icon-size"></span><a href="<?php echo site_url('reports/generate'); ?>">Student Mark List</a></span></li>
+
+<br>
+<br>
 </ul>
 </div>
 <div class="rightcontainer">
