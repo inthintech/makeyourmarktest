@@ -6,7 +6,8 @@ Class User extends CI_Model
  function login($username, $password)
  {
    
-    $query = $this->db->query("select clients.client_id,clients.is_active,users.user_id,users.username,users.user_type from users join clients 
+    $query = $this->db->query("select clients.client_id,clients.is_active,clients.client_type,
+    users.user_id,users.username,users.user_type from users join clients 
     on users.client_id=clients.client_id where users.lgcl_del_f='N'
     and username=".$this->db->escape($username)." and passwd=".$this->db->escape($password));
 
@@ -141,7 +142,7 @@ from clientpackage where client_id=".$this->db->escape($client_id));
 
   $query = $this->db->query("select exam_id,exam_name from exams 
     where
-    exam_id in (select distinct exam_id from class c where c.client_id=".$this->db->escape($client_id)." and c.is_ready='Y' and c.lgcl_del_f='N')
+    exam_id in (select distinct exam_id from class c where c.client_id=".$this->db->escape($client_id)." and c.lgcl_del_f='N')
     and client_id=".$this->db->escape($client_id)." order by crte_ts desc LIMIT ".$no);
 
    if($query -> num_rows() >= 1)
@@ -258,7 +259,7 @@ from clientpackage where client_id=".$this->db->escape($client_id));
 
   $query = $this->db->query("select exam_name,DATE_FORMAT(crte_ts,'%b %D %Y')cdate,
     case
-    when (select count(*) from class c where c.exam_id=e.exam_id and c.is_ready='Y' and c.lgcl_del_f='N')>=1
+    when (select count(*) from class c join marks m on c.batch_id=m.batch_id where c.exam_id=e.exam_id and c.lgcl_del_f='N')>=1
     then 'Results Available' else 'Results Not Uploaded' end status_msg,status from exams e
     where client_id=".$this->db->escape($client_id)." order by crte_ts desc LIMIT ".$no);
 
@@ -358,12 +359,12 @@ function newResult($client_id,$exam_id,$target_path,$staffname,$staffid,$subname
         
       $query = $this->db->query("insert into class(batch_id,exam_id,client_id,user_id,dept_code,year,section,subject_code,subject_name,
                                 staff_id,staff_name,total_marks,pass_mark,crte_ts,updt_ts,
-                                is_ready,lgcl_del_f) values(".$batchid.",".$this->db->escape($exam_id).",".$this->db->escape($client_id).","
+                                lgcl_del_f) values(".$batchid.",".$this->db->escape($exam_id).",".$this->db->escape($client_id).","
                                 .$this->session->userdata('user_id').",".$this->db->escape($deptcode).",".$this->db->escape($year).","
                                 .$this->db->escape($section).",".$this->db->escape($subcode).","
                                 .$this->db->escape($subname).",".$this->db->escape($staffid).","
                                 .$this->db->escape($staffname).",".$this->db->escape($maxmark).","
-                                .$this->db->escape($minmark).",CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,'N','N')");
+                                .$this->db->escape($minmark).",CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,'N')");
                                
       if($query)
       {
@@ -389,28 +390,45 @@ function newResult($client_id,$exam_id,$target_path,$staffname,$staffid,$subname
 
   {
        
-      $query = $this->db->query('LOAD DATA LOCAL INFILE "'.$target_path.'"
-      INTO TABLE marks
-      FIELDS TERMINATED BY "," ENCLOSED BY "\""
-      LINES TERMINATED BY "\n"               
-      IGNORE 1 LINES
-      (student_id,student_name,marks_obtained)   
-      set
-      batch_id='.$this->db->escape($batchid).',
-      crte_ts=CURRENT_TIMESTAMP,
-      updt_ts=CURRENT_TIMESTAMP');
+      $id_string='';
+      $prequery = $this->db->query('select dept_code,section from class where batch_id='.$this->db->escape($batchid));
+      
+      foreach($prequery->result() as $row)
+        {
+          $id_string= $id_string.$row->dept_code.$row->section;
+        }
+      
+      if($this->session->userdata('client_type')==1)
+	  {
+         $query = $this->db->query('LOAD DATA LOCAL INFILE "'.$target_path.'"
+         INTO TABLE marks
+         FIELDS TERMINATED BY "," ENCLOSED BY "\""
+         LINES TERMINATED BY "\n"               
+         IGNORE 1 LINES
+         (student_id,student_name,marks_obtained)   
+         set
+         batch_id='.$this->db->escape($batchid).',
+         crte_ts=CURRENT_TIMESTAMP,
+         updt_ts=CURRENT_TIMESTAMP');
+      }
+      else
+      {
+         $query = $this->db->query('LOAD DATA LOCAL INFILE "'.$target_path.'"
+         INTO TABLE marks
+         FIELDS TERMINATED BY "," ENCLOSED BY "\""
+         LINES TERMINATED BY "\n"               
+         IGNORE 1 LINES
+         (student_id,student_name,marks_obtained)   
+         set
+         batch_id='.$this->db->escape($batchid).',
+         student_id=CONCAT(\''.$id_string.'\',student_id),
+         crte_ts=CURRENT_TIMESTAMP,
+         updt_ts=CURRENT_TIMESTAMP');      
+      }
       
       if($query)
       {
-        $querysub = $this->db->query("update class set is_ready='Y' where batch_id=".$batchid);
-        if($querysub)
-        {
          return TRUE;
-        }
-        else
-        {
-         return FALSE;
-        }
       }
       else
       {
@@ -422,12 +440,22 @@ function newResult($client_id,$exam_id,$target_path,$staffname,$staffid,$subname
 function getResultInfo($client_id,$exam_id)
 
   {
-
-    $query = $this->db->query("select exam_id,c.batch_id,user_id,dept_code,year,section,staff_id,staff_name,subject_name,count(*) count
-    from class c join marks m on c.batch_id=m.batch_id
-    where is_ready='Y' and lgcl_del_f='N' and client_id=".$this->db->escape($client_id)." and exam_id=".$this->db->escape($exam_id)."
-    group by exam_id,batch_id,user_id,dept_code,year,section,staff_id,staff_name,subject_name
-    order by dept_code,year,section,subject_name");
+    if($this->session->userdata('client_type')==1)
+	  {
+        $query = $this->db->query("select exam_id,c.batch_id,user_id,dept_code,year,section,staff_id,staff_name,subject_name,count(*) count
+        from class c join marks m on c.batch_id=m.batch_id
+        where lgcl_del_f='N' and client_id=".$this->db->escape($client_id)." and exam_id=".$this->db->escape($exam_id)."
+        group by exam_id,batch_id,user_id,dept_code,year,section,staff_id,staff_name,subject_name
+        order by dept_code,year,section,subject_name");
+      }
+    else
+     {
+        $query = $this->db->query("select exam_id,c.batch_id,user_id,CAST(dept_code AS UNSIGNED) dept_code,year,section,staff_id,staff_name,subject_name,count(*) count
+        from class c join marks m on c.batch_id=m.batch_id
+        where lgcl_del_f='N' and client_id=".$this->db->escape($client_id)." and exam_id=".$this->db->escape($exam_id)."
+        group by exam_id,batch_id,user_id,dept_code,year,section,staff_id,staff_name,subject_name
+        order by dept_code,year,section,subject_name");
+     }
 
     if($query -> num_rows() >= 1)
    {

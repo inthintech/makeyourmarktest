@@ -23,6 +23,7 @@
 </table>
 <?php echo form_error('staffname'); ?>
 
+<!--
 <table class="uploadTable">
 <tr>
 <td class="uploadTableLabel"><label>Enter Staff Employee ID</label></td>
@@ -31,7 +32,8 @@
 </td>    
 </tr>    
 </table>
-<?php echo form_error('staffname'); ?>
+<?php echo form_error('staffid'); ?>
+-->
 
 <table class="uploadTable">
 <tr>
@@ -43,14 +45,25 @@
 </table>
 <?php echo form_error('subname'); ?>
 
-<table class="uploadTable">
-<tr>
-<td class="uploadTableLabel"><label>Enter Subject Code</label></td>
-<td class="uploadTableInput">
-<input type="text" name="subcode" value="<?php echo set_value('subcode'); ?>" size="250" class="form-control">
-</td>    
-</tr>    
-</table>
+<?php
+if($this->session->userdata('client_type')==1)
+{
+    echo
+    '
+    <table class="uploadTable">
+    <tr>
+    <td class="uploadTableLabel"><label>Enter Subject Code</label></td>
+    <td class="uploadTableInput">
+    <input type="text" name="subcode" value="';
+    echo set_value('subcode');
+    echo '" size="250" class="form-control">
+    </td>    
+    </tr>    
+    </table>
+    ';
+}
+?>
+
 <?php echo form_error('subcode'); ?>
 
 <table class="uploadTable">
@@ -75,34 +88,49 @@
 
 <table class="uploadTable">
 <tr>
-<td class="uploadTableLabel"><label>Select the DEPT code of the Class</label></td>
+<td class="uploadTableLabel"><label>Select the
+
+<?php
+if($this->session->userdata('client_type')==1)
+{
+    echo 'DEPT code';
+}
+else
+{
+    echo 'Standard';
+}
+?>
+
+of the Class</label></td>
 <td class="uploadTableInput">
 <select class="exam_select" name="dept_code" >
-<option selected value="CSE">CSE</option>
-<option value="IT">IT</option>
-<option value="EEE">EEE</option>
-<option value="EIE">EIE</option>
-<option value="ECE">ECE</option>
-<option value="MECH">MECH</option>
-<option value="ICE">ICE</option>
+<?php echo $deptHtml?>
+
 </select>
 </td>    
 </tr>    
 </table>
 
-<table class="uploadTable">
-<tr>
-<td class="uploadTableLabel"><label>Select the Year of the Class</label></td>
-<td class="uploadTableInput">
-<select class="exam_select" name="year" >
-<option selected value="1">1</option>
-<option value="2">2</option>
-<option value="3">3</option>
-<option value="4">4</option>
-</select>
-</td>    
-</tr>    
-</table>
+<?php
+if($this->session->userdata('client_type')==1)
+{
+    echo
+    '<table class="uploadTable">
+    <tr>
+    <td class="uploadTableLabel"><label>Select the Year of the Class</label></td>
+    <td class="uploadTableInput">
+    <select class="exam_select" name="year" >
+    <option selected value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+    </select>
+    </td>    
+    </tr>    
+    </table>
+    ';
+}
+?>
 
 <table class="uploadTable">
 <tr>

@@ -14,6 +14,7 @@ class Upload extends CI_Controller {
         	redirect('login');
         }
 		$this->load->model('user','',TRUE);
+		$this->load->model('common','',TRUE);
 		$this->containerHeight = 100;
 		$this->targetPathValue = '';
     }
@@ -26,7 +27,7 @@ class Upload extends CI_Controller {
 		{
 			$client_name= $row->client_name;
 		}
-		$headerdata = array('usertype' => $this->session->userdata('user_type'),
+		$headerdata = array(
 		'client_name' => $client_name ,
 		'title' => $title,
 		'container_height' => $height,
@@ -89,8 +90,15 @@ class Upload extends CI_Controller {
 	
 	public function form()
 	{
-
-		$this->headerSetup('Upload Results',$this->containerHeight+150);
+		
+		if($this->session->userdata('client_type')==1)
+		{
+			$this->headerSetup('Upload Results',$this->containerHeight+130);
+		}
+		else
+		{
+			$this->headerSetup('Upload Results',$this->containerHeight+100);
+		}
 		
 		if(!isset($_POST['submit']))
 		{
@@ -105,7 +113,7 @@ class Upload extends CI_Controller {
 					$examlist = "<option selected value=".$row->exam_id.">".$row->exam_name."</option>".$examlist;
 				}
 			
-				$data = array('formaction' => 'upload/form','examlist' => $examlist);
+				$data = array('formaction' => 'upload/form','examlist' => $examlist,'deptHtml' => $this->common->getDeptNames());
 				$this->load->view('vuploadresults1',$data);
 			}
 			else
@@ -122,9 +130,15 @@ class Upload extends CI_Controller {
 		{
 			$this->load->library('form_validation');
 			$this->form_validation->set_rules('staffname', 'Staff Name', 'trim|required|xss_clean|max_length[250]|callback_alphanumericVal[Staff Name]');
-			$this->form_validation->set_rules('staffid', 'Staff Id', 'trim|required|xss_clean|max_length[250]|callback_alphanumericNoSpcVal[Staff Id]');
+			if($this->session->userdata('client_type')==1)
+			{
+				/*$this->form_validation->set_rules('staffid', 'Staff Id', 'trim|required|xss_clean|max_length[250]|callback_alphanumericNoSpcVal[Staff Id]');*/
+			}
 			$this->form_validation->set_rules('subname', 'Subject Name', 'trim|required|xss_clean|max_length[250]|callback_alphanumericVal[Subject Name]');
-			$this->form_validation->set_rules('subcode', 'Subject Code', 'trim|required|xss_clean|max_length[250]|callback_alphanumericVal[Subject Code]');
+			if($this->session->userdata('client_type')==1)
+			{
+				$this->form_validation->set_rules('subcode', 'Subject Code', 'trim|required|xss_clean|max_length[250]|callback_alphanumericVal[Subject Code]');
+			}
 			$this->form_validation->set_rules('maxmark', 'Maximum Mark', 'trim|required|xss_clean|max_length[250]|callback_numericVal[Maximum Mark]');
 			$this->form_validation->set_rules('minmark', 'Minimum Mark', 'trim|required|xss_clean|max_length[250]|callback_numericVal[Minimum Mark]');
 			$this->form_validation->set_rules('fileToUpload', 'File', 'callback_csvFileValidation');
@@ -154,11 +168,23 @@ class Upload extends CI_Controller {
 			}
 			else
 			{
-				$batch = $this->user->newBatch($this->session->userdata('client_id'),
-				$this->input->post('examid'),$this->input->post('staffname'),$this->input->post('staffid'),
-				$this->input->post('subname'),$this->input->post('subcode'),$this->input->post('maxmark'),
-				$this->input->post('minmark'),$this->input->post('dept_code'),$this->input->post('year'),
-				$this->input->post('section'),$this->targetPathValue);
+				if($this->session->userdata('client_type')==1)
+				{
+					$batch = $this->user->newBatch($this->session->userdata('client_id'),
+					$this->input->post('examid'),$this->input->post('staffname'),'99',
+					$this->input->post('subname'),$this->input->post('subcode'),$this->input->post('maxmark'),
+					$this->input->post('minmark'),$this->input->post('dept_code'),$this->input->post('year'),
+					$this->input->post('section'),$this->targetPathValue);
+				}
+				else
+				{
+					//for school subname and staff name are same, year is not required
+					$batch = $this->user->newBatch($this->session->userdata('client_id'),
+					$this->input->post('examid'),$this->input->post('staffname'),'99',
+					$this->input->post('subname'),$this->input->post('subname'),$this->input->post('maxmark'),
+					$this->input->post('minmark'),$this->input->post('dept_code'),'99',
+					$this->input->post('section'),$this->targetPathValue);
+				}
 				
 				if($batch)
 				{

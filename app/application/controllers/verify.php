@@ -24,7 +24,7 @@ class Verify extends CI_Controller {
 		{
 			$client_name= $row->client_name;
 		}
-		$headerdata = array('usertype' => $this->session->userdata('user_type'),
+		$headerdata = array(
 		'client_name' => $client_name ,
 		'title' => $title,
 		'container_height' => $height,
@@ -80,7 +80,16 @@ class Verify extends CI_Controller {
 			foreach($result as $row)
 			{
 				$sno++;
-				$html= $html."<tr><td>".$sno."</td><td>".$row->dept_code." ".$row->year." ".$row->section."</td>
+				$class_code = '';
+				if($this->session->userdata('client_type')==1)
+				{
+					$class_code = $row->dept_code." ".$row->year." ".$row->section;
+				}
+				else
+				{
+					$class_code = $row->dept_code." ".$row->section;
+				}
+				$html= $html."<tr><td>".$sno."</td><td>".$class_code."</td>
 				<td>".$row->staff_name."</td>
 				<td>".$row->subject_name."</td>
 				<td>".$row->count."</td>

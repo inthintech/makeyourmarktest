@@ -223,7 +223,7 @@ font-size:1em;
 <li class="menuitem"><span>Administration</span></li>
 <li><span><span class="glyphicon glyphicon-home icon-size"></span><a href="<?php echo site_url('adminstatic'); ?>">Home</a></span></li>
 <?php
-if($usertype==1)
+if($this->session->userdata('user_type')==1)
 {
 echo '<li><span><span class="glyphicon glyphicon-plus icon-size"></span><a href="'.site_url('adminaction/addexam').'">New Exam</a></span></li>';
 echo '<li><span><span class="glyphicon glyphicon-th-list icon-size"></span><a href="'.site_url('adminstatic/examstatus').'">Exam Status</a></span></li>';
@@ -233,7 +233,7 @@ echo '<li><span><span class="glyphicon glyphicon-th-list icon-size"></span><a hr
 <li><span><span class="glyphicon glyphicon-upload icon-size"></span><a href="<?php echo site_url('upload/form'); ?>">Upload Results</a></span></li>
 <li><span><span class="glyphicon glyphicon-search icon-size"></span><a href="<?php echo site_url('verify/exam'); ?>">Verify Results</a></span></li>
 <?php
-if($usertype==1)
+if($this->session->userdata('user_type')==1)
 {
 echo '<li><span><span class="glyphicon glyphicon-user icon-size"></span><a href="'.site_url('adminaction/adduser').'">Add User</a></span></li>';
 echo '<li><span><span class="glyphicon glyphicon-trash icon-size"></span><a href="'.site_url('adminaction/deleteuser').'">Delete User</a></span></li>';
@@ -244,10 +244,11 @@ echo '<li><span><span class="glyphicon glyphicon-trash icon-size"></span><a href
 <li><span><span class="glyphicon glyphicon-globe icon-size"></span><a href="<?php echo site_url('adminstatic/help'); ?>">Feedback / Help</a></span></li>
 <li class="menuitem"><span>Generate Reports</span></li>
 <li><span><span class="glyphicon glyphicon-stats icon-size"></span><a href="<?php echo site_url('reports/passpercentage'); ?>">Pass Percentage</a></span></li>
-<li><span><span class="glyphicon glyphicon-stats icon-size"></span><a href="<?php echo site_url('reports/generate'); ?>">Topper</a></span></li>
-<li><span><span class="glyphicon glyphicon-stats icon-size"></span><a href="<?php echo site_url('reports/generate'); ?>">Student Rank List</a></span></li>
-<li><span><span class="glyphicon glyphicon-stats icon-size"></span><a href="<?php echo site_url('reports/generate'); ?>">Subject Rank List</a></span></li>
-<li><span><span class="glyphicon glyphicon-stats icon-size"></span><a href="<?php echo site_url('reports/generate'); ?>">Student Mark List</a></span></li>
+<li><span><span class="glyphicon glyphicon-stats icon-size"></span><a href="<?php echo site_url('reports/overalltopper'); ?>">Overall Topper</a></span></li>
+<li><span><span class="glyphicon glyphicon-stats icon-size"></span><a href="<?php echo site_url('reports/subjecttopper'); ?>">Subject Topper</a></span></li>
+<li><span><span class="glyphicon glyphicon-stats icon-size"></span><a href="<?php echo site_url('reports/studentranklist'); ?>">Student Rank List</a></span></li>
+<li><span><span class="glyphicon glyphicon-stats icon-size"></span><a href="<?php echo site_url('reports/subjectranklist'); ?>">Subject Rank List</a></span></li>
+<li><span><span class="glyphicon glyphicon-stats icon-size"></span><a href="<?php echo site_url('reports/studentmarklist'); ?>">Student Mark List</a></span></li>
 
 <br>
 <br>

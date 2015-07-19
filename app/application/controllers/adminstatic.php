@@ -26,7 +26,7 @@ class Adminstatic extends CI_Controller {
 			$client_name= $row->client_name;
 			
 		}
-		$headerdata = array('usertype' => $this->session->userdata('user_type'),
+		$headerdata = array(
 		'client_name' => $client_name ,
 		'title' => $title,
 		'container_height' => $height,

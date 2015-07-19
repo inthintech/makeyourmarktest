@@ -25,7 +25,18 @@ Please follow the steps below :
 <span style="color:#8B008B">
 
 <br><br>
-STUDENT_ID: Enter the student id. (eg) SR8976, VT7654 
+
+<?php
+if($this->session->userdata('client_type')==1)
+{
+    echo 'STUDENT_ID: Enter the student id. (eg) SR8976, VT7654';
+}
+else
+{
+    echo 'STUDENT_ID: Enter the student roll number. (eg) 28, 17';
+}
+?>
+
 
 <br><br>
 STUDENT_NAME: Enter the student name. (eg) RAVI, ASHOK 
