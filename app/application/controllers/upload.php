@@ -146,6 +146,7 @@ class Upload extends CI_Controller {
 			$this->form_validation->set_error_delimiters('<p class="uploadErrMsg">* ', '</p>');
 			if($this->form_validation->run() == FALSE)
 			{
+				unlink($this->targetPathValue);
 				$this->load->helper(array('form'));
 				$examlist = '';
 				$result = $this->user->getExamList($this->session->userdata('client_id'));
@@ -156,7 +157,7 @@ class Upload extends CI_Controller {
 						$examlist = "<option selected value=".$row->exam_id.">".$row->exam_name."</option>".$examlist;
 					}
 				
-					$data = array('formaction' => 'upload/form','examlist' => $examlist);
+					$data = array('formaction' => 'upload/form','examlist' => $examlist,'deptHtml' => $this->common->getDeptNames());
 					$this->load->view('vuploadresults1',$data);
 				}
 				else
@@ -225,6 +226,7 @@ class Upload extends CI_Controller {
 			$newname = $this->session->userdata('user_id').rand(1000, 1999).'.'.$extension;
 			$target_path = "files/";
 			$target_path = $target_path .$newname;
+			$this->targetPathValue = $target_path;
 			
 			if(!move_uploaded_file($_FILES['fileToUpload']['tmp_name'], $target_path)) 
 			{
@@ -263,15 +265,24 @@ class Upload extends CI_Controller {
 		
 		// Column and File Validation
 
-			while ($line = fgetcsv($file))
+			while ($line = fgetcsv($file, 1000, ","))
 			{
 			  // count the number of columns
 			  $numcols = count(array_filter(($line),'strlen'));
+			  //$numcols = count($line);
+			  
+			  /*for ($j = 0; $j < count($line); $j++) {
+                if(trim($line[$j]))
+				   {
+						$numcols++;
+				   }
+            }*/
+            
 
 			  // Bail out of the loop if columns are incorrect
 			  if ($numcols != 3) 
 			  {
-					$this->form_validation->set_message('csvFileValidation', 'Uploaded file has less/more columns or Missing Values at Row '.$numrows.'.');
+					$this->form_validation->set_message('csvFileValidation', 'Uploaded file has less/more columns at Row '.$numrows.' Column Count : '.$numcols);
 					return FALSE;
 			  }
 			  
@@ -279,7 +290,7 @@ class Upload extends CI_Controller {
 			  if($numrows>=2)
 			  {
 					//Data validation of student_id column
-					if(preg_match('/^[a-zA-Z0-9]+$/', $line[0]))
+					if(preg_match('/^[a-zA-Z0-9]+$/', trim($line[0])))
 					{
 						
 					}
@@ -290,7 +301,7 @@ class Upload extends CI_Controller {
 					}
 					
 					//Data validation of student_name column
-					if(preg_match('/^[a-zA-Z ]+$/', $line[1]))
+					if(preg_match('/^[a-zA-Z ]+$/', trim($line[1])))
 					{
 						
 					}
@@ -301,7 +312,7 @@ class Upload extends CI_Controller {
 					}
 					
 					//Data validation of marks_obtained column
-					if(preg_match('/^[0-9]+$/', $line[2]))
+					if(preg_match('/^[0-9]+$/', trim($line[2])))
 					{
 						
 					}
@@ -335,7 +346,7 @@ class Upload extends CI_Controller {
 			}
 
 		
-		$this->targetPathValue = $target_path;
+		
 		return TRUE;
 		
 	}
