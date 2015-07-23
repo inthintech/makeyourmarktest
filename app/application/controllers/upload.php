@@ -265,7 +265,7 @@ class Upload extends CI_Controller {
 		
 		// Column and File Validation
 
-			while ($line = fgetcsv($file, 1000, ","))
+			while ($line = fgetcsv($file, 1000))
 			{
 			  // count the number of columns
 			  $numcols = count(array_filter(($line),'strlen'));
@@ -282,7 +282,7 @@ class Upload extends CI_Controller {
 			  // Bail out of the loop if columns are incorrect
 			  if ($numcols != 3) 
 			  {
-					$this->form_validation->set_message('csvFileValidation', 'Uploaded file has less/more columns at Row '.$numrows.' Column Count : '.$numcols);
+					$this->form_validation->set_message('csvFileValidation', 'Uploaded file has less/more columns at Row '.$numrows.' Column Count : '.$numcols.' '.$line[0].' '.$line[1].' '.$line[2]);
 					return FALSE;
 			  }
 			  

@@ -288,8 +288,6 @@ class Schoolreports extends CI_Controller {
 			}
 
 			</script>';
-			
-			$
 
 			$chart = $chart.'<div class="chart_legend">
 			<ul class="chart_legend_list">'.

@@ -480,8 +480,6 @@ class Reports extends CI_Controller {
 
 			</script>';
 			
-			$
-
 			$chart = $chart.'<div class="chart_legend">
 			<ul class="chart_legend_list">'.
 			'<li>X axis : Department</li>'.
