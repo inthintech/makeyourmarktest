@@ -1909,7 +1909,7 @@ class Schoolreports extends CI_Controller {
 			{
 			$table_headers = "<th style=\"width:15%;\">Class</th>
 			<th style=\"width:10%;\">Rank</th>
-			<th>Subject Code</th><th>Subject Name</th>
+			<th>Subject Name</th>
 			<th>Pass Percentage</th>";
 
 			$opt_data = '';
@@ -1929,7 +1929,7 @@ class Schoolreports extends CI_Controller {
 				{
 				
 					$opt_data = $opt_data."<tr><td>".$row->dept_code." ".$row->section."</td>
-					<td>".$row->rank."</td><td>".$row->subject_code."</td>
+					<td>".$row->rank."</td>
 					<td>".$row->subject_name."</td>
 					<td>".$row->percentage."</td>
 					</tr>";
