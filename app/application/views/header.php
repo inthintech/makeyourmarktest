@@ -243,6 +243,8 @@ echo '<li><span><span class="glyphicon glyphicon-trash icon-size"></span><a href
 
 <li><span><span class="glyphicon glyphicon-globe icon-size"></span><a href="<?php echo site_url('adminstatic/help'); ?>">Feedback / Help</a></span></li>
 <li class="menuitem"><span>Generate Reports</span></li>
+
+
 <li><span><span class="glyphicon glyphicon-stats icon-size"></span><a href="<?php echo site_url('reports/passpercentage'); ?>">Pass Percentage</a></span></li>
 <li><span><span class="glyphicon glyphicon-stats icon-size"></span><a href="<?php echo site_url('reports/overalltopper'); ?>">Overall Topper</a></span></li>
 <li><span><span class="glyphicon glyphicon-stats icon-size"></span><a href="<?php echo site_url('reports/subjecttopper'); ?>">Subject Topper</a></span></li>

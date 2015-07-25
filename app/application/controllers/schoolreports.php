@@ -16,35 +16,7 @@ class Schoolreports extends CI_Controller {
 		$this->containerHeight = 100;
     }
 	
-	public function headerSetup($title,$height)
-	{
-		$client_name = '';
-		$result = $this->user->getClientName($this->session->userdata('client_id'));
-		foreach($result as $row)
-		{
-			$client_name= $row->client_name;
-		}
-		$headerdata = array(
-		'client_name' => $client_name ,
-		'title' => $title,
-		'container_height' => $height,
-		'user_name' => $this->session->userdata('user_name'));
-		$this->load->view('header',$headerdata);
-	}
 
-    private function alphanumericVal($inp)
-	{
-		
-		if(preg_match('/^[a-zA-Z0-9 ]+$/', $inp))
-		//check if only alphanumeric,numbers and spaces are present	
-		{
-			return TRUE;
-		}
-		else
-		{		
-     		return FALSE;
-		}		
-	}
 
 /*----------------------------------------------  Default  ----------------------------------------------*/
 
@@ -58,7 +30,7 @@ class Schoolreports extends CI_Controller {
 
 		if(!isset($_POST['submit']))
 		{
-			redirect('reports/generate');
+			redirect('schoolreports/generate');
 		}
 		$result = $this->user->getClientName($this->session->userdata('client_id'));
 		foreach($result as $row)
