@@ -551,8 +551,8 @@ function subjectRankListReportDept($client_id,$exam_id,$filterQry)
 function subjectRankListReportClass($client_id,$exam_id,$filterQry)
 
 {  
-  $query = $this->db->query("select dept_code,year,section,subject_code,subject_name,percentage,rank from
-	(select dept_code,year,section,subject_code,subject_name,percentage,
+  $query = $this->db->query("select dept_code,section,subject_name,percentage,rank from
+	(select dept_code,section,subject_name,percentage,
 	( 
 	CASE 
 	WHEN dept_code=@dept and section=@section and percentage=@oldPercent
@@ -560,9 +560,9 @@ function subjectRankListReportClass($client_id,$exam_id,$filterQry)
 	WHEN dept_code=@dept and section=@section and percentage<>@oldPercent
 	THEN @curRow := @curRow + 1 
 	ELSE @curRow := 1 END
-	) AS rank,@dept := dept_code,@year := year, @section := section,@oldPercent := percentage
+	) AS rank,@dept := dept_code,@section := section,@oldPercent := percentage
 	from
-	(select CAST(dept_code AS UNSIGNED) dept_code,year,section,subject_code,subject_name,
+	(select CAST(dept_code AS UNSIGNED) dept_code,section,subject_name,
     count(distinct(case when marks_obtained>=pass_mark then student_id end))/count(distinct student_id) * 100 as percentage
 	from class c
 	join 
@@ -571,10 +571,10 @@ function subjectRankListReportClass($client_id,$exam_id,$filterQry)
 	where lgcl_del_f='N'
 	and exam_id=".$this->db->escape($exam_id)."
 	and client_id=".$this->db->escape($client_id)."
-	group by dept_code,year,section,subject_code,subject_name
+	group by dept_code,section,subject_name
 	)a,
-	(SELECT @curRow := 0, @oldPercent := 0, @client_id := 0, @dept := '', @year := 0, @section='') r
-	order by dept_code,year,section,percentage desc
+	(SELECT @curRow := 0, @oldPercent := 0, @dept := 0, @section='') r
+	order by dept_code,section,percentage desc
 	)SCR ".$filterQry);
 
    if($query -> num_rows() >= 1)
