@@ -559,7 +559,7 @@ function subjectRankListReportClass($client_id,$exam_id,$filterQry)
 	THEN @curRow := @curRow + 0 
 	WHEN dept_code=@dept and section=@section and percentage<>@oldPercent
 	THEN @curRow := @curRow + 1 
-	ELSE @curRow := 2 END
+	ELSE @curRow := 1 END
 	) AS rank,@dept := dept_code,@section := section,@oldPercent := percentage
 	from
 	(select CAST(dept_code AS UNSIGNED) dept_code,section,subject_name,
