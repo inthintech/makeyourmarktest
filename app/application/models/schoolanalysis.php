@@ -562,7 +562,7 @@ function subjectRankListReportClass($client_id,$exam_id,$filterQry)
 	ELSE @curRow := 1 END
 	) AS rank,@dept := dept_code,@year := year, @section := section,@oldPercent := percentage
 	from
-	(select dept_code,year,section,subject_code,subject_name,
+	(select CAST(dept_code AS UNSIGNED) dept_code,year,section,subject_code,subject_name,
     count(distinct(case when marks_obtained>=pass_mark then student_id end))/count(distinct student_id) * 100 as percentage
 	from class c
 	join 
