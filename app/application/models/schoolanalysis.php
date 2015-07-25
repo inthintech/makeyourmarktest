@@ -571,7 +571,7 @@ function subjectRankListReportClass($client_id,$exam_id,$filterQry)
 	where lgcl_del_f='N'
 	and exam_id=".$this->db->escape($exam_id)."
 	and client_id=".$this->db->escape($client_id)."
-	group by dept_code,section,subject_name
+	group by dept_code,section,subject_name order by dept_code,section,subject_name
 	)a,
 	(SELECT @curRow := 0, @oldPercent := 0, @dept := 0, @section='') r
 	order by dept_code,section,percentage desc
