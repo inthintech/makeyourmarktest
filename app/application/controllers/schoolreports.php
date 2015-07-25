@@ -8,7 +8,7 @@ class Schoolreports extends CI_Controller {
       	parent::__construct();
         // Your own constructor code
 		$this->load->model('user','',TRUE);
-        $this->load->model('analysis','',TRUE);
+        $this->load->model('schoolanalysis','',TRUE);
         if(!$this->session->userdata('client_id'))
         {
         	redirect('login');
