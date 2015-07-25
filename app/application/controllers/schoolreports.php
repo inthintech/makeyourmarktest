@@ -116,7 +116,7 @@ class Schoolreports extends CI_Controller {
 		{
 			$filterQry = "where 1=1";
 			
-			$output = $this->analysis->passPercentageReportCollege($this->session->userdata('client_id'),$examid,$filterQry);
+			$output = $this->schoolanalysis->passPercentageReportCollege($this->session->userdata('client_id'),$examid,$filterQry);
 			
 			if($output)
 			{
@@ -214,7 +214,7 @@ class Schoolreports extends CI_Controller {
 				$filterQry = $filterQry." and subject_code='".$this->input->post('subjectfilter')."'";
 			}
 			*/
-			$output = $this->analysis->passPercentageReportDept($this->session->userdata('client_id'),$examid,$filterQry);
+			$output = $this->schoolanalysis->passPercentageReportDept($this->session->userdata('client_id'),$examid,$filterQry);
 			
 			if($output)
 			{
@@ -345,7 +345,7 @@ class Schoolreports extends CI_Controller {
 				$filterQry = $filterQry." and subject_code='".$this->input->post('subjectfilter')."'";
 			}
 			*/
-			$output = $this->analysis->passPercentageReportClass($this->session->userdata('client_id'),$examid,$filterQry);
+			$output = $this->schoolanalysis->passPercentageReportClass($this->session->userdata('client_id'),$examid,$filterQry);
 			
 			if($output)
 			{
@@ -485,7 +485,7 @@ class Schoolreports extends CI_Controller {
 				$filterQry = $filterQry." and subject_code='".$this->input->post('subjectfilter')."'";
 			}
 			*/
-			$output = $this->analysis->topperReportCollege($this->session->userdata('client_id'),$examid,$filterQry);
+			$output = $this->schoolanalysis->topperReportCollege($this->session->userdata('client_id'),$examid,$filterQry);
 			
 			if($output)
 			{
@@ -639,7 +639,7 @@ class Schoolreports extends CI_Controller {
 				$filterQry = $filterQry." and subject_code='".$this->input->post('subjectfilter')."'";
 			}
 			*/
-			$output = $this->analysis->topperReportDept($this->session->userdata('client_id'),$examid,$filterQry);
+			$output = $this->schoolanalysis->topperReportDept($this->session->userdata('client_id'),$examid,$filterQry);
 			
 			if($output)
 			{
@@ -786,7 +786,7 @@ class Schoolreports extends CI_Controller {
 				$filterQry = $filterQry." and subject_code='".$this->input->post('subjectfilter')."'";
 			}
 			*/
-			$output = $this->analysis->topperReportClass($this->session->userdata('client_id'),$examid,$filterQry);
+			$output = $this->schoolanalysis->topperReportClass($this->session->userdata('client_id'),$examid,$filterQry);
 			
 			if($output)
 			{
@@ -950,7 +950,7 @@ class Schoolreports extends CI_Controller {
 				}
 			}
 			
-			$output = $this->analysis->subjectTopperReportCollege($this->session->userdata('client_id'),$examid,$filterQry);
+			$output = $this->schoolanalysis->subjectTopperReportCollege($this->session->userdata('client_id'),$examid,$filterQry);
 			
 			if($output)
 			{
@@ -1127,7 +1127,7 @@ class Schoolreports extends CI_Controller {
 				$filterQry = $filterQry." and subject_code='".$this->input->post('subjectfilter')."'";
 			}
 			*/
-			$output = $this->analysis->topperReportCollege($this->session->userdata('client_id'),$examid,$filterQry);
+			$output = $this->schoolanalysis->topperReportCollege($this->session->userdata('client_id'),$examid,$filterQry);
 			
 			if($output)
 			{
@@ -1287,7 +1287,7 @@ class Schoolreports extends CI_Controller {
 				$filterQry = $filterQry." and subject_code='".$this->input->post('subjectfilter')."'";
 			}
 			*/
-			$output = $this->analysis->topperReportDept($this->session->userdata('client_id'),$examid,$filterQry);
+			$output = $this->schoolanalysis->topperReportDept($this->session->userdata('client_id'),$examid,$filterQry);
 			
 			if($output)
 			{
@@ -1442,7 +1442,7 @@ class Schoolreports extends CI_Controller {
 				$filterQry = $filterQry." and subject_code='".$this->input->post('subjectfilter')."'";
 			}
 			*/
-			$output = $this->analysis->topperReportClass($this->session->userdata('client_id'),$examid,$filterQry);
+			$output = $this->schoolanalysis->topperReportClass($this->session->userdata('client_id'),$examid,$filterQry);
 			
 			if($output)
 			{
@@ -1619,7 +1619,7 @@ class Schoolreports extends CI_Controller {
 				$filterQry = $filterQry." and subject_code='".$this->input->post('subjectfilter')."'";
 			}
 			*/
-			$output = $this->analysis->subjectRankListReportCollege($this->session->userdata('client_id'),$examid,$filterQry);
+			$output = $this->schoolanalysis->subjectRankListReportCollege($this->session->userdata('client_id'),$examid,$filterQry);
 			
 			if($output)
 			{
@@ -1781,7 +1781,7 @@ class Schoolreports extends CI_Controller {
 				$filterQry = $filterQry." and subject_code='".$this->input->post('subjectfilter')."'";
 			}
 			*/
-			$output = $this->analysis->subjectRankListReportDept($this->session->userdata('client_id'),$examid,$filterQry);
+			$output = $this->schoolanalysis->subjectRankListReportDept($this->session->userdata('client_id'),$examid,$filterQry);
 			
 			if($output)
 			{
@@ -1931,7 +1931,7 @@ class Schoolreports extends CI_Controller {
 				}
 			}
 			
-			$output = $this->analysis->subjectRankListReportClass($this->session->userdata('client_id'),$examid,$filterQry);
+			$output = $this->schoolanalysis->subjectRankListReportClass($this->session->userdata('client_id'),$examid,$filterQry);
 			
 			if($output)
 			{
@@ -2109,7 +2109,7 @@ class Schoolreports extends CI_Controller {
 			$filterQry = $filterQry." and result='".$this->input->post('resultfilter')."'";
 		}
 
-			$output = $this->analysis->studentMarkListReport($this->session->userdata('client_id'),$examid,$filterQry);
+			$output = $this->schoolanalysis->studentMarkListReport($this->session->userdata('client_id'),$examid,$filterQry);
 			
 			if($output)
 			{
