@@ -140,10 +140,10 @@ from clientpackage where client_id=".$this->db->escape($client_id));
             $no= $row->no;
             } 
 
-  $query = $this->db->query("select exam_id,exam_name from exams 
-    where
-    exam_id in (select distinct exam_id from class c where c.client_id=".$this->db->escape($client_id)." and c.lgcl_del_f='N')
-    and client_id=".$this->db->escape($client_id)." order by crte_ts desc LIMIT ".$no);
+  $query = $this->db->query("select * from (select exam_id,exam_name from exams
+                            where client_id=".$this->db->escape($client_id)." order by crte_ts desc LIMIT ".$no.")e
+    where e.exam_id in (select distinct exam_id from class c
+    where c.client_id=".$this->db->escape($client_id)." and c.lgcl_del_f='N')");
 
    if($query -> num_rows() >= 1)
    {
