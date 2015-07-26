@@ -15,7 +15,7 @@ function passPercentageReportCollege($client_id,$exam_id,$filterQry)
 	on c.batch_id=m.batch_id
 	where lgcl_del_f='N'
 	and exam_id=".$this->db->escape($exam_id)." and client_id=".$this->db->escape($client_id).")
-	SCR ".$filterQry);
+	SCR ".$filterQry ." order by pass_percentage desc");
 
    if($query -> num_rows() >= 1)
    {
@@ -34,7 +34,7 @@ function passPercentageReportDept($client_id,$exam_id,$filterQry)
 {
 	
 	$query = $this->db->query("select * from
-	(select dept_code,count(distinct student_id) as student_cnt,
+	(select CAST(dept_code as unsigned)dept_code,count(distinct student_id) as student_cnt,
 	count(distinct(case when marks_obtained>=pass_mark then student_id end)) as student_pass_cnt,
 	count(distinct(case when marks_obtained>=pass_mark then student_id end))/count(distinct student_id) * 100 as pass_percentage
 	from class c
@@ -42,7 +42,7 @@ function passPercentageReportDept($client_id,$exam_id,$filterQry)
 	on c.batch_id=m.batch_id
 	where lgcl_del_f='N'
 	and exam_id=".$this->db->escape($exam_id)." and client_id=".$this->db->escape($client_id)." group by dept_code)
-	SCR ".$filterQry);
+	SCR ".$filterQry ." order by dept_code");
 
    if($query -> num_rows() >= 1)
    {
@@ -61,7 +61,7 @@ function passPercentageReportClass($client_id,$exam_id,$filterQry)
 {
   
   $query = $this->db->query("select * from
-	(select dept_code,year,section,count(distinct student_id) as student_cnt,
+	(select cast(dept_code as unsigned)dept_code,year,section,count(distinct student_id) as student_cnt,
 	count(distinct(case when marks_obtained>=pass_mark then student_id end)) as student_pass_cnt,
 	count(distinct(case when marks_obtained>=pass_mark then student_id end))/count(distinct student_id) * 100 as pass_percentage
 	from class c
@@ -69,7 +69,7 @@ function passPercentageReportClass($client_id,$exam_id,$filterQry)
 	on c.batch_id=m.batch_id
 	where lgcl_del_f='N'
 	and exam_id=".$this->db->escape($exam_id)." and client_id=".$this->db->escape($client_id)." group by dept_code,year,section)
-	SCR ".$filterQry);
+	SCR ".$filterQry ." order by dept_code,section");
 
    if($query -> num_rows() >= 1)
    {
@@ -87,7 +87,11 @@ function subjectTopperReportCollege($client_id,$exam_id,$filterQry)
 
 {
   $query = $this->db->query("select * from
-(select dept_code,year,section,student_id,student_name,subject_code,subject_name,marks_obtained,rank
+(select cast(dept_code as unsigned)dept_code,year,section,
+case when 12-cast(dept_code as unsigned)<=2 then substring(student_id,4)
+else substring(student_id,3) end AS student_id,
+student_name,
+subject_code,subject_name,marks_obtained,rank
 from class c
 join 
 (select *,
@@ -106,7 +110,7 @@ order by batch_id,marks_obtained desc) m
 on c.batch_id=m.batch_id 
 where lgcl_del_f='N' and marks_obtained>=pass_mark
 and exam_id=".$this->db->escape($exam_id)." and client_id=".$this->db->escape($client_id)."
-)SCR ".$filterQry);
+)SCR ".$filterQry." order by dept_code,section");
 
    if($query -> num_rows() >= 1)
    {
@@ -122,7 +126,10 @@ and exam_id=".$this->db->escape($exam_id)." and client_id=".$this->db->escape($c
 function topperReportCollege($client_id,$exam_id,$filterQry)
 
 { 
-  $query = $this->db->query("select dept_code,year,section,student_id,student_name,percentage,rank from
+  $query = $this->db->query("select dept_code,year,section,
+	case when 12-cast(dept_code as unsigned)<=2 then substring(student_id,4)
+	else substring(student_id,3) end AS student_id,
+	student_name,percentage,rank from
 	(select dept_code,year,section,student_id,student_name,percentage,
 	( 
 	CASE 
@@ -141,8 +148,7 @@ function topperReportCollege($client_id,$exam_id,$filterQry)
 	where lgcl_del_f='N'
 	and exam_id=".$this->db->escape($exam_id)."
 	and client_id=".$this->db->escape($client_id)."
-	and marks_obtained>=pass_mark
-	group by dept_code,year,section,student_id,student_name
+	group by dept_code,year,section,student_id,student_name order by dept_code,year,section
 	)a,
 	(SELECT @curRow := 0, @oldPercent := 0) r
 	order by percentage desc
@@ -163,7 +169,10 @@ function topperReportDept($client_id,$exam_id,$filterQry)
 
 {
   
-  $query = $this->db->query("select dept_code,year,section,student_id,student_name,percentage,rank from
+  $query = $this->db->query("select cast(dept_code as unsigned)dept_code,year,section,
+	case when 12-cast(dept_code as unsigned)<=2 then substring(student_id,4)
+	else substring(student_id,3) end AS student_id,
+	student_name,percentage,rank from
 	(select dept_code,year,section,student_id,student_name,percentage,
 	( 
 	CASE 
@@ -182,8 +191,7 @@ function topperReportDept($client_id,$exam_id,$filterQry)
 	where lgcl_del_f='N'
 	and exam_id=".$this->db->escape($exam_id)."
 	and client_id=".$this->db->escape($client_id)."
-	and marks_obtained>=pass_mark
-	group by dept_code,year,section,student_id,student_name
+	group by dept_code,year,section,student_id,student_name order by dept_code,year,section
 	)a,
 	(SELECT @curRow := 0, @oldPercent := 0, @client_id := 0, @dept := '', @year := 0, @section='') r
 	order by dept_code,percentage desc
@@ -204,8 +212,11 @@ function topperReportDept($client_id,$exam_id,$filterQry)
 function topperReportClass($client_id,$exam_id,$filterQry)
 
 {  
-  $query = $this->db->query("select dept_code,year,section,student_id,student_name,percentage,rank from
-	(select dept_code,year,section,student_id,student_name,percentage,
+  $query = $this->db->query("select cast(dept_code as unsigned)dept_code,year,section,student_id,student_name,percentage,rank from
+	(select dept_code,year,section,
+	case when 12-cast(dept_code as unsigned)<=2 then substring(student_id,4)
+	else substring(student_id,3) end AS student_id,
+	student_name,percentage,
 	( 
 	CASE 
 	WHEN dept_code=@dept and year = @year and section=@section and percentage=@oldPercent
@@ -223,8 +234,7 @@ function topperReportClass($client_id,$exam_id,$filterQry)
 	where lgcl_del_f='N'
 	and exam_id=".$this->db->escape($exam_id)."
 	and client_id=".$this->db->escape($client_id)."
-	and marks_obtained>=pass_mark
-	group by dept_code,year,section,student_id,student_name
+	group by dept_code,year,section,student_id,student_name order by dept_code,year,section
 	)a,
 	(SELECT @curRow := 0, @oldPercent := 0, @client_id := 0, @dept := '', @year := 0, @section='') r
 	order by dept_code,year,section,percentage desc
@@ -246,7 +256,10 @@ function studentMarkListReport($client_id,$exam_id,$filterQry)
 {
 
   $query = $this->db->query("select * from 
-    (select client_id,dept_code,year,section,subject_code,subject_name,student_id,student_name,total_marks,marks_obtained,
+    (select client_id,cast(dept_code as unsigned)dept_code,year,section,subject_code,subject_name,
+	case when 12-cast(dept_code as unsigned)<=2 then cast(substring(student_id,4) as unsigned)
+	else cast(substring(student_id,3) as unsigned) end AS student_id,
+	student_name,total_marks,marks_obtained,
 	case when marks_obtained>=pass_mark then '1' else '0' end result 
 	from class cs join marks ms on cs.batch_id=ms.batch_id 
 	where lgcl_del_f='N'  and exam_id=".$this->db->escape($exam_id)." 
@@ -288,11 +301,11 @@ function subjectRankListReportCollege($client_id,$exam_id,$filterQry)
 	where lgcl_del_f='N'
 	and exam_id=".$this->db->escape($exam_id)."
 	and client_id=".$this->db->escape($client_id)."
-	group by dept_code,year,section,subject_code,subject_name
+	group by dept_code,year,section,subject_code,subject_name order by dept_code,year,section
 	)a,
 	(SELECT @curRow := 0, @oldPercent := 0) r
 	order by percentage desc
-	)SCR ".$filterQry);
+	)SCR ".$filterQry." order by rank");
 
    if($query -> num_rows() >= 1)
    {
@@ -310,7 +323,7 @@ function subjectRankListReportDept($client_id,$exam_id,$filterQry)
 
 {
   
-  $query = $this->db->query("select dept_code,year,section,subject_code,subject_name,percentage,rank from
+  $query = $this->db->query("select cast(dept_code as unsigned)dept_code,year,section,subject_code,subject_name,percentage,rank from
 	(select dept_code,year,section,subject_code,subject_name,percentage,
 	( 
 	CASE 
@@ -330,11 +343,11 @@ function subjectRankListReportDept($client_id,$exam_id,$filterQry)
 	where lgcl_del_f='N'
 	and exam_id=".$this->db->escape($exam_id)."
 	and client_id=".$this->db->escape($client_id)."
-	group by dept_code,year,section,subject_code,subject_name
+	group by dept_code,year,section,subject_code,subject_name order by dept_code,year,section
 	)a,
 	(SELECT @curRow := 0, @oldPercent := 0, @client_id := 0, @dept := '', @year := 0, @section='') r
 	order by dept_code,percentage desc
-	)SCR ".$filterQry);
+	)SCR ".$filterQry." order by dept_code,rank");
 
    if($query -> num_rows() >= 1)
    {
@@ -351,7 +364,7 @@ function subjectRankListReportDept($client_id,$exam_id,$filterQry)
 function subjectRankListReportClass($client_id,$exam_id,$filterQry)
 
 {  
-  $query = $this->db->query("select dept_code,section,subject_name,percentage,rank from
+  $query = $this->db->query("select cast(dept_code as unsigned)dept_code,section,subject_name,percentage,rank from
 	(select dept_code,section,subject_name,percentage,
 	( 
 	CASE 
@@ -371,11 +384,11 @@ function subjectRankListReportClass($client_id,$exam_id,$filterQry)
 	where lgcl_del_f='N'
 	and exam_id=".$this->db->escape($exam_id)."
 	and client_id=".$this->db->escape($client_id)."
-	group by dept_code,section,subject_name order by dept_code,section,subject_name
+	group by dept_code,section,subject_name order by dept_code,section
 	)a,
 	(SELECT @curRow := 0, @oldPercent := 0, @dept := 0, @section='') r
 	order by dept_code,section,percentage desc
-	)SCR ".$filterQry);
+	)SCR ".$filterQry." order by dept_code,section,rank");
 
    if($query -> num_rows() >= 1)
    {

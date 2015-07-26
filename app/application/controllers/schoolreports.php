@@ -16,6 +16,19 @@ class Schoolreports extends CI_Controller {
 		$this->containerHeight = 100;
     }
 	
+	 private function alphanumericVal($inp)
+	{
+		
+		if(preg_match('/^[a-zA-Z0-9 ]+$/', $inp))
+		//check if only alphanumeric,numbers and spaces are present	
+		{
+			return TRUE;
+		}
+		else
+		{		
+     		return FALSE;
+		}		
+	}
 
 
 /*----------------------------------------------  Default  ----------------------------------------------*/
@@ -172,20 +185,7 @@ class Schoolreports extends CI_Controller {
 			{
 				$filterQry = $filterQry." and dept_code='".$this->input->post('deptfilter')."'";
 			}
-			/*
-			if($this->input->post('yearfilter')<>99)
-			{
-				$filterQry = $filterQry." and year=".$this->input->post('yearfilter');
-			}
-			if($this->input->post('sectionfilter')<>99)
-			{
-				$filterQry = $filterQry." and section='".$this->input->post('sectionfilter')."'";
-			}
-			if($this->input->post('subjectfilter')<>99)
-			{
-				$filterQry = $filterQry." and subject_code='".$this->input->post('subjectfilter')."'";
-			}
-			*/
+
 			$output = $this->schoolanalysis->passPercentageReportDept($this->session->userdata('client_id'),$examid,$filterQry);
 			
 			if($output)
@@ -304,19 +304,6 @@ class Schoolreports extends CI_Controller {
 				$filterQry = $filterQry." and section='".$this->input->post('sectionfilter')."'";
 			}
 
-			/*
-			
-			
-			
-			if($this->input->post('sectionfilter')<>99)
-			{
-				$filterQry = $filterQry." and section='".$this->input->post('sectionfilter')."'";
-			}
-			if($this->input->post('subjectfilter')<>99)
-			{
-				$filterQry = $filterQry." and subject_code='".$this->input->post('subjectfilter')."'";
-			}
-			*/
 			$output = $this->schoolanalysis->passPercentageReportClass($this->session->userdata('client_id'),$examid,$filterQry);
 			
 			if($output)
@@ -326,10 +313,17 @@ class Schoolreports extends CI_Controller {
 			<th>No of Students Passed</th><th>Overall Pass Percentage</th>";
 
 			$opt_data = '';
-			$labels = '';
-			$total_cnt_data = '';
-			$pass_cnt_data = '';
-			$cnt = 0;
+			$chart_data = '';
+			$set1 = 0;
+			$set2 = 0;
+			$set3 = 0;
+			$set4 = 0;
+			$set5 = 0;
+			$set6 = 0;
+			$set7 = 0;
+			$set8 = 0;
+			$set9 = 0;
+			$set10 = 0;
 
 			foreach($output as $row)
 				{
@@ -337,42 +331,62 @@ class Schoolreports extends CI_Controller {
 					$opt_data = $opt_data."<tr><td>".$row->dept_code."th Standard</td><td>".$row->section."</td><td>".$row->student_cnt."</td>
 					<td>".$row->student_pass_cnt."</td><td>".$row->pass_percentage."</td></tr>";
 
-				if($cnt==0)
+				if($row->pass_percentage>=0&&$row->pass_percentage<=10)
 					{
-						$labels = '"'.$row->dept_code.' '.$row->section.'"';
-						$total_cnt_data = $row->student_cnt;
-						$pass_cnt_data = $row->student_pass_cnt;
+						$set1++;
 
 					}
-					else
+					if($row->pass_percentage>=11&&$row->pass_percentage<=20)
 					{
-						$labels = $labels.',"'.$row->dept_code.' '.$row->section.'"';
-						$total_cnt_data = $total_cnt_data.','.$row->student_cnt;
-						$pass_cnt_data = $pass_cnt_data.','.$row->student_pass_cnt;
-
+						$set2++;
 					}
-					$cnt=1;
+					if($row->pass_percentage>=21&&$row->pass_percentage<=30)
+					{
+						$set3++;
+					}
+					if($row->pass_percentage>=31&&$row->pass_percentage<=40)
+					{
+						$set4++;
+					}
+					if($row->pass_percentage>=41&&$row->pass_percentage<=50)
+					{
+						$set5++;
+					}
+					if($row->pass_percentage>=51&&$row->pass_percentage<=60)
+					{
+						$set6++;
+					}
+					if($row->pass_percentage>=61&&$row->pass_percentage<=70)
+					{
+						$set7++;
+					}
+					if($row->pass_percentage>=71&&$row->pass_percentage<=80)
+					{
+						$set8++;
+					}
+					if($row->pass_percentage>=81&&$row->pass_percentage<=90)
+					{
+						$set9++;
+					}
+					if($row->pass_percentage>=91&&$row->pass_percentage<=100)
+					{
+						$set10++;
+					}
 				
 				} 
 
+			$chart_data = $set1.','.$set2.','.$set3.','.$set4.','.$set5.','.$set6.','.$set7.','.$set8.','.$set9.','.$set10;
 			$chart = '<div id="canvas-holder" style="text-align:center;margin-top:3%;"><canvas id="chart-area" width="450" height="300"/></div>';
 			$chart = $chart.'<script>
 		var Data = {
-		labels : ['.$labels.'],
+		labels : ["0-10","11-20","21-30","31-40","41-50","51-60","61-70","71-80","81-90","91-100"],
 		datasets : [
 			{
 				fillColor : "#EEC900",
-				strokeColor : "rgba(220,220,220,0.8)",
-				highlightFill: "rgba(220,220,220,0.75)",
-				highlightStroke: "rgba(220,220,220,1)",
-				data : ['.$total_cnt_data.']
-			},
-			{
-				fillColor : "#006400",
 				strokeColor : "rgba(151,187,205,0.8)",
 				highlightFill : "rgba(151,187,205,0.75)",
 				highlightStroke : "rgba(151,187,205,1)",
-				data : ['.$pass_cnt_data.']
+				data : ['.$chart_data.']
 			}
 			]
 			}
@@ -393,15 +407,11 @@ class Schoolreports extends CI_Controller {
 
 			$chart = $chart.'<div class="chart_legend">
 			<ul class="chart_legend_list">
-			<li>X axis : Class</li>
-			<li>Y axis : Students</li>
+			<li>X axis : Percentage</li>
+			<li>Y axis : Class</li>
 			<li>
 			<div style="background:#EEC900;"></div>
-			<span style="margin-left:5%;">Students Attempted</span>
-			</li>
-			<li>
-			<div style="background:#006400;"></div>
-			<span style="margin-left:5%;">Students Passed</span>
+			<span style="margin-left:5%;">No of Class</span>
 			</li>
 			</ul>
 			</div>';
@@ -419,7 +429,7 @@ class Schoolreports extends CI_Controller {
 		
 	}
 
-/*--------------------------------- TOPPER REPORT ---------------------------------*/
+/*--------------------------------- OVERALL TOPPER REPORT ---------------------------------*/
 
 	private function topperReport($examid,$levelid,$client_name)
 
@@ -437,26 +447,8 @@ class Schoolreports extends CI_Controller {
 		
 		if($levelid==1)
 		{
-			$filterQry = "where 1=1 and rank=1";
-			
-			/*
-			if($this->input->post('deptfilter')<>99)
-			{
-				$filterQry = $filterQry." and dept_code='".$this->input->post('deptfilter')."'";
-			}
-			if($this->input->post('yearfilter')<>99)
-			{
-				$filterQry = $filterQry." and year=".$this->input->post('yearfilter');
-			}
-			if($this->input->post('sectionfilter')<>99)
-			{
-				$filterQry = $filterQry." and section='".$this->input->post('sectionfilter')."'";
-			}
-			if($this->input->post('subjectfilter')<>99)
-			{
-				$filterQry = $filterQry." and subject_code='".$this->input->post('subjectfilter')."'";
-			}
-			*/
+			$filterQry = "where 1=1 and rank=1 order by percentage desc";
+
 			$output = $this->schoolanalysis->topperReportCollege($this->session->userdata('client_id'),$examid,$filterQry);
 			
 			if($output)
@@ -573,7 +565,7 @@ class Schoolreports extends CI_Controller {
 			</ul>
 			</div>';
 
-			$rptdata = array('exam_name' => $exam_name,'table_headers' => $table_headers,'data' => $opt_data,'report_name' => 'Topper Report','level' => 'School Level','chart' => $chart);
+			$rptdata = array('exam_name' => $exam_name,'table_headers' => $table_headers,'data' => $opt_data,'report_name' => 'Overall Topper Report','level' => 'School Level','chart' => $chart);
 			$this->load->view('vrptoutput',$rptdata);
 			}
 			else
@@ -596,21 +588,7 @@ class Schoolreports extends CI_Controller {
 				$filterQry = $filterQry." and dept_code='".$this->input->post('deptfilter')."'";
 			}
 
-			/*
-			
-			if($this->input->post('yearfilter')<>99)
-			{
-				$filterQry = $filterQry." and year=".$this->input->post('yearfilter');
-			}
-			if($this->input->post('sectionfilter')<>99)
-			{
-				$filterQry = $filterQry." and section='".$this->input->post('sectionfilter')."'";
-			}
-			if($this->input->post('subjectfilter')<>99)
-			{
-				$filterQry = $filterQry." and subject_code='".$this->input->post('subjectfilter')."'";
-			}
-			*/
+			$filterQry = $filterQry." order by dept_code";
 			$output = $this->schoolanalysis->topperReportDept($this->session->userdata('client_id'),$examid,$filterQry);
 			
 			if($output)
@@ -726,7 +704,7 @@ class Schoolreports extends CI_Controller {
 			</ul>
 			</div>';
 
-			$rptdata = array('exam_name' => $exam_name,'table_headers' => $table_headers,'data' => $opt_data,'report_name' => 'Topper Report','level' => 'Standard Level','chart' => $chart);
+			$rptdata = array('exam_name' => $exam_name,'table_headers' => $table_headers,'data' => $opt_data,'report_name' => 'Overall Topper Report','level' => 'Standard Level','chart' => $chart);
 			$this->load->view('vrptoutput',$rptdata);
 			}
 			else
@@ -752,6 +730,8 @@ class Schoolreports extends CI_Controller {
 			{
 				$filterQry = $filterQry." and section='".$this->input->post('sectionfilter')."'";
 			}
+			
+			$filterQry = $filterQry." order by dept_code,section";
 			/*
 			if($this->input->post('subjectfilter')<>99)
 			{
@@ -871,7 +851,7 @@ class Schoolreports extends CI_Controller {
 			</ul>
 			</div>';
 
-			$rptdata = array('exam_name' => $exam_name,'table_headers' => $table_headers,'data' => $opt_data,'report_name' => 'Topper Report','level' => 'Class Level','chart' => $chart);
+			$rptdata = array('exam_name' => $exam_name,'table_headers' => $table_headers,'data' => $opt_data,'report_name' => 'Overall Topper Report','level' => 'Class Level','chart' => $chart);
 			$this->load->view('vrptoutput',$rptdata);
 			}
 			else
@@ -1031,7 +1011,7 @@ class Schoolreports extends CI_Controller {
 
 			$chart = $chart.'<div class="chart_legend">
 			<ul class="chart_legend_list">
-			<li>X axis : Percentage</li>
+			<li>X axis : Marks Obtained</li>
 			<li>Y axis : Students</li>
 			<li>
 			<div style="background:#EEC900;"></div>
@@ -1103,10 +1083,11 @@ class Schoolreports extends CI_Controller {
 			
 			if($output)
 			{
-			$table_headers = "<th style=\"width:20%;\">Rank</th>
+			$table_headers = "<th style=\"width:10%;\">S.No</th><th style=\"width:10%;\">Rank</th>
 			<th>Student ID</th><th>Student Name</th><th>Class</th>
 			<th>Percentage</th>";
-
+			
+			$sno = 0;
 			$opt_data = '';
 			$chart_data = '';
 			$set1 = 0;
@@ -1121,8 +1102,8 @@ class Schoolreports extends CI_Controller {
 			$set10 = 0;
 			foreach($output as $row)
 				{
-				
-					$opt_data = $opt_data."<tr><td>".$row->rank."</td><td>".$row->student_id."</td>
+					$sno++;
+					$opt_data = $opt_data."<tr><td>".$sno."</td><td>".$row->rank."</td><td>".$row->student_id."</td>
 					<td>".$row->student_name."</td>
 					<td>".$row->dept_code." ".$row->section."</td>
 					<td>".$row->percentage."</td>
@@ -1243,6 +1224,8 @@ class Schoolreports extends CI_Controller {
 					$filterQry = $filterQry." and student_name like '%".$this->input->post('studentfilter')."%'";
 				}
 			}
+			
+			$filterQry = $filterQry." order by dept_code,rank";
 
 			/*
 			
@@ -1263,10 +1246,10 @@ class Schoolreports extends CI_Controller {
 			
 			if($output)
 			{
-			$table_headers = "<th style=\"width:20%;\">Standard Name</th><th style=\"width:10%;\">Rank</th>
+			$table_headers = "<th style=\"width:10%;\">S.No</th><th style=\"width:20%;\">Standard Name</th><th style=\"width:10%;\">Rank</th>
 			<th>Student ID</th><th>Student Name</th><th>Class</th>
 			<th>Percentage</th>";
-
+			$sno=0;
 			$opt_data = '';
 			$chart_data = '';
 			$set1 = 0;
@@ -1281,8 +1264,8 @@ class Schoolreports extends CI_Controller {
 			$set10 = 0;
 			foreach($output as $row)
 				{
-				
-					$opt_data = $opt_data."<tr><td>".$row->dept_code."th Standard</td><td>".$row->rank."</td><td>".$row->student_id."</td>
+					$sno++;
+					$opt_data = $opt_data."<tr><td>".$sno."</td><td>".$row->dept_code."th Standard</td><td>".$row->rank."</td><td>".$row->student_id."</td>
 					<td>".$row->student_name."</td>
 					<td>".$row->dept_code." ".$row->section."</td>
 					<td>".$row->percentage."</td>
@@ -1407,6 +1390,8 @@ class Schoolreports extends CI_Controller {
 					$filterQry = $filterQry." and student_name like '%".$this->input->post('studentfilter')."%'";
 				}
 			}
+			
+			$filterQry = $filterQry." order by dept_code,section,rank";
 
 			/*
 			if($this->input->post('subjectfilter')<>99)
@@ -1418,10 +1403,10 @@ class Schoolreports extends CI_Controller {
 			
 			if($output)
 			{
-			$table_headers = "<th style=\"width:15%;\">Class</th><th style=\"width:10%;\">Rank</th>
+			$table_headers = "<th style=\"width:10%;\">S.No</th><th style=\"width:15%;\">Class</th><th style=\"width:10%;\">Rank</th>
 			<th>Student ID</th><th>Student Name</th>
 			<th>Percentage</th>";
-
+			$sno=0;
 			$opt_data = '';
 			$chart_data = '';
 			$set1 = 0;
@@ -1437,8 +1422,8 @@ class Schoolreports extends CI_Controller {
 
 			foreach($output as $row)
 				{
-				
-					$opt_data = $opt_data."<tr><td>".$row->dept_code." ".$row->section."</td>
+					$sno++;
+					$opt_data = $opt_data."<tr><td>".$sno."</td><td>".$row->dept_code." ".$row->section."</td>
 					<td>".$row->rank."</td>
 					<td>".$row->student_id."</td>
 					<td>".$row->student_name."</td>
@@ -1595,10 +1580,10 @@ class Schoolreports extends CI_Controller {
 			
 			if($output)
 			{
-			$table_headers = "<th style=\"width:10%;\">Rank</th>
+			$table_headers = "<th style=\"width:10%;\">S.No</th><th style=\"width:10%;\">Rank</th>
 			<th>Subject Name</th><th>Class</th>
 			<th>Pass Percentage</th>";
-
+			$sno=0;
 			$opt_data = '';
 			$chart_data = '';
 			$set1 = 0;
@@ -1614,8 +1599,8 @@ class Schoolreports extends CI_Controller {
 
 			foreach($output as $row)
 				{
-				
-					$opt_data = $opt_data."<tr><td>".$row->rank."</td>
+					$sno++;
+					$opt_data = $opt_data."<tr><td>".$sno."</td><td>".$row->rank."</td>
 					<td>".$row->subject_name."</td>
 					<td>".$row->dept_code." ".$row->section."</td>
 					<td>".$row->percentage."</td>
@@ -1757,10 +1742,10 @@ class Schoolreports extends CI_Controller {
 			
 			if($output)
 			{
-			$table_headers = "<th style=\"width:20%;\">Standard Name</th><th style=\"width:10%;\">Rank</th>
-			<th>Subject Code</th><th>Subject Name</th><th>Class</th>
+			$table_headers = "<th style=\"width:10%;\">S.No</th><th style=\"width:20%;\">Standard Name</th><th style=\"width:10%;\">Rank</th>
+			<th>Subject Name</th><th>Class</th>
 			<th>Pass Percentage</th>";
-
+			$sno=0;
 			$opt_data = '';
 			$chart_data = '';
 			$set1 = 0;
@@ -1776,8 +1761,8 @@ class Schoolreports extends CI_Controller {
 
 			foreach($output as $row)
 				{
-				
-					$opt_data = $opt_data."<tr><td>".$row->dept_code."th Standard</td><td>".$row->rank."</td><td>".$row->subject_code."</td>
+					$sno++;
+					$opt_data = $opt_data."<tr><td>".$sno."</td><td>".$row->dept_code."th Standard</td><td>".$row->rank."</td>
 					<td>".$row->subject_name."</td>
 					<td>".$row->dept_code." ".$row->section."</td>
 					<td>".$row->percentage."</td>
@@ -1907,11 +1892,11 @@ class Schoolreports extends CI_Controller {
 			
 			if($output)
 			{
-			$table_headers = "<th style=\"width:15%;\">Class</th>
+			$table_headers = "<th style=\"width:10%;\">S.No</th><th style=\"width:15%;\">Class</th>
 			<th style=\"width:10%;\">Rank</th>
 			<th>Subject Name</th>
 			<th>Pass Percentage</th>";
-
+			$sno=0;
 			$opt_data = '';
 			$chart_data = '';
 			$set1 = 0;
@@ -1927,8 +1912,8 @@ class Schoolreports extends CI_Controller {
 
 			foreach($output as $row)
 				{
-				
-					$opt_data = $opt_data."<tr><td>".$row->dept_code." ".$row->section."</td>
+					$sno++;
+					$opt_data = $opt_data."<tr><td>".$sno."</td><td>".$row->dept_code." ".$row->section."</td>
 					<td>".$row->rank."</td>
 					<td>".$row->subject_name."</td>
 					<td>".$row->percentage."</td>
@@ -2117,7 +2102,7 @@ class Schoolreports extends CI_Controller {
 					}
 					else
 					{
-					$opt_data = $opt_data."<tr><td>".$sno."</td><td>".$row->dept_code." ".$row->year." ".$row->section."</td>
+					$opt_data = $opt_data."<tr><td>".$sno."</td><td>".$row->dept_code." ".$row->section."</td>
 					<td>".$row->student_id."</td><td>".$row->student_name."</td>
 					<td>".$row->subject_name."</td>
 					<td>".$row->total_marks."</td><td>".$row->marks_obtained."</td><td style='background:#DC143C;color:white;'>Failed</td>

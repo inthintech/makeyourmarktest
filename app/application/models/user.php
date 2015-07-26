@@ -474,7 +474,10 @@ function getResultDetails($client_id,$exam_id,$batch_id)
 
   {
 
-    $query = $this->db->query("select student_id,student_name,total_marks,pass_mark,marks_obtained
+    $query = $this->db->query("select
+    case when 12-cast(dept_code as unsigned)<=2 then substring(student_id,4)
+	else substring(student_id,3) end AS student_id,
+    student_name,total_marks,pass_mark,marks_obtained
     from marks m join class c on m.batch_id=c.batch_id
     where c.client_id=".$this->db->escape($client_id)." and c.exam_id=".$this->db->escape($exam_id)." and c.batch_id=".$this->db->escape($batch_id));
 
