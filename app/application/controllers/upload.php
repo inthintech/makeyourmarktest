@@ -15,7 +15,7 @@ class Upload extends CI_Controller {
         }
 		$this->load->model('user','',TRUE);
 		$this->load->model('common','',TRUE);
-		$this->containerHeight = 100;
+		$this->containerHeight = 140;
 		$this->targetPathValue = '';
     }
 	

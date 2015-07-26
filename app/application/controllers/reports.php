@@ -14,7 +14,7 @@ class Reports extends CI_Controller {
         {
         	redirect('login');
         }
-		$this->containerHeight = 100;
+		$this->containerHeight = 160;
     }
 	
 	public function headerSetup($title,$height)
