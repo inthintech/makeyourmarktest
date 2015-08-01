@@ -14,13 +14,6 @@ function getReport($examid,$levelid,$client_name){
 		   $exam_name= $row->exam_name;
 	   }
 	   
-	   $result = $this->user->getClientName($this->session->userdata('client_id'));
-	   foreach($result as $row)
-	   {
-
-		   $client_name= $row->client_name;
-	   }
- 
 	   $filterQry = '';
 	   
 	   //swap parameters for school and college
@@ -488,10 +481,14 @@ function getReport($examid,$levelid,$client_name){
 	 {
 		 $filterQry = $filterQry." and dept_code='".$this->input->post('deptfilter')."'";
 	 }
-
-	 if($this->input->post('yearfilter')<>99)
-	 {
-		 $filterQry = $filterQry." and year=".$this->input->post('yearfilter');
+	 
+	 
+	 if($this->session->userdata('client_type')!=3)
+	 {	
+		 if($this->input->post('yearfilter')<>99)
+		 {
+			 $filterQry = $filterQry." and year=".$this->input->post('yearfilter');
+		 }
 	 }
 
 	 if($this->input->post('sectionfilter')<>99)
