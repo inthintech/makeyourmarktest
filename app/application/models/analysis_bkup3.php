@@ -3,199 +3,34 @@
 Class Analysis extends CI_Model
 {
  
-function passPercentageReportCollege($client_id,$exam_id,$filterQry,$level_id)
+function passPercentageReportCollege($client_id,$exam_id,$filterQry)
 
 {
-	//Level
-	// 1 - College
-	// 2 - Dept
-	// 3 - Year
-	// 4 - Class
-	// 5 - Dept Year
+	/*
+	$query = $this->db->query("select * from
+	(select a.student_cnt,ifnull(b.student_pass_cnt,0) student_pass_cnt,
+    ROUND((ifnull(b.student_pass_cnt,0)/a.student_cnt)*100) pass_percentage from 
+    (select client_id,count(distinct student_id) student_cnt from class cs join marks ms on cs.batch_id=ms.batch_id 
+    where is_ready='Y' and lgcl_del_f='N'  and client_id=".$this->db->escape($client_id)." and exam_id=".$this->db->escape($exam_id)." group by client_id)a
+    
+    left join
+    (select client_id,count(distinct student_id) student_pass_cnt from class cs join marks ms on cs.batch_id=ms.batch_id 
+    where marks_obtained>=pass_mark and is_ready='Y' and lgcl_del_f='N'  
+    and client_id=".$this->db->escape($client_id)." and exam_id=".$this->db->escape($exam_id)." group by client_id)b
+    on a.client_id=b.client_id)
+	SCR ".$filterQry);
+	*/
 	
-	$queryStr = "Select * from (select ";
-	
-	//select columns
-	
-	switch($level_id)
-	{
-	  case 1:
-		$queryStr = $queryStr."a.client_id,";
-	  break;
-	  case 2:
-		$queryStr = $queryStr."a.dept_code,";
-	  break;
-	  case 3:
-		$queryStr = $queryStr."a.year,";
-	  break;
-	  case 4:
-		$queryStr = $queryStr."a.dept_code,a.year,a.section,";
-	  break;
-	  case 5:
-		$queryStr = $queryStr."a.dept_code,a.year,";
-	  break;
-	}
-	
-	
-	
-	
-  	$queryStr = $queryStr."
-	count(distinct a.student_id) as student_cnt,
-	count(distinct(case when b.student_id is null then a.student_id end)) as student_pass_cnt,
-	count(distinct(case when b.student_id is null then a.student_id end))
-	/count(distinct a.student_id) * 100 as pass_percentage 
-	from
-	(select distinct c.*,student_id
-	from marks m
-	join class c
-	on m.batch_id=c.batch_id
-	where c.lgcl_del_f='N' and c.exam_id=".$this->db->escape($exam_id)." and c.client_id=".$this->db->escape($client_id)."
-	)a left join
-	(select distinct student_id
-	from marks m
-	join class c
-	on m.batch_id=c.batch_id
-	where c.lgcl_del_f='N' and c.exam_id=".$this->db->escape($exam_id)."
-	and c.client_id=".$this->db->escape($client_id)." and marks_obtained<pass_mark
-	)b
-	on a.student_id=b.student_id";
-		
-	//group by columns
-	
-	switch($level_id)
-	{
-	  case 1:
-		$queryStr = $queryStr." group by a.client_id)SCR";
-	  break;
-	  case 2:
-		$queryStr = $queryStr." group by a.dept_code)SCR";
-	  break;
-	  case 3:
-		$queryStr = $queryStr." group by a.year)SCR";
-	  break;
-	  case 4:
-		$queryStr = $queryStr." group by a.dept_code,a.year,a.section)SCR";
-	  break;
-	  case 5:
-		$queryStr = $queryStr." group by a.dept_code,a.year)SCR";
-	  break;
-	}
-	
-	$queryStr = $queryStr." ".$filterQry;
-	
-	//order by columns
-	
-	switch($level_id)
-	{
-	  case 1:
-		$queryStr = $queryStr." order by client_id";
-	  break;
-	  case 2:
-		$queryStr = $queryStr." order by dept_code";
-	  break;
-	  case 3:
-		$queryStr = $queryStr." order by year";
-	  break;
-	  case 4:
-		$queryStr = $queryStr." order by dept_code,year,section";
-	  break;
-	  case 5:
-		$queryStr = $queryStr." order by dept_code,year";
-	  break;
-	}
-	
-	$query = $this->db->query($queryStr);
-
-   if($query -> num_rows() >= 1)
-   {
-     return $query->result();
-   }
-   else
-   {
-     return false;
-   }
-
-}
-
-function passPercentageReportSchool($client_id,$exam_id,$filterQry,$level_id)
-
-{
-	//Level
-	// 1 - School
-	// 2 - Standard
-	// 4 - Class
-	
-	$queryStr = "Select * from (select ";
-	
-	//select columns
-	
-	switch($level_id)
-	{
-	  case 1:
-		$queryStr = $queryStr."a.client_id,";
-	  break;
-	  case 2:
-		$queryStr = $queryStr."a.dept_code,";
-	  break;
-	  case 4:
-		$queryStr = $queryStr."a.dept_code,a.section,";
-	  break;
-	}
-	
-  	$queryStr = $queryStr."
-	count(distinct a.student_id) as student_cnt,
-	count(distinct(case when b.student_id is null then a.student_id end)) as student_pass_cnt,
-	count(distinct(case when b.student_id is null then a.student_id end))
-	/count(distinct a.student_id) * 100 as pass_percentage 
-	from
-	(select distinct c.*,student_id
-	from marks m
-	join class c
-	on m.batch_id=c.batch_id
-	where c.lgcl_del_f='N' and c.exam_id=".$this->db->escape($exam_id)." and c.client_id=".$this->db->escape($client_id)."
-	)a left join
-	(select distinct student_id
-	from marks m
-	join class c
-	on m.batch_id=c.batch_id
-	where c.lgcl_del_f='N' and c.exam_id=".$this->db->escape($exam_id)."
-	and c.client_id=".$this->db->escape($client_id)." and marks_obtained<pass_mark
-	)b
-	on a.student_id=b.student_id";
-		
-	//group by columns
-	
-	switch($level_id)
-	{
-	  case 1:
-		$queryStr = $queryStr." group by a.client_id)SCR";
-	  break;
-	  case 2:
-		$queryStr = $queryStr." group by a.dept_code)SCR";
-	  break;
-	  case 4:
-		$queryStr = $queryStr." group by a.dept_code,a.year,a.section)SCR";
-	  break;
-	}
-	
-	$queryStr = $queryStr." ".$filterQry;
-	
-	//order by columns
-	
-	switch($level_id)
-	{
-	  case 1:
-		$queryStr = $queryStr." order by client_id";
-	  break;
-	  case 2:
-		$queryStr = $queryStr." order by cast(dept_code as unsigned)";
-	  break;
-	  case 4:
-		$queryStr = $queryStr." order by cast(dept_code as unsigned),section";
-	  break;
-	}
-	
-	$query = $this->db->query($queryStr);
+	$query = $this->db->query("select * from
+	(select count(distinct student_id) as student_cnt,
+	count(distinct(case when marks_obtained>=pass_mark then student_id end)) as student_pass_cnt,
+	count(distinct(case when marks_obtained>=pass_mark then student_id end))/count(distinct student_id) * 100 as pass_percentage
+	from class c
+	join marks m
+	on c.batch_id=m.batch_id
+	where lgcl_del_f='N'
+	and exam_id=".$this->db->escape($exam_id)." and client_id=".$this->db->escape($client_id).")
+	SCR ".$filterQry);
 
    if($query -> num_rows() >= 1)
    {
@@ -705,7 +540,7 @@ function subjectRankListReportDept($client_id,$exam_id,$filterQry)
    {
      return $query->result();
    }
-   else													
+   else
    {
      return false;
    }
@@ -794,7 +629,7 @@ function subjectRankListReportDeptYear($client_id,$exam_id,$filterQry)
 }
 
 function subjectRankListReportClass($client_id,$exam_id,$filterQry)
-	  
+
 {  
   $query = $this->db->query("select dept_code,year,section,subject_code,subject_name,percentage,rank from
 	(select dept_code,year,section,subject_code,subject_name,percentage,

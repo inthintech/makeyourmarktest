@@ -5,6 +5,7 @@
 <div class="panel-body">
 
 <?php
+/*
 if($this->session->userdata('client_type')==3)
 {
 	echo '<form class="upload_form" target="_blank" action='.site_url('schoolreports/output').' method="POST" enctype="multipart/form-data">';
@@ -13,7 +14,10 @@ else
 {
 	echo '<form class="upload_form" target="_blank" action='.site_url('reports/output').' method="POST" enctype="multipart/form-data">';
 }
+*/
 ?>
+
+<form class="upload_form" target="_blank" action="<?php echo site_url('reports/output') ?>" method="POST" enctype="multipart/form-data">
 
 <input type="hidden" value="<?php echo $reportID;?>" name="reportid" />
 
