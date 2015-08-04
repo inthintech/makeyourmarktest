@@ -728,7 +728,7 @@ function subjectTopperReportCollege($client_id,$exam_id,$filterQry)
 	)m
 	on c.batch_id=m.batch_id where lgcl_del_f='N'
 	and exam_id=".$this->db->escape($exam_id)." and client_id=".$this->db->escape($client_id)."
-	)SCR ".$filterQry. "order by client_id,dept_code,year,section");
+	)SCR ".$filterQry. " order by client_id,dept_code,year,section");
 
    if($query -> num_rows() >= 1)
    {
