@@ -389,7 +389,7 @@ function getReport($examid,$levelid,$client_name){
 				$filterQry = $filterQry." and subject_code='".$this->input->post('subjectfilter')."'";
 			}
 			*/
-			$output = $this->analysis->topperReportYear($this->session->userdata('client_id'),$examid,$filterQry,$levelid);
+			$output = $this->analysis->overallTopperReportCollege($this->session->userdata('client_id'),$examid,$filterQry,$levelid);
 			
 			if($output)
 			{
@@ -552,7 +552,7 @@ function getReport($examid,$levelid,$client_name){
 				$filterQry = $filterQry." and subject_code='".$this->input->post('subjectfilter')."'";
 			}
 			*/
-			$output = $this->analysis->topperReportDeptYear($this->session->userdata('client_id'),$examid,$filterQry,$levelid);
+			$output = $this->analysis->overallTopperReportCollege($this->session->userdata('client_id'),$examid,$filterQry,$levelid);
 			
 			if($output)
 			{
