@@ -220,28 +220,40 @@ font-size:1em;
 <div class="leftnav">
 <ul> 
 
-<li class="menuitem"><span>Administration</span></li>
-<li><span><span class="glyphicon glyphicon-home icon-size"></span><a href="<?php echo site_url('adminstatic'); ?>">Home</a></span></li>
 <?php
+
+if($this->session->userdata('user_type')!=3)
+{
+
+echo
+'<li class="menuitem"><span>Administration</span></li>
+<li><span><span class="glyphicon glyphicon-home icon-size"></span><a href="'.site_url('adminstatic').'">Home</a></span></li>';
+
 if($this->session->userdata('user_type')==1)
 {
 echo '<li><span><span class="glyphicon glyphicon-plus icon-size"></span><a href="'.site_url('adminaction/addexam').'">New Exam</a></span></li>';
 echo '<li><span><span class="glyphicon glyphicon-th-list icon-size"></span><a href="'.site_url('adminstatic/examstatus').'">Exam Status</a></span></li>';
 }
-?>
-<li><span><span class="glyphicon glyphicon-file icon-size"></span><a href="<?php echo site_url('adminstatic/createcsv'); ?>">How to Create CSV File</a></span></li>
-<li><span><span class="glyphicon glyphicon-upload icon-size"></span><a href="<?php echo site_url('upload/form'); ?>">Upload Results</a></span></li>
-<li><span><span class="glyphicon glyphicon-search icon-size"></span><a href="<?php echo site_url('verify/exam'); ?>">Verify Results</a></span></li>
-<?php
+
+echo'
+<li><span><span class="glyphicon glyphicon-file icon-size"></span><a href="'.site_url('adminstatic/createcsv').'">How to Create CSV File</a></span></li>
+<li><span><span class="glyphicon glyphicon-upload icon-size"></span><a href="'.site_url('upload/form').'">Upload Results</a></span></li>
+<li><span><span class="glyphicon glyphicon-search icon-size"></span><a href="'.site_url('verify/exam').'">Verify Results</a></span></li>';
+
 if($this->session->userdata('user_type')==1)
 {
 echo '<li><span><span class="glyphicon glyphicon-user icon-size"></span><a href="'.site_url('adminaction/adduser').'">Add User</a></span></li>';
 echo '<li><span><span class="glyphicon glyphicon-trash icon-size"></span><a href="'.site_url('adminaction/deleteuser').'">Delete User</a></span></li>';
 }
-?>
-<li><span><span class="glyphicon glyphicon-cog icon-size"></span><a href="<?php echo site_url('adminaction/changepassword'); ?>">Change Password</a></span></li>
 
-<li><span><span class="glyphicon glyphicon-globe icon-size"></span><a href="<?php echo site_url('adminstatic/help'); ?>">Feedback / Help</a></span></li>
+echo
+'
+<li><span><span class="glyphicon glyphicon-cog icon-size"></span><a href="'.site_url('adminaction/changepassword').'">Change Password</a></span></li>
+<li><span><span class="glyphicon glyphicon-globe icon-size"></span><a href="'.site_url('adminstatic/help').'">Feedback / Help</a></span></li>
+';
+
+}
+?>
 <li class="menuitem"><span>Generate Reports</span></li>
 
 
