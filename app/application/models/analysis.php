@@ -718,10 +718,10 @@ function subjectTopperReportCollege($client_id,$exam_id,$filterQry)
 
 {
   $query = $this->db->query("select * from
-	(select client_id,dept_code,year,section,subject_name,student_id,marks_obtained from class c
+	(select client_id,dept_code,year,section,subject_name,student_id,student_name,marks_obtained from class c
 	join  
 	(
-	select b.batch_id,b.student_id,b.marks_obtained from
+	select b.batch_id,b.student_id,b.student_name,b.marks_obtained from
 	(select batch_id,max(marks_obtained) max from marks
 	group by batch_id)a
 	join marks b
