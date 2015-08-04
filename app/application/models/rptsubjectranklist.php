@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-Class Rptstudentranklist extends CI_Model
+Class Rptsubjectranklist extends CI_Model
 {
 
  private function alphanumericVal($inp)
@@ -56,35 +56,27 @@ function getReport($examid,$levelid,$client_name){
 		{
 			$filterQry = "where 1=1";
 			
-			if($this->input->post('studentfilter'))
+			if($this->input->post('subjectfilter'))
 			{
-				if($this->alphanumericVal($this->input->post('studentfilter')))
+				if($this->alphanumericVal($this->input->post('subjectfilter')))
 				{
-					$filterQry = $filterQry." and student_name like '%".$this->input->post('studentfilter')."%'";
-				}
-			}
-			
-	        if($this->input->post('studentidfilter'))
-			{
-				if($this->alphanumericVal($this->input->post('studentidfilter')))
-				{
-					$filterQry = $filterQry." and student_id like '%".$this->input->post('studentidfilter')."%'";
+					$filterQry = $filterQry." and subject_name like '%".$this->input->post('subjectfilter')."%'";
 				}
 			}
 			
 			if($this->session->userdata('client_type')==3)
 		    {
-				$output = $this->analysis->overallTopperReportSchool($this->session->userdata('client_id'),$examid,$filterQry,$levelid);
+				$output = $this->analysis->subjectRankListReportSchool($this->session->userdata('client_id'),$examid,$filterQry,$levelid);
 			}
 			else
 			{
-				$output = $this->analysis->overallTopperReportCollege($this->session->userdata('client_id'),$examid,$filterQry,$levelid);
+				$output = $this->analysis->subjectRankListReportCollege($this->session->userdata('client_id'),$examid,$filterQry,$levelid);
 			}
 			if($output)
 			{
 			$table_headers = "<th style=\"width:10%;\">Rank</th>
-			<th>Student ID</th><th>Student Name</th><th>Class</th>
-			<th>Percentage</th><th>All Cleared</th>";
+			<th style=\"width:30%;\">Subject Name</th><th>Class</th>
+			<th>Pass Percentage</th>";
 
 			$opt_data = '';
 			$chart_data = '';
@@ -101,32 +93,25 @@ function getReport($examid,$levelid,$client_name){
 
 			foreach($output as $row)
 				{
-					if($row->allpass==1)
-					{
-						$stat = "<td style='background:green;color:white;'>Yes</td>";
-					}
-					else
-					{
-						$stat = "<td style='background:#DC143C;color:white;'>No</td>";
-					}
+					
 					
 					if($this->session->userdata('client_type')==3)
 					{
 						
 						
-						$opt_data = $opt_data."<tr><td>".$row->rank."</td><td>".$row->student_id."</td>
-						<td>".$row->student_name."</td>
+						$opt_data = $opt_data."<tr><td>".$row->rank."</td>
+						<td>".$row->subject_name."</td>
 						<td>".$row->dept_code." ".$row->section."</td>
-						<td>".$row->percentage."</td>".$stat."
+						<td>".$row->percentage."</td>
 						</tr>";
 					}
 					else
 					{
-						$opt_data = $opt_data."<tr><td>".$row->rank."</td><td>".$row->student_id."</td>
-						<td>".$row->student_name."</td>
+						$opt_data = $opt_data."<tr><td>".$row->rank."</td>
+						<td>".$row->subject_name."</td>
 						<td>".$row->dept_code." ".$row->year." ".$row->section."</td>
 						<td>".$row->percentage."</td>
-						".$stat."
+						
 						</tr>";
 					}
 
@@ -208,15 +193,15 @@ function getReport($examid,$levelid,$client_name){
 			$chart = $chart.'<div class="chart_legend">
 			<ul class="chart_legend_list">
 			<li>X axis : Percentage</li>
-			<li>Y axis : Students</li>
+			<li>Y axis : Subjects</li>
 			<li>
 			<div style="background:#EEC900;"></div>
-			<span style="margin-left:5%;">No of Students</span>
+			<span style="margin-left:5%;">No of Subjects</span>
 			</li>
 			</ul>
 			</div>';
 
-			$rptdata = array('exam_name' => $exam_name,'table_headers' => $table_headers,'data' => $opt_data,'report_name' => 'Student Rank List','level' => $var1.' Level','chart' => $chart);
+			$rptdata = array('exam_name' => $exam_name,'table_headers' => $table_headers,'data' => $opt_data,'report_name' => 'Subject Rank List','level' => $var1.' Level','chart' => $chart);
 			$this->load->view('vrptoutput',$rptdata);
 			}
 			else
@@ -234,21 +219,14 @@ function getReport($examid,$levelid,$client_name){
 		{
 			$filterQry = "where 1=1";
 			
-			if($this->input->post('studentfilter'))
+			if($this->input->post('subjectfilter'))
 			{
-				if($this->alphanumericVal($this->input->post('studentfilter')))
+				if($this->alphanumericVal($this->input->post('subjectfilter')))
 				{
-					$filterQry = $filterQry." and student_name like '%".$this->input->post('studentfilter')."%'";
+					$filterQry = $filterQry." and subject_name like '%".$this->input->post('subjectfilter')."%'";
 				}
 			}
-			
-	        if($this->input->post('studentidfilter'))
-			{
-				if($this->alphanumericVal($this->input->post('studentidfilter')))
-				{
-					$filterQry = $filterQry." and student_id like '%".$this->input->post('studentidfilter')."%'";
-				}
-			}
+
 			
 			if($this->input->post('deptfilter')<>99)
 			{
@@ -257,18 +235,18 @@ function getReport($examid,$levelid,$client_name){
 
 			if($this->session->userdata('client_type')==3)
 		    {
-				$output = $this->analysis->overallTopperReportSchool($this->session->userdata('client_id'),$examid,$filterQry,$levelid);
+				$output = $this->analysis->subjectRankListReportSchool($this->session->userdata('client_id'),$examid,$filterQry,$levelid);
 			}
 			else
 			{
-				$output = $this->analysis->overallTopperReportCollege($this->session->userdata('client_id'),$examid,$filterQry,$levelid);
+				$output = $this->analysis->subjectRankListReportCollege($this->session->userdata('client_id'),$examid,$filterQry,$levelid);
 			}
 			
 			if($output)
 			{
 			$table_headers = "<th style=\"width:10%;\">".$var2."</th><th style=\"width:10%;\">Rank</th>
-			<th>Student ID</th><th>Student Name</th><th>Class</th>
-			<th>Percentage</th><th>All Cleared</th>";
+			<th style=\"width:30%;\">Subject Name</th><th>Class</th>
+			<th>Pass Percentage</th>";
 
 			$opt_data = '';
 			$chart_data = '';
@@ -285,30 +263,21 @@ function getReport($examid,$levelid,$client_name){
 
 			foreach($output as $row)
 				{
-					
-					if($row->allpass==1)
-					{
-						$stat = "<td style='background:green;color:white;'>Yes</td>";
-					}
-					else
-					{
-						$stat = "<td style='background:#DC143C;color:white;'>No</td>";
-					}
-					
+
 					if($this->session->userdata('client_type')==3)
 					{
-						$opt_data = $opt_data."<tr><td>".$row->dept_code."</td><td>".$row->rank."</td><td>".$row->student_id."</td>
-						<td>".$row->student_name."</td>
+						$opt_data = $opt_data."<tr><td>".$row->dept_code."</td><td>".$row->rank."</td>
+						<td>".$row->subject_name."</td>
 						<td>".$row->dept_code." ".$row->section."</td>
-						<td>".$row->percentage."</td>".$stat."
+						<td>".$row->percentage."</td>
 						</tr>";
 					}
 					else
 					{
-						$opt_data = $opt_data."<tr><td>".$row->dept_code."</td><td>".$row->rank."</td><td>".$row->student_id."</td>
-						<td>".$row->student_name."</td>
+						$opt_data = $opt_data."<tr><td>".$row->dept_code."</td><td>".$row->rank."</td>
+						<td>".$row->subject_name."</td>
 						<td>".$row->dept_code." ".$row->year." ".$row->section."</td>
-						<td>".$row->percentage."</td>".$stat."
+						<td>".$row->percentage."</td>
 						</tr>";
 					}
 
@@ -389,15 +358,15 @@ function getReport($examid,$levelid,$client_name){
 			$chart = $chart.'<div class="chart_legend">
 			<ul class="chart_legend_list">
 			<li>X axis : Percentage</li>
-			<li>Y axis : Students</li>
+			<li>Y axis : Subjects</li>
 			<li>
 			<div style="background:#EEC900;"></div>
-			<span style="margin-left:5%;">No of Students</span>
+			<span style="margin-left:5%;">No of Subjects</span>
 			</li>
 			</ul>
 			</div>';
 
-			$rptdata = array('exam_name' => $exam_name,'table_headers' => $table_headers,'data' => $opt_data,'report_name' => 'Student Rank List','level' => $var3.' Level','chart' => $chart);
+			$rptdata = array('exam_name' => $exam_name,'table_headers' => $table_headers,'data' => $opt_data,'report_name' => 'Subject Rank List','level' => $var3.' Level','chart' => $chart);
 			$this->load->view('vrptoutput',$rptdata);
 			}
 			else
@@ -414,19 +383,11 @@ function getReport($examid,$levelid,$client_name){
 		{
 			$filterQry = "where 1=1";
 			
-			if($this->input->post('studentfilter'))
+			if($this->input->post('subjectfilter'))
 			{
-				if($this->alphanumericVal($this->input->post('studentfilter')))
+				if($this->alphanumericVal($this->input->post('subjectfilter')))
 				{
-					$filterQry = $filterQry." and student_name like '%".$this->input->post('studentfilter')."%'";
-				}
-			}
-			
-	        if($this->input->post('studentidfilter'))
-			{
-				if($this->alphanumericVal($this->input->post('studentidfilter')))
-				{
-					$filterQry = $filterQry." and student_id like '%".$this->input->post('studentidfilter')."%'";
+					$filterQry = $filterQry." and subject_name like '%".$this->input->post('subjectfilter')."%'";
 				}
 			}
 			
@@ -457,8 +418,8 @@ function getReport($examid,$levelid,$client_name){
 			if($output)
 			{
 			$table_headers = "<th style=\"width:10%;\">Year</th><th style=\"width:10%;\">Rank</th>
-			<th>Student ID</th><th>Student Name</th><th>Class</th>
-			<th>Percentage</th><th>All Cleared</th>";
+			<th style=\"width:30%;\">Subject Name</th><th>Class</th>
+			<th>Pass Percentage</th>";
 
 			$opt_data = '';
 			$chart_data = '';
@@ -474,20 +435,11 @@ function getReport($examid,$levelid,$client_name){
 			$set10 = 0;
 			foreach($output as $row)
 				{
-					
-					if($row->allpass==1)
-					{
-						$stat = "<td style='background:green;color:white;'>Yes</td>";
-					}
-					else
-					{
-						$stat = "<td style='background:#DC143C;color:white;'>No</td>";
-					}
-					
-					$opt_data = $opt_data."<tr><td>".$row->year."</td><td>".$row->rank."</td><td>".$row->student_id."</td>
-					<td>".$row->student_name."</td>
+
+					$opt_data = $opt_data."<tr><td>".$row->year."</td><td>".$row->rank."</td>
+					<td>".$row->subject_name."</td>
 					<td>".$row->dept_code." ".$row->year." ".$row->section."</td>
-					<td>".$row->percentage."</td>".$stat."
+					<td>".$row->percentage."</td>
 					</tr>";
 
 					if($row->percentage>=0&&$row->percentage<=10)
@@ -568,15 +520,15 @@ function getReport($examid,$levelid,$client_name){
 			$chart = $chart.'<div class="chart_legend">
 			<ul class="chart_legend_list">
 			<li>X axis : Percentage</li>
-			<li>Y axis : Students</li>
+			<li>Y axis : Subjects</li>
 			<li>
 			<div style="background:#EEC900;"></div>
-			<span style="margin-left:5%;">No of Students</span>
+			<span style="margin-left:5%;">No of Subjects</span>
 			</li>
 			</ul>
 			</div>';
 
-			$rptdata = array('exam_name' => $exam_name,'table_headers' => $table_headers,'data' => $opt_data,'report_name' => 'Student Rank List','level' => 'Year Level','chart' => $chart);
+			$rptdata = array('exam_name' => $exam_name,'table_headers' => $table_headers,'data' => $opt_data,'report_name' => 'Subject Rank List','level' => 'Year Level','chart' => $chart);
 			$this->load->view('vrptoutput',$rptdata);
 			}
 			else
@@ -594,19 +546,11 @@ function getReport($examid,$levelid,$client_name){
 		{
 			$filterQry = "where 1=1";
 			
-			if($this->input->post('studentfilter'))
+			if($this->input->post('subjectfilter'))
 			{
-				if($this->alphanumericVal($this->input->post('studentfilter')))
+				if($this->alphanumericVal($this->input->post('subjectfilter')))
 				{
-					$filterQry = $filterQry." and student_name like '%".$this->input->post('studentfilter')."%'";
-				}
-			}
-			
-	        if($this->input->post('studentidfilter'))
-			{
-				if($this->alphanumericVal($this->input->post('studentidfilter')))
-				{
-					$filterQry = $filterQry." and student_id like '%".$this->input->post('studentidfilter')."%'";
+					$filterQry = $filterQry." and subject_name like '%".$this->input->post('subjectfilter')."%'";
 				}
 			}
 
@@ -636,8 +580,8 @@ function getReport($examid,$levelid,$client_name){
 			if($output)
 			{
 			$table_headers = "<th style=\"width:10%;\">Dept</th><th style=\"width:10%;\">Year</th><th style=\"width:10%;\">Rank</th>
-			<th>Student ID</th><th>Student Name</th><th>Class</th>
-			<th>Percentage</th><th>All Cleared</th>";
+			<th style=\"width:30%;\">Subject Name</th><th>Class</th>
+			<th>Pass Percentage</th>";
 
 			$opt_data = '';
 			$chart_data = '';
@@ -654,21 +598,12 @@ function getReport($examid,$levelid,$client_name){
 
 			foreach($output as $row)
 				{
-					
-					if($row->allpass==1)
-					{
-						$stat = "<td style='background:green;color:white;'>Yes</td>";
-					}
-					else
-					{
-						$stat = "<td style='background:#DC143C;color:white;'>No</td>";
-					}
-					
+
 					$opt_data = $opt_data."<tr><td>".$row->dept_code."</td><td>".$row->year."</td><td>".$row->rank."</td>
-					<td>".$row->student_id."</td>
-					<td>".$row->student_name."</td>
+					
+					<td>".$row->subject_name."</td>
 					<td>".$row->dept_code." ".$row->year." ".$row->section."</td>
-					<td>".$row->percentage."</td>".$stat."
+					<td>".$row->percentage."</td>
 					</tr>";
 
 					if($row->percentage>=0&&$row->percentage<=10)
@@ -748,15 +683,15 @@ function getReport($examid,$levelid,$client_name){
 			$chart = $chart.'<div class="chart_legend">
 			<ul class="chart_legend_list">
 			<li>X axis : Percentage</li>
-			<li>Y axis : Students</li>
+			<li>Y axis : Subjects</li>
 			<li>
 			<div style="background:#EEC900;"></div>
-			<span style="margin-left:5%;">No of Students</span>
+			<span style="margin-left:5%;">No of Subjects</span>
 			</li>
 			</ul>
 			</div>';
 
-			$rptdata = array('exam_name' => $exam_name,'table_headers' => $table_headers,'data' => $opt_data,'report_name' => 'Student Rank List','level' => 'Department and Year Level','chart' => $chart);
+			$rptdata = array('exam_name' => $exam_name,'table_headers' => $table_headers,'data' => $opt_data,'report_name' => 'Subject Rank List','level' => 'Department and Year Level','chart' => $chart);
 			$this->load->view('vrptoutput',$rptdata);
 			}
 			else
@@ -773,19 +708,11 @@ function getReport($examid,$levelid,$client_name){
 		{
 			$filterQry = "where 1=1";
 			
-			if($this->input->post('studentfilter'))
+			if($this->input->post('subjectfilter'))
 			{
-				if($this->alphanumericVal($this->input->post('studentfilter')))
+				if($this->alphanumericVal($this->input->post('subjectfilter')))
 				{
-					$filterQry = $filterQry." and student_name like '%".$this->input->post('studentfilter')."%'";
-				}
-			}
-			
-	        if($this->input->post('studentidfilter'))
-			{
-				if($this->alphanumericVal($this->input->post('studentidfilter')))
-				{
-					$filterQry = $filterQry." and student_id like '%".$this->input->post('studentidfilter')."%'";
+					$filterQry = $filterQry." and subject_name like '%".$this->input->post('subjectfilter')."%'";
 				}
 			}
 
@@ -810,18 +737,18 @@ function getReport($examid,$levelid,$client_name){
 
 			if($this->session->userdata('client_type')==3)
 		    {
-				$output = $this->analysis->overallTopperReportSchool($this->session->userdata('client_id'),$examid,$filterQry,$levelid);
+				$output = $this->analysis->subjectRankListReportSchool($this->session->userdata('client_id'),$examid,$filterQry,$levelid);
 			}
 			else
 			{
-				$output = $this->analysis->overallTopperReportCollege($this->session->userdata('client_id'),$examid,$filterQry,$levelid);
+				$output = $this->analysis->subjectRankListReportCollege($this->session->userdata('client_id'),$examid,$filterQry,$levelid);
 			}
 			
 			if($output)
 			{
 			$table_headers = "<th style=\"width:15%;\">Class</th><th style=\"width:10%;\">Rank</th>
-			<th>Student ID</th><th>Student Name</th>
-			<th>Percentage</th><th>All Cleared</th>";
+			<th style=\"width:30%;\">Subject Name</th>
+			<th>Pass Percentage</th>";
 
 			$opt_data = '';
 			$chart_data = '';
@@ -837,30 +764,22 @@ function getReport($examid,$levelid,$client_name){
 			$set10 = 0;
 			foreach($output as $row)
 				{
-					if($row->allpass==1)
-					{
-						$stat = "<td style='background:green;color:white;'>Yes</td>";
-					}
-					else
-					{
-						$stat = "<td style='background:#DC143C;color:white;'>No</td>";
-					}
-					
+
 					if($this->session->userdata('client_type')==3)
 					{
 						$opt_data = $opt_data."<tr><td>".$row->dept_code." ".$row->section."</td><td>".$row->rank."</td>
-						<td>".$row->student_id."</td>
-						<td>".$row->student_name."</td>
-						<td>".$row->percentage."</td>".$stat."
+						
+						<td>".$row->subject_name."</td>
+						<td>".$row->percentage."</td>
 						</tr>";
 					}
 					else
 					{
 						$opt_data = $opt_data."<tr><td>".$row->dept_code." ".$row->year." ".$row->section."</td>
 						<td>".$row->rank."</td>
-						<td>".$row->student_id."</td>
-						<td>".$row->student_name."</td>
-						<td>".$row->percentage."</td>".$stat."
+						
+						<td>".$row->subject_name."</td>
+						<td>".$row->percentage."</td>
 						</tr>";
 					}
 
@@ -941,15 +860,15 @@ function getReport($examid,$levelid,$client_name){
 			$chart = $chart.'<div class="chart_legend">
 			<ul class="chart_legend_list">
 			<li>X axis : Percentage</li>
-			<li>Y axis : Students</li>
+			<li>Y axis : Subjects</li>
 			<li>
 			<div style="background:#EEC900;"></div>
-			<span style="margin-left:5%;">No of Students</span>
+			<span style="margin-left:5%;">No of Subjects</span>
 			</li>
 			</ul>
 			</div>';
 
-			$rptdata = array('exam_name' => $exam_name,'table_headers' => $table_headers,'data' => $opt_data,'report_name' => 'Student Rank List','level' => 'Class Level','chart' => $chart);
+			$rptdata = array('exam_name' => $exam_name,'table_headers' => $table_headers,'data' => $opt_data,'report_name' => 'Subject Rank List','level' => 'Class Level','chart' => $chart);
 			$this->load->view('vrptoutput',$rptdata);
 			}
 			else

@@ -150,9 +150,17 @@ class Verify extends CI_Controller {
 			$sno = 0;
 			foreach($result as $row)
 			{
+				if($row->marks_obtained>=$row->pass_mark)
+					{
+						$stat = "<td style='background:green;color:white;'>".$row->marks_obtained."</td>";
+					}
+					else
+					{
+						$stat = "<td style='background:#DC143C;color:white;'>".$row->marks_obtained."</td>";
+					}
 				$sno++;
 				$html= $html."<tr><td>".$sno."</td><td>".$row->student_id."</td><td>".$row->student_name."</td>
-				<td>".$row->total_marks."</td><td>".$row->pass_mark."</td><td>".$row->marks_obtained."</td>";
+				<td>".$row->total_marks."</td><td>".$row->pass_mark."</td>".$stat;
 				
 			} 
 		}
