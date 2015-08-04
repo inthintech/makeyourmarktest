@@ -398,7 +398,7 @@ function newResult($client_id,$exam_id,$target_path,$staffname,$staffid,$subname
           $id_string= $id_string.$row->dept_code.$row->section;
         }
       
-      if($this->session->userdata('client_type')==1)
+      if($this->session->userdata('client_type')!=3)
 	  {
          $query = $this->db->query('LOAD DATA LOCAL INFILE "'.$target_path.'"
          INTO TABLE marks
@@ -440,7 +440,7 @@ function newResult($client_id,$exam_id,$target_path,$staffname,$staffid,$subname
 function getResultInfo($client_id,$exam_id)
 
   {
-    if($this->session->userdata('client_type')==1)
+    if($this->session->userdata('client_type')!=3)
 	  {
         $query = $this->db->query("select exam_id,c.batch_id,user_id,dept_code,year,section,staff_id,staff_name,subject_name,count(*) count
         from class c join marks m on c.batch_id=m.batch_id
@@ -473,14 +473,23 @@ function getResultInfo($client_id,$exam_id)
 function getResultDetails($client_id,$exam_id,$batch_id)
 
   {
-
+       if($this->session->userdata('client_type')!=3)
+	  {
+    $query = $this->db->query("select
+    student_id,
+    student_name,total_marks,pass_mark,marks_obtained
+    from marks m join class c on m.batch_id=c.batch_id
+    where c.client_id=".$this->db->escape($client_id)." and c.exam_id=".$this->db->escape($exam_id)." and c.batch_id=".$this->db->escape($batch_id));
+      }
+    else
+    {
     $query = $this->db->query("select
     case when 12-cast(dept_code as unsigned)<=2 then substring(student_id,4)
 	else substring(student_id,3) end AS student_id,
     student_name,total_marks,pass_mark,marks_obtained
     from marks m join class c on m.batch_id=c.batch_id
     where c.client_id=".$this->db->escape($client_id)." and c.exam_id=".$this->db->escape($exam_id)." and c.batch_id=".$this->db->escape($batch_id));
-
+    }
     if($query -> num_rows() >= 1)
    {
      return $query->result();
