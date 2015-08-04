@@ -30,7 +30,7 @@ who have passed in all subjects.';
 }
 if($reportID==2)
 {
-echo 'The Overall Topper report displays the students who have passed in all subjects and have the highest total percentage score.';
+echo 'The Overall Topper report displays the students who have the highest total percentage score.';
 }
 if($reportID==3)
 {
