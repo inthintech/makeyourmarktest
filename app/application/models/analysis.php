@@ -717,7 +717,8 @@ function subjectRankListReportSchool($client_id,$exam_id,$filterQry,$level_id)
 function subjectTopperReportCollege($client_id,$exam_id,$filterQry)
 
 {
-  $query = $this->db->query("select client_id,dept_code,year,section,subject_name,student_id,marks_obtained from class c
+  $query = $this->db->query("select * from
+	(select client_id,dept_code,year,section,subject_name,student_id,marks_obtained from class c
 	join  
 	(
 	select b.batch_id,b.student_id,b.marks_obtained from
@@ -728,7 +729,7 @@ function subjectTopperReportCollege($client_id,$exam_id,$filterQry)
 	)m
 	on c.batch_id=m.batch_id where lgcl_del_f='N'
 	and exam_id=".$this->db->escape($exam_id)." and client_id=".$this->db->escape($client_id)."
-	)SCR ".$filterQry. " order by client_id,dept_code,year,section");
+	)SCR ".$filterQry." order by client_id,dept_code,year,section");
 
    if($query -> num_rows() >= 1)
    {
