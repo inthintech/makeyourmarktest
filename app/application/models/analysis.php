@@ -313,19 +313,19 @@ function overallTopperReportCollege($client_id,$exam_id,$filterQry,$level_id)
 	switch($level_id)
 	{
 	  case 1:
-		$queryStr = $queryStr." order by client_id";
+		$queryStr = $queryStr." order by client_id,rank";
 	  break;
 	  case 2:
-		$queryStr = $queryStr." order by dept_code";
+		$queryStr = $queryStr." order by dept_code,rank";
 	  break;
 	  case 3:
-		$queryStr = $queryStr." order by year";
+		$queryStr = $queryStr." order by year,rank";
 	  break;
 	  case 4:
-		$queryStr = $queryStr." order by dept_code,year,section";
+		$queryStr = $queryStr." order by dept_code,year,section,rank";
 	  break;
 	  case 5:
-		$queryStr = $queryStr." order by dept_code,year";
+		$queryStr = $queryStr." order by dept_code,year,rank";
 	  break;
 	}
 	
@@ -438,13 +438,13 @@ function overallTopperReportSchool($client_id,$exam_id,$filterQry,$level_id)
 	switch($level_id)
 	{
 	  case 1:
-		$queryStr = $queryStr." order by client_id";
+		$queryStr = $queryStr." order by client_id,rank";
 	  break;
 	  case 2:
-		$queryStr = $queryStr." order by cast(dept_code as unsigned)";
+		$queryStr = $queryStr." order by cast(dept_code as unsigned),rank";
 	  break;
 	  case 4:
-		$queryStr = $queryStr." order by cast(dept_code as unsigned),section";
+		$queryStr = $queryStr." order by cast(dept_code as unsigned),section,rank";
 	  break;
 	}
 	

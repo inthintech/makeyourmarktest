@@ -364,9 +364,18 @@ echo
 <br>
 <table class="uploadTable">
 <tr>
-<td class="uploadTableLabel"><span class="glyphicon glyphicon-ok icon-size icon-green"></span><label class="reportLabel">Student Filter</label></td>
+<td class="uploadTableLabel"><span class="glyphicon glyphicon-ok icon-size icon-green"></span><label class="reportLabel">Student Name</label></td>
 <td class="uploadTableInput">
 <input type="text" id="studentfilter" class="exam_select" name="studentfilter" size="50"/>
+</td>    
+</tr>
+</table>
+<br>
+<table class="uploadTable">
+<tr>
+<td class="uploadTableLabel"><span class="glyphicon glyphicon-ok icon-size icon-green"></span><label class="reportLabel">Student Id</label></td>
+<td class="uploadTableInput">
+<input type="text" id="studentidfilter" class="exam_select" name="studentidfilter" size="50"/>
 </td>    
 </tr>
 </table>

@@ -273,7 +273,8 @@ class Reports extends CI_Controller {
 			$this->rptoveralltopper->getReport($this->input->post('examid'),$this->input->post('levelid'),$client_name);
 			break;
 			case 3:
-			$this->studentRankListReport($this->input->post('examid'),$this->input->post('levelid'),$client_name);
+			$this->load->model('rptstudentranklist','',TRUE);
+			$this->rptstudentranklist->getReport($this->input->post('examid'),$this->input->post('levelid'),$client_name);
 			break;
 			case 4:
 			$this->subjectRankListReport($this->input->post('examid'),$this->input->post('levelid'),$client_name);
