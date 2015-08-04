@@ -515,7 +515,7 @@ function subjectRankListReportCollege($client_id,$exam_id,$filterQry,$level_id)
 		count(distinct a.student_id) as student_cnt,
 		count(distinct(case when b.student_id is null then a.student_id end)) as student_pass_cnt,
 		count(distinct(case when b.student_id is null then a.student_id end))
-		/count(distinct a.student_id) * 100 as pass_percentage 
+		/count(distinct a.student_id) * 100 as percentage 
 		from
 		(select distinct c.*,student_id
 		from marks m
