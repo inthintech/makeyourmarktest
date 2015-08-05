@@ -539,7 +539,7 @@ function removeResults($client_id,$exam_id,$batch_id)
 
   {
 
-    $query = $this->db->query("select * from users where username=".$this->db->escape($uname));
+    $query = $this->db->query("select * from users where lgcl_del_f='N' and username=".$this->db->escape($uname));
 
     if($query -> num_rows() >= 1)
    {
