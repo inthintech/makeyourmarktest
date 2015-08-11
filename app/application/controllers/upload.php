@@ -146,7 +146,10 @@ class Upload extends CI_Controller {
 			$this->form_validation->set_error_delimiters('<p class="uploadErrMsg">* ', '</p>');
 			if($this->form_validation->run() == FALSE)
 			{
-				unlink($this->targetPathValue);
+				if($this->targetPathValue)
+				{
+					unlink($this->targetPathValue);
+				}
 				$this->load->helper(array('form'));
 				$examlist = '';
 				$result = $this->user->getExamList($this->session->userdata('client_id'));
