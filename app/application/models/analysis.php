@@ -747,8 +747,8 @@ function subjectTopperReportSchool($client_id,$exam_id,$filterQry)
 {
   $query = $this->db->query("select * from
 	(select client_id,dept_code,section,subject_name,
-	case when 12-cast(dept_code as unsigned)<=2 then cast(substring(student_id,4) as unsigned)
-	else cast(substring(student_id,3) as unsigned) end AS student_id,student_name,
+	case when 12-cast(dept_code as unsigned)<=2 then substring(student_id,4)
+	else substring(student_id,3) end AS student_id,student_name,
 	marks_obtained from class c
 	join  
 	(
@@ -804,8 +804,8 @@ function studentMarkListReportSchool($client_id,$exam_id,$filterQry)
 
   $query = $this->db->query("select * from 
     (select client_id,cast(dept_code as unsigned)dept_code,section,subject_name,
-	case when 12-cast(dept_code as unsigned)<=2 then cast(substring(student_id,4) as unsigned)
-	else cast(substring(student_id,3) as unsigned) end AS student_id,
+	case when 12-cast(dept_code as unsigned)<=2 then substring(student_id,4)
+	else substring(student_id,3) end AS student_id,
 	student_name,total_marks,marks_obtained,
 	case when marks_obtained>=pass_mark then '1' else '0' end result 
 	from class cs join marks ms on cs.batch_id=ms.batch_id 
