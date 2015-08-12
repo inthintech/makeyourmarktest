@@ -206,7 +206,7 @@ function passPercentageReportSchool($client_id,$exam_id,$filterQry,$level_id)
 
 }
 
-function overallTopperReportCollege($client_id,$exam_id,$filterQry,$level_id)
+function overallTopperReportCollege($client_id,$exam_id,$filterQry,$level_id,$allpass)
 {
   
   //Level
@@ -215,6 +215,20 @@ function overallTopperReportCollege($client_id,$exam_id,$filterQry,$level_id)
 	// 3 - Year
 	// 4 - Class
 	// 5 - Dept Year
+	
+	$rstFilter = '';
+	
+	switch($allpass)
+	{
+	  case 99:
+	  break;
+	  case 1:
+		$rstFilter = " and b.student_id is null ";
+	  break;
+	  case 0:
+		$rstFilter = " and b.student_id is not null ";
+	  break;
+	}
 	
   	$queryStr =
 	"Select *
@@ -276,6 +290,7 @@ function overallTopperReportCollege($client_id,$exam_id,$filterQry,$level_id)
 		and marks_obtained<pass_mark
 		)b
 		on a.student_id=b.student_id
+		where 1=1".$rstFilter."
 		group by a.client_id,a.dept_code,a.year,a.section,a.student_id,a.student_name
 		order by a.client_id,a.dept_code,a.year,a.section
 	)
@@ -342,13 +357,27 @@ function overallTopperReportCollege($client_id,$exam_id,$filterQry,$level_id)
   
 }
 
-function overallTopperReportSchool($client_id,$exam_id,$filterQry,$level_id)
+function overallTopperReportSchool($client_id,$exam_id,$filterQry,$level_id,$allpass)
 {
   
   //Level
 	// 1 - College
 	// 2 - Dept
 	// 4 - Class
+	
+	$rstFilter = '';
+	
+	switch($allpass)
+	{
+	  case 99:
+	  break;
+	  case 1:
+		$rstFilter = " and b.student_id is null ";
+	  break;
+	  case 0:
+		$rstFilter = " and b.student_id is not null ";
+	  break;
+	}
 	
   	$queryStr =
 	"Select *
@@ -407,6 +436,7 @@ function overallTopperReportSchool($client_id,$exam_id,$filterQry,$level_id)
 		and marks_obtained<pass_mark
 		)b
 		on a.student_id=b.student_id
+		where 1=1".$rstFilter." 
 		group by a.client_id,a.dept_code,a.section,a.student_id,a.student_name
 		order by a.client_id,a.dept_code,a.section
 	)

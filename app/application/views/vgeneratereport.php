@@ -385,7 +385,7 @@ echo
 
 <?php
 
-if($reportID==5)
+if($reportID==5||$reportID==3)
 {
 echo
 
