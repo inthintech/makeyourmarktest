@@ -386,8 +386,8 @@ function overallTopperReportSchool($client_id,$exam_id,$filterQry,$level_id)
 	(
 		select
 		a.client_id,a.dept_code,a.section,
-		case when 12-cast(dept_code as unsigned)<=2 then cast(substring(a.student_id,4) as unsigned)
-		else cast(substring(a.student_id,3) as unsigned) end AS student_id,
+		case when 12-cast(dept_code as unsigned)<=2 then substring(a.student_id,4)
+		else substring(a.student_id,3) end AS student_id,
 		a.student_name,
 		case when b.student_id is null then '1' else '0' end allpass,
 		avg(marks_obtained) percentage
@@ -748,7 +748,8 @@ function subjectTopperReportSchool($client_id,$exam_id,$filterQry)
   $query = $this->db->query("select * from
 	(select client_id,dept_code,section,subject_name,
 	case when 12-cast(dept_code as unsigned)<=2 then substring(student_id,4)
-	else substring(student_id,3) end AS student_id,student_name,
+	else substring(student_id,3) end AS student_id,
+	student_name,
 	marks_obtained from class c
 	join  
 	(
